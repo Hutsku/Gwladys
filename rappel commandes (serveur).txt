@@ -1,0 +1,28 @@
+login ssh server: 
+(cmd) ssh armel@strangeday.fr / ssh root@strangeday.fr
+
+problème snapd:
+- Désactiver: systemctl mask snapd.service
+	      systemctl stop snapd.service
+- Réactiver: systemctl unmask snapd.service
+             systemctl start snapd.service
+
+run server:
+npm start
+ou pm2 start index.js
+
+run nginx:
+sudo systemctl restart nginx
+
+maj github code:
+(server) sudo git pull
+pour forcer le pull: 
+git fetch --all
+git reset --hard origin/master
+
+si problème connexion mysql:
+(mysql) ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
+flush privileges;
+
+si problème https:
+sudo certbot --nginx -d ydogbe.store

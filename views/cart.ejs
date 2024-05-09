@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <!--<link rel="stylesheet" type="text/css" href="/css/style-product.css">-->
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-cart.css">
+        <title>Strange Day</title>
+    </head>
+ 
+    <body>
+    	<header>
+            <%- include('navbar') %>
+        </header>
+
+        <main class="py-5 mt-3">
+    		<div class="container-fluid row m-0">
+    			<div class="cart-left col-md-8 px-md-5 mb-md-5 pt-5">
+    				<div class="cart-pannel-main container">
+                        <span class="title row mb-4"> Contenu du panier </span>
+                        <% for (product of session.cart.products) {  %>
+                            <div class="cart-product row align-items-center" product_id="<%= product.id %>" product_option="<%= product.option %>" product_color="<%= product.color %>" product_available="<%= product.available %>" product_weight="<%= product.weight %>">
+                            	<div class="cart-product-img p-2 col-3">
+                            		<img class="w-100" src="/img/<%= product.image %>">
+                            	</div>
+                            	<div class="cart-product-name col-md-5 col" product_name='<%- product.name %>'>
+                            		<a href="/product/<%= product.id %>"><%- product.name %> <%- product.color == "Défaut" ? '' : product.color %> <%- product.option %></a>
+                            	</div>
+                            	<div class="w-100 d-md-none d-block"></div>
+                            	<div class="cart-product-qty col-md-2 offset-md-0 offset-3 col-4">
+                            		<input type="number" value="<%= product.cart_qty %>" min="1" max="99" step="1"/>
+                            	</div>
+                            	<div class="cart-product-price col-md-1 col-3" product_price="<%= product.price %>">
+                            		<span><%= parseFloat((product.price * product.cart_qty).toFixed(10)) %>€</span>
+                            	</div>
+                            	<div class="product-remove col-md-1 col-1">
+                                <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>" product_option="<%= product.option %>" product_color="<%= product.color %>">
+                            		<button type="submit" class="close" aria-label="Close">
+                                    	<span aria-hidden="true">&times;</span>
+                                	</button>
+                                </form>
+                            	</div>     
+                            </div>
+                            <div class="w-100 border-bottom my-3"></div>
+                        <% } 
+                        if (session.cart.products.length) { %>
+                            <form action="/valid-cart" method="post" class="mt-5 text-center">
+                                <button class="w-auto btn btn-log mb-3 payout-button" type="submit" name="valid-cart">
+                                    Valider le panier
+                                </button>
+                            </form>
+                        <% } else { %>
+                            <div class="cart-empty text-center row"> 
+                                <span class="col my-5">Aucun produit dans le panier ...</span>
+                            </div>
+                        <% } %>
+              		</div>
+    			</div>
+    			
+    			<!---------------------------------------------------------------------->
+
+                <% 
+                let subtot = session.cart.subtotal_cost+'€';
+                let ship = session.cart.shipping_cost+'€';
+                let vouch = session.cart.voucher_promo ? session.cart.voucher_promo+'%':0;
+                let tot = session.cart.total_cost+'€';
+                if (!parseInt(ship)) {
+                    ship = 'Gratuite';
+                    tot = subtot;
+                }
+                if (!session.cart.products.length) { 
+                    subtot = "-";
+                    ship = "-";
+                    tot = "-";
+                } %>
+
+	    		<div class="cart-payout col-md-4 mt-4 mt-md-5">
+	    			<div class="sticky-top sticky-offset p-4">
+	    				<div class="row">
+	    					<span class="title col-5">Total Panier</span>
+		    			</div>
+		    			<div class="w-100 border-bottom my-3"></div>
+		    			<div class="row py-3">
+		    				<span class="title col-5">Sous-Total <span class="detail">(TTC)</span></span>
+		    				<span class="price price-sub-total"><%= subtot %></span>
+		    			</div>
+		    			<div class="row py-3">
+		    				<span class="title col-5">Livraison <span class="detail">(estimée)</span></span>
+		    				<span class="price price-shipping"><%= ship %></span>
+		    			</div>
+                        <% if (vouch) { %>
+                        <div class="row py-3">
+                            <span class="title col-5">Coupon <span class="detail">(<%= session.cart.voucher_code %>)</span></span>
+                            <span class="price price-voucher" voucher_name="<%= session.cart.voucher_code %>"><%= vouch %></span>
+                        </div>
+                        <% } %>
+		    			<div class="w-100 border-bottom my-3"></div>
+		    			<div class="row pb-4">
+			    			<span class="title total col-5">Total <span class="detail">(TTC)</span></span>
+			    			<span class="price price-total"><%= tot %></span>
+			    		</div>
+                        <div class="form-check w-100 pb-2">
+                            <input class="form-check-input" type="checkbox" id="validCgv" name="cgv" value="yes">
+                            <label for="validCgv">J'ai lu et accepte les <a href="/cgv.pdf" target="_blank">CGV</a></label>
+                            <div class="invalid-feedback">Vous devez accepter les CGV pour vous poursuivre</div>
+                        </div>
+			    		<div class="text-center">
+                            <form action="/payout" method="post" class="">
+    				    		<button class="w-100 btn btn-cart mb-3 payout-button" <% if (!session.cart.products.length) { %> disabled=true <% } %> type="submit" name="add-cart">
+    		    					Passer au paiement
+    		    				</button>
+                            </form>
+	    				</div>
+                        <div class="voucher">
+                            <form action="/valid-voucher" method="post">
+                                <label class="title my-2"> Code promo ? </label>
+                                <div class="row m-0">
+                                    <input type="text" placeholder="Rentrez-le ici !" class="form-control col-md-8" name="voucher">
+                                    <button class="btn btn-log ml-md-2 mt-md-0 mt-2 col" type="submit" name="valid-voucher">Valider</button>
+                                    <div class="invalid-feedback">Le code promo n'est pas valide ...</div>
+                                </div>
+                            </form>
+                        </div>
+	    			</div>
+	    		</div>
+
+	    		<!---------------------- MOBILE ONLY ---------------------------->
+	    		<!--<div class="fixed-bottom product-payout d-md-none d-none w-100 p-3 bg-light shadow-lg">
+    				<div class="row mx-2 mb-2">
+    					<span class="title-product col-10 p-0">(1966) CHINE : T-Shirt manches courtes - Blanc</span>
+    					<span class="price-product col-2 p-0 text-right">29.99€</span>
+	    			</div>
+	    			<form class="form-product row w-100">
+	    				<select class="custom-select size col ml-4">
+					        <option selected disabled>Sélectionnez la taille</option>
+							<option value="S" class="attached enabled">S</option>
+	    					<option value="M" class="attached enabled">M</option>
+	    					<option value="L" class="attached enabled">L</option>
+	    					<option value="XL" class="attached enabled">XL</option>
+				      	</select>
+	    				<button class="btn btn-primary col ml-2 text-truncate" type="submit" name="add-cart">
+	    					Ajouter au panier <i class="fas fa-cart-arrow-down"></i>
+	    				</button>
+	    			</form>
+	    		</div>-->
+	    	</div>
+        </main>
+        <footer>
+            <%- include('footer') %>
+        </footer>
+    </body>
+
+	<script src="./scripts/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script>
+	<script>
+	    $("input[type='number']").inputSpinner()
+	</script>
+
+    <script type="text/javascript">
+        updateTotalPrice()
+
+        // Arrondis les opérations de float
+        function roundPrice(x) {
+            return parseFloat(x.toFixed(2));
+        }
+
+        // Change les sub et total des prix en checkant tout les produits
+        function updateTotalPrice() {
+            let sub_price  = 0;
+            let ship_price = parseFloat($('.price-shipping').text()) || 0
+            let promo      = parseFloat($('.price-voucher').text()) || 0
+            $('.price-sub-total').text(function () {
+                $('.cart-pannel-main .cart-product-price').each(function () {
+                    sub_price = roundPrice(sub_price + parseFloat($(this).text()));
+                });
+                return sub_price+'€';
+            });
+
+            $('.price-total').text(function () {
+                let reduc = roundPrice(promo * (sub_price + ship_price) / 100)
+                let total = roundPrice(ship_price + sub_price - reduc);
+                return total+'€';
+            });
+        }
+
+        // Créer un nouveau panier avec les informations de la page
+        function validCart() {
+            console.log('test')
+            var new_cart = {
+                products: [],
+                subtotal_cost: $('.price-sub-total').text(),
+                shipping_cost: parseFloat('<%= session.cart.shipping_cost %>') || 0,
+                total_cost: $('.price-total').text(),
+                nb_products: 0,
+                weight: 0,
+                voucher_code: $('.price-voucher').attr('voucher_name'),
+                voucher_promo: $('.price-voucher').text(),
+            }
+            $('.cart-pannel-main .cart-product').each(function () {
+                var product = $(this);
+                new_cart.products.push({
+                    id: product.attr('product_id'), 
+                    option: product.attr('product_option'), 
+                    color: product.attr('product_color'),
+                    name: product.find('.cart-product-name').attr('product_name'),
+                    price: product.find('.cart-product-price').attr('product_price'),
+                    weight: parseInt(product.attr('product_weight')),
+                    cart_qty: product.find('.cart-product-qty input').val(),
+                    img: product.find('img').attr('src').split('/')[2],
+                    available: product.attr('product_available')
+                });
+                new_cart.weight += parseInt(product.attr('product_weight')) * parseInt(product.find('.cart-product-qty input').val())
+                new_cart.nb_products += parseInt(product.find('.cart-product-qty input').val());
+            });
+            return JSON.stringify(new_cart);
+        }
+
+        // actualise lors du changement de quantité
+        $('.cart-pannel-main .cart-product-qty input').on("input", function (event) {
+            var element = $(this);
+            var price_element = element.parent().next();
+
+            var price = parseFloat(price_element.attr('product_price')); // on recupère le prix du produit changé
+            price_element.text(roundPrice(element.val()*price)+"€"); // On met à jour avec la qty selectionné
+
+            updateTotalPrice();
+        });
+
+        // actualise lorsque on supprime un produit
+        $('.cart-pannel-main form[action="/remove-cart"]').submit(function () {
+            var product_id = $(this).attr('product_id');
+            var product_option = $(this).attr('product_option');
+            var product_color = $(this).attr('product_color');
+
+            // on modifie la page dynamiquement
+            var element = $(`.cart-pannel-main div.cart-product[product_id='${product_id}'][product_option='${product_option}'][product_color='${product_color}']`);
+            element.prev().remove();
+            element.remove();
+
+            // s'il n'y a plus rien dans le panier, on supprime le total et on ajoute le texte de vide
+            if (!$('.cart-pannel-main .cart-product').length) {
+                $('form[action="/valid-cart"]').remove()
+                $('.cart-pannel-main').append(
+                    `<div class="cart-empty text-center row"> 
+                        <span class="col mt-5">Aucun produit dans le panier ...</span>
+                    </div>`);
+                
+                $('.price-shipping').text("-");
+                $('.price-sub-total').text("-");
+                $('.price-total').text("-");
+                $('.payout-button').prop("disabled", true);
+            }
+            else {
+                updateTotalPrice();
+            }
+            return false;
+         });
+            
+        // Valide un coupon
+        $('form[action="/valid-voucher"]').submit(function () {
+            let voucherCode = $('input[name="voucher"]').val();
+            if (!voucherCode) {
+                $('input[name="voucher"]').removeClass('is-valid').addClass('is-invalid');
+                return false;
+            } else {
+                $('input[name="voucher"]').removeClass('is-invalid').addClass('is-valid');
+            }
+
+            $.post("/valid-voucher", {
+                code: voucherCode
+            }).done( function (data) {
+                if (data == "badCode") $('input[name="voucher"]').removeClass('is-valid').addClass('is-invalid');
+                else location.reload();
+            });
+            return false;
+        });
+
+        // Valide le panier
+        $('form[action="/valid-cart"]').submit(function () {
+            // on construit un nouveau panier final et on l'envoie
+            $.post("/valid-cart", {
+                cart: validCart()
+            }).done( function (data) {
+                if (data == "badCart") {
+                    console.log("error occured")
+                }
+                else {
+                    location.reload();
+                }
+            });
+            return false;
+        });
+
+        // Valide le panier et passe au payement
+        $('form[action="/payout"]').submit(function () {
+            let cgvInput = $('input[name="cgv"]:checked');
+
+            if (!cgvInput.val()) {
+                $('input[name="cgv"]').removeClass('is-valid').addClass('is-invalid');
+                return false;
+            } else {
+                $('input[name="cgv"]').removeClass('is-invalid').addClass('is-valid');
+            }
+
+            $.post("/valid-cart", {
+                cart: validCart()
+            }).done( function (data) {
+                if (data == "badCart") {
+                    console.log("error occured")
+                }
+                else {
+                    location.assign("/payout");
+                }
+            });
+            return false;
+        });
+
+	</script>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/style-subscribe.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+        <title>Strange Day</title>
+    </head>
+ 
+    <body>
+    	<header>
+            <%- include('navbar') %>
+        </header>
+
+        <main class="py-5 mt-3">
+			<form action="/sign-up" method="post" class="subscribe-pannel container mt-5">
+				<div class="subscribe-infos">
+					<div class="container">
+						<span class="title"> Détails personnels </span>
+						<div class="form-group form-row">
+		                    <input type="text" placeholder="Nom et prénom" class="form-control" name="name">
+		                    <div class="invalid-feedback">Veuillez rentrer un nom valide</div>
+		                </div>
+		                <div class="form-group form-row">
+		                    <input type="text" placeholder="Adresse email" class="form-control" name="email">
+		                    <div class="invalid-feedback">Veuillez rentrer une adresse email valide</div>
+		                </div>
+		                <div class="form-group form-row">
+		                	<input type="tel" placeholder="Téléphone (mobile de préférence)" class="form-control" name="tel">
+        					<div class="invalid-feedback">Veuillez rentrer un numéro valide</div>
+        				</div>
+	            	</div>
+	            	<div class="container">
+	            		<span class="title"> Adresse </span>
+                        <div class="form-group w-100">
+                            <input type="text" placeholder="Adresse" class="form-control" name="address1">
+                            <div class="invalid-feedback">Veuillez rentrer une adresse valide</div>
+                        </div>
+                        <div class="form-group w-100">
+                            <input type="text" placeholder="N° suite / appartement (optionnel)" class="form-control" name="address2">
+                            <div class="invalid-feedback">Veuillez rentrer une adresse valide</div>
+                        </div>
+                        <div class="form-row w-100 m-0 mb-3">
+                            <div class="col p-0 pr-1">
+                                <input type="text" placeholder="Ville" class="form-control" name="city">
+                                <div class="invalid-feedback">Veuillez rentrer une ville valide</div>
+                            </div>
+                            <div class="col p-0 pl-1">
+                                <input type="text" placeholder="Code postal" class="form-control" name="postal-code">
+                                <div class="invalid-feedback">Veuillez rentrer un code valide</div>
+                            </div>
+                        </div>
+                        <div class="form-row w-100 m-0 mb-3">
+                            <div class="col p-0 pr-1">
+                                <input type="text" placeholder="Région / Etat" class="form-control" name="state">
+                                <div class="invalid-feedback">Veuillez rentrer une région valide</div>
+                            </div>
+                            <div class="col p-0 pl-1">
+                                <select class="form-control" value="FR" data-role="country-selector" data-code-mode="alpha2" name="country"></select>
+                                <div class="invalid-feedback">Veuillez rentrer un pays valide</div>
+                            </div>
+                        </div>
+	            	</div>
+	            	<div class="container">
+	            		<span class="title"> Mot de passe </span>
+		                <div class="form-group form-row">
+		                    <input type="password" placeholder="Mot de passe" class="form-control" name="password">
+		                    <div class="invalid-feedback">Veuillez rentrer un mot de passe valide</div>
+		                </div>
+		                <div class="form-group form-row">
+		                    <input type="password" placeholder="Répetez le mot de passe" class="form-control" name="repeat-password">
+		                    <div class="invalid-feedback">les mots de passe ne correspondent pas</div>
+		                </div>
+		            </div>
+	        	</div>
+	        	<div class="subscribe-check mt-md-0 m-3">
+	                <div class="form-check w-100">
+	                    <input class="form-check-input" type="checkbox" id="subscribeNewsletter" name="newsletter" value="yes">
+	                    <label for="subscribeNewsletter">Je souhaite m'abonner à la newsletter</label>
+	                </div>
+	                <div class="form-check w-100">
+	                    <input class="form-check-input" type="checkbox" id="subscribeCgu" name="cgu" value="yes">
+	                    <label class="label"for="subscribeCgu">Je reconnais avoir lu et compris les <a href="/cgu.pdf" target="_blank">CGU</a> et je les accepte </label>
+	                    <div class="invalid-feedback">Vous devez accepter les CGU pour vous inscrire</div>
+	                </div>
+                    <button type="submit" class="btn btn-cart mt-3 col-md-2" data-dismiss="">S'inscrire</button>
+	            </div>
+            </form>
+        </main>
+        <footer>
+            <%- include('footer') %>
+        </footer>
+    </body>
+
+	<script src="jquery.countryselector.js"></script>
+	<script type="text/javascript">
+	    /* Erreur à afficher pour le login */
+	    $('form[action="/sign-up"]').submit(function () {
+	    	var nameInput = $('.subscribe-pannel input[name="name"]');
+	        var emailInput = $('.subscribe-pannel input[name="email"]');
+	        var address1Input = $('.subscribe-pannel input[name="address1"]');
+	        var address2Input = $('.subscribe-pannel input[name="address2"]');
+	        var cityInput = $('.subscribe-pannel input[name="city"]');
+	        var countryInput = $('.subscribe-pannel select[name="country"]');
+	        var stateInput = $('.subscribe-pannel input[name="state"]');
+	        var postalCodeInput = $('.subscribe-pannel input[name="postal-code"]');
+	        var passwordInput = $('.subscribe-pannel input[name="password"]');
+	        var repeatpasswordInput = $('.subscribe-pannel input[name="repeat-password"]');
+	        var newsletterInput = $('.subscribe-pannel input[name="newsletter"]:checked');
+	        var cguInput = $('.subscribe-pannel input[name="cgu"]:checked');
+	        var telInput = $('.subscribe-pannel input[name="tel"]');
+    		var regexTel = new RegExp("^([0-9]{10})$");
+    		var regexEmail = new RegExp(`^[\\w.+-]{1,64}@([a-zA-Z\\d-]{2,252}\\.[\\w\\.]{2,6})$`);
+
+	        // On check les erreurs et on ajoute la classe en consequant
+	        if (!nameInput.val()) {
+	            nameInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            nameInput.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!emailInput.val()) {
+	            emailInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else if (!emailInput.val().match(regexEmail)) {
+	            emailInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            emailInput.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!telInput.val()) {
+	            telInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            telInput.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!address1Input.val()) {
+	            address1Input.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            address1Input.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (address2Input.val()) {
+	            address2Input.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!cityInput.val()) {
+	            cityInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            cityInput.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!postalCodeInput.val()) {
+	            postalCodeInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            postalCodeInput.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!countryInput.val()) {
+	            countryInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            countryInput.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!stateInput.val()) {
+	            stateInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            stateInput.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!passwordInput.val()) {
+	            passwordInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            passwordInput.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!repeatpasswordInput.val()) {
+	            repeatpasswordInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else if (repeatpasswordInput.val() != passwordInput.val()) {
+	            repeatpasswordInput.removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	        	repeatpasswordInput.removeClass('is-invalid').addClass('is-valid');
+	        }
+	        if (!cguInput.val()) {
+	            $('.subscribe-pannel input[name="cgu"]').removeClass('is-valid').addClass('is-invalid');
+	            return false;
+	        } else {
+	            $('.subscribe-pannel input[name="cgu"]').removeClass('is-invalid').addClass('is-valid');
+	        }
+
+	        if (newsletterInput.val()) var newsletterInputValue = 1;
+	        else var newsletterInputValue = 0;
+
+	        $.post("/sign-up", {
+	        	name: nameInput.val(),
+	            email: emailInput.val(),
+	            address1: address1Input.val(),
+	            address2: address2Input.val(),
+	            city: cityInput.val(),
+	            postalCode: postalCodeInput.val(),
+	            country: countryInput.val(),
+	            state: stateInput.val(),
+	            password: passwordInput.val(),
+	            tel: telInput.val(),
+	            newsletter: newsletterInputValue
+	        })
+	        .done( function (data) {
+	            if (data == "badEmail") {
+	                emailInput.removeClass('is-valid').addClass('is-invalid'); // l'email est déjà utilisé
+	                $('header').append(
+	                	`<div class="notif-container row w-100 justify-content-center">
+				            <div class="alert alert-danger alert-dismissible fade show col-8" role="alert">
+				                <strong>Erreur !</strong> L'email est déjà utilisé par un autre compte ...
+				                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				                    <span aria-hidden="true">&times;</span>
+				                </button>
+				            </div>
+				            <div class="w-100"></div>
+				        </div>`
+                	)
+	            }
+	            else {
+	            	// une fois inscrit, on connecte directement
+					$.post("/login", {
+		                email: emailInput.val(),
+		                password: passwordInput.val()
+		            })
+		            .done( function (data) {
+		                if (data == "badEmail") {
+		                    console.log("bad email")
+		                    emailInput.removeClass('is-valid').addClass('is-invalid');
+		                }
+		                else if (data == "badPassword") {
+		                    console.log("bad password")
+		                    passwordInput.removeClass('is-valid').addClass('is-invalid');
+		                }
+		                else {
+		                	if (emailInput.val() == 'yaniss.mardaoui@outlook.fr') {
+		                		location.assign('gilbert')
+		                	}
+		                	else {
+		                		location.assign('/')
+		                	}
+		                }
+		            });
+	            }
+	        });
+
+	        return false; // on execute pas le submit normal
+	         
+	    });
+	</script>
+</html>

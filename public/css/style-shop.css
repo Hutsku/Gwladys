@@ -1,0 +1,154 @@
+h3 {
+	font-size: 1.6rem;
+	font-weight: 600;
+}
+
+.product-list, .lookbook-gallery, .staff-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.lookbook-gallery {
+	display:none;
+}
+.staff-list {
+	justify-content: center;
+}
+.honor {
+	font-size: 13px;
+	text-transform: none;
+	text-align: center;
+}
+
+.product-img, .lookbook-img, .staff-img {
+	overflow: hidden;
+	width: 100%;
+}
+.product-img img, .lookbook-img img, .staff-img img {
+	filter: none;
+	transition: 1s;
+	text-align: center;
+}
+
+/* On aligne les images les unes sur les autres */
+
+div.product-img {
+	position: relative;
+}
+div.product-img img {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+div.product-img img.main {
+	position: relative;
+}
+.product-img:hover img {
+	filter: brightness(100%);
+	transform: scale(1.05);
+}
+
+.hidden {
+	opacity: 0;
+}
+
+/* ----------------------------------------- */
+
+.staff-name {
+	display: flex;
+	flex-direction: column;
+}
+.product-name .name, .staff-name .name {
+	font-size: 18px;
+	font-weight: var(--shop-name-fw);
+	color: black;
+}
+.product-name .collection {
+	font-size: 16px;
+	font-weight: var(--shop-name-fw);
+}
+
+.desc {
+	text-transform: none;
+	font-weight: 500;
+}
+.faq {
+	display: flex;
+	flex-direction: column;
+	text-transform: none;
+}
+
+span.sold-out {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	position:absolute;
+	width: 100px;
+	height: 30px;
+
+	background-color: black;
+	color: white;
+	font-weight: 700;
+	font-size: 13px;
+
+	z-index: 99;
+}
+
+/* ================= COLOR PICKER ================ */
+
+.color-box {
+	height: 15px;
+	width: 15px;
+	border: 1px solid grey;
+	border-radius: 50%;
+	transition: 0.3s;
+	opacity: 0.85;
+}
+.color-box.selected {
+	border: 1px solid black;
+}
+.color-box:hover {
+	cursor: pointer;
+	border: 1px solid black;
+}
+
+.color-picker {
+	position: absolute;
+	flex-direction: row-reverse;
+	width: 100px;
+	height: 20px;
+	right: 0px;
+	margin-top: 8px;
+
+	z-index: 99;
+}
+
+/* =============================================== */
+
+/* PANEL SWITCH */
+
+div.tab {
+	text-align: center;
+}
+ul.tab-switch {
+	text-align: center;
+	margin: auto;
+}
+ul.tab-switch li {
+	border-bottom: 5px solid transparent;
+	margin: 0;
+	width: 240px;	
+	height: 50px;
+	padding-top: 10px;	
+	font-weight: 400;
+
+	cursor: pointer;
+	transition: 0.2s;
+}
+ul.tab-switch li:hover {
+	border-bottom: 5px solid lightgrey;	
+}
+ul.tab-switch li.active {
+	border-bottom: 5px solid black;	
+	font-weight: 600;
+}

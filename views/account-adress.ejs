@@ -1,0 +1,114 @@
+<form action="/edit-adress" method="post" class="">
+	<div class="mb-5"> 
+		<span href="#" class="link-title p-2 pl-4">
+			Modification de l'adresse
+		</span>
+	</div>
+
+	<div class="m-2 my-4 account-input row">
+        
+	    <input type="text" placeholder="Adresse" class="form-control col-md-5 col" name="address1" >
+        <div class="invalid-feedback">Veuillez rentrer une adresse valide</div>
+	</div>
+    <div class="m-2 my-4 account-input row">
+        <input type="text" placeholder="N° suite / appartement (optionnel)" class="form-control col-md-5 col" name="address2" >
+        <div class="invalid-feedback">Veuillez rentrer une adresse valide</div>
+    </div>
+    <div class="m-2 my-4 account-input row">
+        <input type="text" placeholder="Ville" class="form-control col-md-5 col" name="city">
+        <div class="invalid-feedback">Veuillez rentrer une ville valide</div>
+    </div>
+    <div class="m-2 my-4 account-input row">
+        <input type="text" placeholder="Code postal" class="form-control col-md-5 col" name="postal-code">
+        <div class="invalid-feedback">Veuillez rentrer un code valide</div>
+    </div>
+
+    <div class="m-2 my-4 account-input row">
+        <input type="text" placeholder="Région / Etat" class="form-control col-md-5 col" name="state">
+        <div class="invalid-feedback">Veuillez rentrer une région valide</div>
+    </div>
+    <div class="m-2 my-4 account-input row">
+        <select class="form-control col-md-5 col" value="<%- session.account.country %>" data-role="country-selector" data-code-mode="alpha2" name="country"></select>
+        <div class="invalid-feedback">Veuillez rentrer un pays valide</div>
+    </div>
+
+	<div class="m-2 my-4 account-input row">
+		<button type="submit" class="btn btn-cart mt-3" data-dismiss="">Confirmer</button>
+	</div>
+</form>
+
+<script src="/jquery.countryselector.js"></script>
+<script type="text/javascript">
+    // on préremplis les champs
+    var address1Input = $('.account-input input[name="address1"]');
+    var address2Input = $('.account-input input[name="address2"]');
+    var cityInput = $('.account-input input[name="city"]');
+    var countryInput = $('.account-input select[name="country"]');
+    var stateInput = $('.account-input input[name="state"]');
+    var postalCodeInput = $('.account-input input[name="postal-code"]');
+
+    address1Input.val("<%- session.account.address1 %>");
+    address2Input.val("<%- session.account.address2 %>");
+    cityInput.val("<%- session.account.city %>");
+    stateInput.val("<%- session.account.state %>");
+    countryInput.val("<%- session.account.country %>");
+    postalCodeInput.val("<%- session.account.postal_code %>");
+
+    /* Erreur à afficher pour le login */
+    $('form[action="/edit-adress"]').submit(function () {
+        // On check les erreurs et on ajoute la classe en consequant
+        if (!address1Input.val()) {
+            address1Input.removeClass('is-valid').addClass('is-invalid');
+            return false;
+        } else {
+            address1Input.removeClass('is-invalid').addClass('is-valid');
+        }
+        if (address2Input.val()) {
+            address2Input.removeClass('is-invalid').addClass('is-valid');
+        }
+        if (!cityInput.val()) {
+            cityInput.removeClass('is-valid').addClass('is-invalid');
+            return false;
+        } else {
+            cityInput.removeClass('is-invalid').addClass('is-valid');
+        }
+        if (!postalCodeInput.val()) {
+            postalCodeInput.removeClass('is-valid').addClass('is-invalid');
+            return false;
+        } else {
+            postalCodeInput.removeClass('is-invalid').addClass('is-valid');
+        }
+        if (!countryInput.val()) {
+            countryInput.removeClass('is-valid').addClass('is-invalid');
+            return false;
+        } else {
+            countryInput.removeClass('is-invalid').addClass('is-valid');
+        }
+        if (!stateInput.val()) {
+            stateInput.removeClass('is-valid').addClass('is-invalid');
+            return false;
+        } else {
+            stateInput.removeClass('is-invalid').addClass('is-valid');
+        }
+
+        $.post("/edit-address", {
+            address1: address1Input.val(),
+            address2: address2Input.val(),
+            postal_code: postalCodeInput.val(),
+            city: cityInput.val(),
+            country: countryInput.val(),
+            state: stateInput.val()
+        })
+        .done( function (data) {
+            if (data == "badAddress") {
+                return false;
+            }
+            else {
+                location.reload();
+            }
+        });
+
+        return false; // on execute pas le submit normal
+         
+    });
+</script>

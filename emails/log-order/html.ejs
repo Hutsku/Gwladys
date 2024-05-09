@@ -1,0 +1,27 @@
+<body>
+    <div class="content px-3 mb-2">
+	    <p> ====== DETAILS CLIENT ====== <br/>
+	    <b>Nom & prenoms</b>: <%= user.name %><br/>
+	    <b>Adresse email</b>: <%= user.email %><br/>
+	    <b>Numéro téléphone</b>: <%= user.tel %></p>
+
+	    <p>====== DETAILS LIVRAISON ======<br/>
+	    <b>Adresse livraison</b> <%= shipping_address.string %><br/>
+	    <b>Adresse facturation</b>: <%= billing_address %><br/>
+	    <b>Methode de livraison</b>: Colissimo</p>
+	    
+	    <% for (product of products) { %>
+	        <p> <%=product.name%> <%=product.color%> <%=product.option%> (x <%=product.cart_qty%>) <%=product.price%>€ </p>
+	    <% } %>
+
+	    <p>====== DETAIL COMMANDE ======<br/>
+	    <b>Date de facturation</b>: <%= date %><br/>
+	    <b>Numéro de commande</b>: <%= order_id %><br/>
+	    <b>Mode de paiement</b>: <%= billing_method %></p>
+	    
+	    <p><b>Sous-total</b>: <%= subtotal_cost %>€<br/>
+	    <b>Frais de livraison</b>: <%= shipping_cost %>€<br/>
+	    <% if (voucher_code) { %> <b>Code promo</b>: <%= voucher_code %> <%- reduc.toFixed(2) %>€<br/> <% } %>
+	    <b>TOTAL</b>: <%= total_cost %>€</p>
+	</div>
+</body>

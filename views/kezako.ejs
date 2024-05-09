@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/style-shop.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+
+        <title>Strange Day</title>
+    </head>
+ 
+    <body>
+        <header>
+            <%- include('navbar') %>
+        </header>
+        <main class="py-5 mt-3">
+            <%- include('jumbo') %>
+            <div class="head-title my-5">
+                <h2>Qui sommes-nous ?</h2>
+            </div>
+            <div class="container desc">
+                Quand j’ai créé Strange Day, je ne savais pas trop ce que c’était. Le but était juste de faire des vêtements et de les rassembler sous une même bannière. J’aimais bien la sonorité du mot « Strange » et ce qu’il représentait. Quelque chose d’étrange, de particulier, d’unique.<br/>
+                <br/>
+                Au fil du temps, je vois de plus en plus ce que ça représente. Strange Day c’est apprécier les choses imprévues. C’est rigoler avec des inconnus dans la rue. C’est danser en pleine nuit à Pigalle. C’est s’incruster à une soirée où on connaît personne. C’est manger un kebab en pleine nuit à Montmartre. C’est se réveiller quelque part et s’endormir autre part. C’est partir en vacances sur un coup de tête. C’est voir un film au hasard dans un vieux cinéma.<br/>
+                <br/>
+                Ce qu’on essaie de faire, c’est de retranscrire toutes ces émotions, tout ces moments à travers des vêtements et des photos. On utilise souvent des références culturelles pour que ça parle à tout le monde, surtout le cinéma et la musique.<br/>
+                <br/>
+                Le but avec ces vêtements, c’est qu’en les portant, à la fin de la journée, vous vous disiez « Today was a Strange Day ». 
+            </div>
+            <div class="head-title mt-5">
+                <h2>L'équipe</h2>
+            </div>
+            <div class="container staff-list">
+                <div class="staff col-md-3 p-5">
+                    <div class="staff-img text-center">
+                        <img class="w-100" src="/img/kezako3.jpg">
+                    </div>
+                    <div class="staff-name p-2 text-center">
+                        <span class="name">
+                            <a class="link" href="https://instagram.com/ydogbe" target="_blank">Yoann</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="staff col-md-3 p-5">
+                    <div class="staff-img text-center">
+                        <img class="w-100" src="/img/Armel.jpg">
+                    </div>
+                    <div class="staff-name p-2 text-center">
+                        <span class="name"><a class="link" href="https://instagram.com/armel_rxl" target="_blank">Armel</a></span>
+                        
+                    </div>
+                </div>
+                <div class="staff col-md-3 p-5">
+                    <div class="staff-img text-center">
+                        <img class="w-100" src="/img/Alexandrine.jpg">
+                    </div>
+                    <div class="staff-name p-2 text-center">
+                        <span class="name">
+                            <a class="link" href="https://instagram.com/alexandrinesnd" target="_blank">Alexandrine</a>
+                        </span>
+                        
+                    </div>
+                </div>  
+                <div class="staff col-md-3 p-5">
+                    <div class="staff-img text-center">
+                        <img class="w-100" src="/img/Cailliou.png">
+                    </div>
+                    <div class="staff-name p-2 text-center">
+                        <span class="name">
+                            <a class="link" href="https://instagram.com/cailliou" target="_blank">Camille</a>
+                        </span>
+                        
+                    </div>
+                </div>                
+            </div>
+        </main>
+        <footer>
+            <%- include('footer') %>
+        </footer>
+    </body>
+</html>

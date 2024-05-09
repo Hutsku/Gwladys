@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/style-payment-success.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+        <title>Strange Day</title>
+    </head>
+ 
+    <body>
+    	<header>
+            <%- include('navbar') %>
+        </header>
+
+        <main class="pt-5 mt-3" style="align-items:center;">
+    		<div class="success-pannel container-fluid m-0 text-center mt-5">
+                <div class="row title text-center mb-3">
+                    <span class="col">Nouveau mot de passe envoyé !</span>
+                </div>
+                <div class="row description text-center mb-4">
+                    <span class="col">Merci pour votre patience ! Si cet adresse est bien affilié à un compte, un email a du vous être envoyé. <br/> Si vous ne l'avez toujours pas reçu, merci de vérifier les dossiers spam. <br/>Sinon, vous pouvez essayer de réiterer l'opération ...</span>
+                </div>
+                <a href="/forgot-password" class="row btn btn-cart mb-5" role="button" name="add-cart">Renvoyer un email</a>
+	    	</div>
+        </main>
+        <footer>
+            <%- include('footer') %>
+        </footer>
+    </body>
+
+    <script type="text/javascript">
+    </script>
+
+</html>

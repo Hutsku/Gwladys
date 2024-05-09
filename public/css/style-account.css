@@ -1,0 +1,98 @@
+.title {
+	display: block;
+
+	font-weight: var(--head-title-ts);
+	font-size: 17px;
+	margin-bottom: 15px;
+}
+span.info {
+	text-transform: none;
+	color: grey;
+	margin-left: 4px;
+}
+span.row {
+	text-transform: none;
+}
+
+div.account-content {
+	min-height: 100vh;
+}
+
+.account-left {
+	color: black;
+	font-weight: var(--head-title-fw);
+	height: max-content;
+}
+
+ul.account-link {
+	background-color: white;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+ul.account-link a {
+	display: block;
+
+	color: black;
+	outline: none;
+  	text-decoration: none;
+	border-bottom: solid 1px lightgrey;
+	border-left: 1px solid white;
+	padding-left: 0;
+
+	transition: 0.2s;
+}
+ul.account-link a:hover {
+	border-left: 7px solid #343a40;
+	padding-left: 20px;
+	background-color: #f8f9fa;
+}
+
+ul.account-link a.header-link {
+	color: white;
+	background-color: #343a40;
+	border-left: 1px solid #343a40;
+	border-bottom: solid 1px lightgrey;
+}
+ul.account-link a.header-link:hover {
+	background-color: #343a40;
+	opacity: 0.8;
+
+	border:0;
+	border-bottom: solid 1px lightgrey;
+	padding:0;
+}
+
+.link-title {
+	background-color: var(--table-header-bg);
+	color: var(--table-header-text);
+	display: block;
+	text-transform: var(--head-title-ts);
+	font-weight: var(--head-title-fw);
+}
+
+#unsubscribe-pannel a:hover{
+	color: white;
+	background-color: red;
+	border-left: 1px solid white;
+}
+
+/* PASSWORD EDIT */
+.account-input input {
+	/*min-width: 450px;*/
+	width: auto;
+}
+.confirmation-button button {
+	min-width: 150px;
+}
+
+/* =========== TABLE ORDER ================== */
+.table-order thead th, .table-history thead th {
+	background-color: var(--table-header-bg);
+	color: var(--table-header-text);
+    border: solid 2px var(--table-header-bg);
+}
+.table-order tbody, .table-history tbody {
+    text-transform:none;
+}

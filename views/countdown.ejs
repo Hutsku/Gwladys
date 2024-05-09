@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-reveal.css">
+        <title>Strange Day</title>
+    </head>
+ 
+    <body>
+        <main>
+    		<div class="main-pannel container-fluid text-center">
+                <a href="/"><img class="main-logo" src="/img/logo_flower3.png"></a>
+                <div class="py-5 py-md-0" id="countdown">
+                    <div>
+                        <div class="days"></div>
+                        <span>Jours</span>
+                    </div>
+                    <div>
+                        <div class="hours"></div>
+                        <span>Heures</span>
+                    </div>
+                    <div>
+                        <div class="minutes"></div>
+                        <span>Minutes</span>
+                    </div>
+                    <div>
+                        <div class="seconds"></div>
+                        <span>Secondes</span>
+                    </div>
+                </div>
+                <form action="/submit-newsletter" method="post" class="register-email mt-5">
+                    <input type="text" placeholder="Passez votre email !" class="form-control mr-md-3" name="email">
+                    <button type="submit" class="btn btn-cart mt-3 mt-md-0" data-dismiss="">Envoyer</button>
+                    <div class="invalid-feedback mt-2">Veuillez rentrer un email valide</div>
+                </form>
+	    	</div>
+        </main>
+        <footer>
+        </footer>
+    </body>
+
+    <!-- Import JS Bootstrap dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        // Date de sortie prévue
+        let countDownDate = `<%= countdownDate %>`; // 18h paris
+        function updateCountdown() {
+            // Get today's date and time
+            let now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            let distance = countDownDate - now;
+            if (distance <= 0) {
+                // Time calculations for days, hours, minutes and seconds
+                $('.days').text(0);
+                $('.hours').text(0);
+                $('.minutes').text(0);
+                $('.seconds').text(0);   
+            } else {
+                 // Time calculations for days, hours, minutes and seconds
+                $('.days').text(Math.floor(distance / (1000 * 60 * 60 * 24)));
+                $('.hours').text(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+                $('.minutes').text(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+                $('.seconds').text(Math.floor((distance % (1000 * 60)) / 1000));               
+            }
+        }
+        updateCountdown();
+
+        // Update the count down every 1 second
+        setInterval(updateCountdown, 1000);
+
+        let emailInput = $('.register-email input[name="email"]');
+        let regexEmail = new RegExp(`[\\w.+-]{1,64}@([a-zA-Z\\d-]{2,252}\\.[\\w\\.]{2,6})`);
+        $('form[action="/submit-newsletter"]').submit(function () {
+            // On check les erreurs et on ajoute la classe en consequant
+            if (!emailInput.val()) {
+                emailInput.removeClass('is-valid').addClass('is-invalid');
+                return false;
+            } else if (!emailInput.val().match(regexEmail)) {
+                emailInput.removeClass('is-valid').addClass('is-invalid');
+                return false;
+            } else {
+                emailInput.removeClass('is-invalid').addClass('is-valid');
+            }
+
+           /* $.post("/edit-infos", {
+                email: emailInput.val(),
+            })
+
+            return false; // le submit par défaut ne s'execute pas*/
+        });
+    </script>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/style-account.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+        <title>Strange Day</title>
+    </head>
+ 
+    <body>
+    	<header>
+            <%- include('navbar') %>
+        </header>
+
+        <main class="pt-5 mt-3">
+    		<div class="account-content container-fluid row m-0 ">
+    			<div class="account-left col-md-3 p-0 shadow mt-3">
+					<div>
+						<span href="#" class="link-title text-center p-3">
+							<i class="fa fa-user"></i> Espace client
+						</span>
+					</div>
+    				<ul class="account-link">
+    					<li>
+    						<a href="/account/infos" class="p-3"> Infos personelles </a>
+    					</li>
+    					<li>
+    						<a href="/account/order" class="p-3"> Mes commandes </a>
+    					</li>
+    					<li>
+    						<a href="/account/adress" class="p-3"> Mon adresse</a>
+    					</li>
+    					<li>
+    						<a href="/account/password" class="p-3"> Mot de passe </a>
+    					</li>
+    					<li>
+    						<a href="/account/newsletter" class="p-3"> Newsletter </a>
+    					</li>
+                        <!--<li id="unsubscribe-pannel">
+                            <a href="#" data-toggle="modal" data-target="#unsubscribeModal" class="p-3"> SE DESINSCRIRE </a>
+                        </li>-->
+
+    				</ul>
+    			</div>
+    			<div class="account-right col-md-9 mt-3 pl-md-4 p-0">
+    				<% switch (link) {
+    					case "overview": %>
+	    					<%- include('account-overview') %>
+	    					<% break;
+	    					case "infos": %>
+	    					<%- include('account-infos') %>
+	    					<% break;
+    					case "order": %>
+	    					<%- include('account-order') %>
+	    					<% break;
+    					case "adress": %>
+	    					<%- include('account-adress') %>
+	    					<% break;
+    					case "password": %>
+	    					<%- include('account-password') %>
+	    					<% break;
+    					case "newsletter": %>
+	    					<%- include('account-newsletter') %>
+	    					<% break;
+	    				default: %>
+	    					<%- include('account-overview') %>
+	    			<% } %>
+    			</div>
+	    	</div>
+            <!-- MODAL UNSUBSCRIBE -->
+            <div class="modal fade" id="unsubscribeModal" tabindex="-1" role="dialog" aria-labelledby="unsubscribeModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="unsubscribeModalLabel">Voulez-vous vraiment vous désinscrire ?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body p-4" style="text-transform:none; font-weight: 500;">
+                            <div>
+                                    En vous désinscrivant, toutes vos données personnelles seront définitivement supprimées et ne seront en aucun cas conservées sur notre site. <br/>Seul votre historique de commande sera conservé, mais ne sera plus affilié à votre compte.
+                            </div>
+                            <form action="/unsubscribe" method="post" class="unsubscribe-pannel offset-2 col-8 offset-2 mt-3">
+                                <div class="form-row justify-content-center">
+                                    <button type="submit" class="btn btn-danger mr-2" data-dismiss="">Confirmer</button>
+                                    <button type="button" class="ml-2 btn btn-log" data-dismiss="modal" aria-label="Close"> Annuler</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        <footer>
+            <%- include('footer') %>
+        </footer>
+    </body>
+
+</html>

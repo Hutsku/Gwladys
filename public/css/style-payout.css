@@ -1,0 +1,241 @@
+.hide {
+	display: none;
+}
+
+ul.payout-order li {
+	margin: 0 !important;
+	list-style: none;
+}
+/* Selectionne les 2 premiers élements */
+ul.payout-order li:nth-of-type(-n+2) {
+	margin-right: 10% !important;
+}
+
+ul.payout-order a {
+	position: relative;
+	z-index: 1;
+	text-decoration: none;
+}
+
+ul.payout-order span.order {
+	display: block;
+
+	background-color: lightgrey;
+	height: 35px;
+	width: 35px;
+	line-height: 35px;
+    border-radius: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+
+    color: white;
+    transition: 0.2s;
+}
+ul.payout-order li.active span.order {
+	background-color: grey;
+}
+ul.payout-order span.order:hover {
+	background-color: grey;
+}
+ul.payout-order span.label {
+    color: grey;
+}
+
+div.line {
+	position: absolute;
+	border: 1px solid lightgrey;
+	/*width: 30%;
+	left: 50%;
+	margin-left: -15%;
+	top: 130px;*/
+}
+.product-payout.sticky-bottom {
+	background-color: var(--sticky-bottom);
+}
+
+/* --------------------------------- PANNEL ---------------------------------- */
+
+div.payout-left {
+	background-color: var(--payout-frame);
+	padding: 0;
+	/*min-height: 90vh;*/
+}
+
+div.payout-left div.container {
+	max-width: 450px;
+}
+div.payout-left div.tab {
+	text-align: center;
+}
+div.payout-left ul.tab-switch {
+	text-align: center;
+	margin: auto;
+	max-width: 450px;
+}
+div.payout-left ul.tab-switch li {
+	border-bottom: 5px solid var(--payout-frame);
+	margin: 0;
+	width: 45%;	
+	height: 50px;
+	padding-top: 10px;	
+	font-weight: 400;
+
+	cursor: pointer;
+	transition: 0.2s;
+}
+div.payout-left ul.tab-switch li:hover {
+	border-bottom: 5px solid lightgrey;	
+}
+div.payout-left ul.tab-switch li.active {
+	border-bottom: 5px solid black;	
+	font-weight: 600;
+}
+div.payout-left div.tab ~ div{
+	display: none;
+}
+div.payout-left div.subscribe-payout.active {
+	display: block;
+}
+div.payout-left div.log-payout.active{
+	display: block;
+}
+
+div.payout-left .title {
+	display: inline-block;
+
+	font-weight: var(--head-title-fw);
+	font-size: 17px;
+	margin-bottom: 15px;
+}
+.title .detail {
+	font-size: 11px;
+	color: grey;
+}
+
+div.shipping-address-new, div.billing-address-new, div.paypal-payment, div.card-payment {
+	background-color: var(--payout-form);
+}
+
+img.payment-logo-paypal {
+	height: 20px;
+}
+img.payment-logo {
+	height: 20px;
+}
+#card-errors {
+	font-size: 12px;
+}
+.form-check label {
+	font-size: 14px;
+}
+
+/* ---------------------------------- PAYPAL BUTTON HACK ------------------------- */
+
+button#submit-payment {
+	position: relative;
+	width: 220px;
+	overflow: hidden;
+}
+
+#paypal-button-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 220px;
+	height: 38px;
+	opacity: 0;
+}
+
+/* ---------------------------------- CART RECAP ------------------------------- */
+
+.cart-recap .title {
+	font-size: 15px;
+	font-weight: var(--head-title-fw);
+	text-transform: var(--product-name-ts);
+}
+.cart-recap .price {
+	font-size: 15px;
+	font-weight: 700;
+}
+
+.cart-recap .total {
+	font-size: 18px;
+}
+.cart-recap .price-total {
+	color: #c12020;
+	font-size: 18px;
+}
+
+.sticky-offset {
+	top: 100px;
+}
+
+/* ----------------------------- RADIO BUTTON ----------------------------*/
+
+.radio-payout {
+	background-color: var(--payout-menu);
+}
+.radio-payout input:hover, .radio-payout label:hover {
+	cursor: pointer;
+}
+
+/* ----------------------------- STRIPE ---------------------------*/
+/**
+ * The CSS shown here will not be introduced in the Quickstart guide, but shows
+ * how you can use CSS to style your Element's container.
+ */
+.StripeElement {
+  box-sizing: border-box;
+
+  height: 40px;
+
+  padding: 10px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+/* ================= spinner ============== */
+.loader-container {
+	display: flex;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	background-color: var(--button1);
+}
+
+.loader {
+  border: 3px solid rgb(255, 255, 255, 0);
+  border-radius: 50%;
+  border-top: 3px solid white;
+  border-bottom: 3px solid white;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

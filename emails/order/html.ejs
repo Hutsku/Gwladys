@@ -1,0 +1,67 @@
+<%- include('../head') %>
+<tr style="background-color: white;">
+<td class="wrapper">
+  <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td>
+        <h2> Merci de votre commande ! </h2>
+        <p> 
+          Vous recevez ce mail car vous avez effectué une commande chez Strange Day. Si vous n'avez jamais effectué cette commande, vous pouvez faire une réclamation sur la <a href="https://strangeday.fr/contact" target="_blank">page de contact</a>.
+        </p>
+        <p style="border-top: 1px solid lightgrey; width:100%;"></p>
+        <b> Informations client: </b>
+        <p>Nom & prenoms: <%= name %><br/>Adresse email: <%= user.email %><br/>Numéro téléphone: <%= user.tel %></p>
+        <b> Informations commande: </b>
+        <p>Date de facturation: <%= date %><br/>Méthode de livraison: Colissimo<br/>Méthode de paiement: <%= billing_method %><br/>Numéro de commande : <b><a href="https://strangeday.fr/order-detail/<%= order_id %>" target="_blank"><%= order_id %></a></b></p>
+        <p style="border-top: 1px solid lightgrey; width:100%;"></p>
+        <table>
+          <tbody>
+          	<% for (product of products) { %>
+            <tr>
+              <td>
+                <a href="https://strangeday.fr/product/<%= product.id %>">
+                  <img height="50" alt="Image article" src="https://strangeday.fr/img/<%= product.image %>">
+                </a>
+              </td>
+              <td> 
+                <a href="https://strangeday.fr/product/<%= product.id %>"><%= product.name %></a>
+              </td>
+              <td><%= product.color %></td>
+              <td><%= product.option %></td>
+              <td>x<%= product.cart_qty %></td>
+              <td><%= product.price %>€</td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+
+        <br/>
+        <p style="border-top: 1px solid lightgrey; width:100%;"></p>
+        <b> Adresse de livraison: </b>
+        <p><%= shipping_address.string %></p>
+        <b> Adresse de facturation: </b>
+        <p><%= billing_address %></p>
+        <p><b>Sous-total:</b> <%= subtotal_cost %>€<br/> <b>Livraison:</b> <%= shipping_cost %>€ <% if (voucher_code) { %> <br/> <b>Code promo:</b> <%= voucher_code %> <%- reduc.toFixed(2) %>€</p> <% } %>
+        <p style="font-weight: bold; text-transform: uppercase; font-size: 15px">Total: <%= total_cost %>€</p>
+
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+          <tbody>
+            <tr>
+              <td align="center">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                  <tbody>
+                    <tr>
+                      <td> <a href="https://strangeday.fr/order-detail/<%= order_id %>" target="_blank">Détail de la commande</a> </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </table>
+</td>
+</tr>
+<%- include('../foot') %>

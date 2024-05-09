@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Découvrez l'univers et les vêtements de la marque Strange Day ! Les T-shirts, sweats, longsleeves et casquettes de notre dernière collection sont disponibles !">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/style-mainpage.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-shop.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+
+        <title>Strange Day</title>
+    </head>
+ 
+    <body>
+        <header>
+            <%- include('navbar') %>
+        </header>
+        <main class="py-5 mt-3">
+            <%- include('jumbo') %>
+            <!----------------  CAROUSEL ------------->
+            <div class="carousel-container d-flex">
+                <!-- PC -->
+                <div id="carouselPC" class="carousel slide d-none d-md-block" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <% for (var i=0; i < main_pc.length; i++) { %>
+                            <div class="carousel-item <% if (!i) { %> active <% } %>">
+                                <img class="d-block w-100" src="/img/mainpage/pc/<%= main_pc[i] %>">
+                            </div>
+                        <% } %>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselPC" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselPC" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                <!-- MOBILE -->
+                <div id="carouselMobile" class="carousel slide d-block d-md-none" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <% for (var i=0; i < main_mobile.length; i++) { %>
+                            <div class="carousel-item <% if (!i) { %> active <% } %>">
+                                <img class="d-block w-100" src="/img/mainpage/mobile/<%= main_mobile[i] %>">
+                            </div>
+                        <% } %>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselMobile" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselMobile" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <!--<div class="mainpage-content shadow">
+                <img class="d-none d-md-block" src="/img/mainpage1.jpg">
+                <img class="d-md-none"src="/img/mainpage2.png">
+            </div>-->
+            <!--<div id="mainpage-video-container">
+                <div id="mainpage-video-content">
+                    <iframe height="100%" width="100%;" src="https://embed.wave.video/60d5f73f46e0fb000185207d" frameborder="0" allow="autoplay; fullscreen" scrolling="no"></iframe>
+                </div>
+            </div>-->
+
+            <!------ caché tant que pas scroll -->
+            <div class="hidden-shop pt-3">
+                <div class="head-title my-5">
+                    <h1> Tous les produits </h1>
+                </div>
+                <div class="container product-list">
+                    <% if (products.length) {
+                    for (product of products) { %>
+                        <div class="product col-md-4 p-5">
+                            <div class="product-img text-center">
+                                <% if (!product.available) { %>
+                                    <span class="sold-out"> Indisponible </span>
+                                <% } %>
+                                <% if (product.color) { %>
+                                    <div class="color-picker d-flex">
+                                        <% for (color of product.color) { %>
+                                        <a href="/product/<%= product.id %>?color=<%= color.name %>">
+                                            <div class='color-box mr-2 <% if (color.name == product.default_color) {%> selected <% } %>' data-color="<%= color.name %>" style="background-color: <%= color.code %>;"></div>
+                                        </a>
+                                        <% } %>
+                                    </div>
+                                <% } %>
+                                <a class="product-img" href="/product/<%= product.id %>">
+                                    <% let first_image = true;
+                                    for (image of product.image) { %>
+                                        <img class="w-100 <% if (!first_image) { %> hidden <% } else { %> main <% } %>" src="/img/<%= image %>">
+                                    <% first_image = false;
+                                    } %>
+                                </a>
+                            </div>
+                            <div class="product-name p-2">
+                                <div class="container text-center">
+                                    <a class="name w-100" href="/product/<%= product.id %>"><%= product.name %></a>
+                                    <div class="w-100"></div>
+                                    <!--<% if (product.collection != 'Aucune') { %>
+                                        <span class="collection w-100"><%= product.collection %></span>
+                                        <div class="w-100"></div>
+                                    <% } %>-->
+                                    <span class="price w-100"><%= product.price %>€</span>
+                                </div>
+                            </div>
+                        </div>
+                    <% } }%>
+                </div>                
+            </div>
+        </main>
+        <footer>
+            <%- include('footer') %>
+        </footer>
+    </body>
+
+    <script type="text/javascript">
+        const options = {
+            threshold: 1
+        }
+
+        const callback = function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.intersectionRatio == 1) {
+                    $('.hidden-shop').removeClass("hidden");
+                }
+            });
+        }
+
+        const observer = new IntersectionObserver(callback, options);
+
+        /*$('.head-title').each( function(index) {
+            observer.observe(this)
+        });*/
+
+        // On fait defiler les iamges sur l'apercu du produit
+        let eventHook, element, index;
+        $('div.product-img').hover(function(){
+            element = $(this);
+            // Si le produit a bien plus d'une image, on les fait defiler
+            if (element.find('img').length > 1) {
+                index = 1;
+                eventHook = setInterval(function(){
+                    element.find('img').addClass('hidden');
+                    element.find('img').eq(index).removeClass('hidden');
+                    if (index+1 >= element.find('img').length) index=0;
+                    else index++;
+                }, 1800);               
+            }
+
+        }, function () {
+            // On enlève la callback et on remet l'image de base
+            clearInterval(eventHook);
+            element.find('img').addClass('hidden');
+            element.find('img').first().removeClass('hidden');
+        });
+
+    </script>
+</html>

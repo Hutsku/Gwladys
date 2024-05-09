@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/style-account.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-admin.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+        <title>Strange Day</title>
+    </head>
+ 
+    <body>
+        <header>
+            <%- include('navbar') %>
+        </header>
+
+        <main class="pt-5 mt-3">
+            <div class="orders-list-content container-fluid p-4">
+               <div class="tab mb-3">
+                    <ul class="tab-switch list-inline">
+                        <li class="list-inline-item active" target="table-order">
+                            Commandes                           
+                        </li>
+                        <li class="list-inline-item" target="table-history">
+                            Historique
+                        </li>
+                    </ul>
+                </div>
+                <div class="table-order text-center w-100 active">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="p-1" scope="col">Utilisateur</th>
+                                <th class="p-1" scope="col">Montant</th>
+                                <th class="p-1" scope="col">Statut</th>
+                                <th class="p-1" scope="col">Produits</th>
+                                <th class="p-1" scope="col">Adresse</th>
+                                <th class="p-1" scope="col">Détail</th>
+                                <th class="p-1" scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-transform:none; font-weight: 500;">
+                            <% for (order of orders) { 
+                                switch (order.state) {
+                                    case "waiting":
+                                        var color = "orange";
+                                        var text = "En attente";
+                                        var button = "Confirmer";
+                                        break;
+                                    case "confirmed":
+                                        var color = "green";
+                                        var text = "En préparation";
+                                        var button = "Envoyer";
+                                        break;
+                                    case "shipped":
+                                        var color = "blue";
+                                        var text = "Envoyée";
+                                        var button = "";
+                                        break;
+                                } 
+
+                                if (order.state != 'shipped' && !order.preorder) { 
+                                    var products = order.product; %>
+                                    <tr>
+                                        <td><%= order.name %><br/><%= order.email %></td>
+                                        <td><%= order.total_cost %>€</td>
+                                        
+                                        <td style="color:<%= color %>;"><%= text %></td>
+                                        <td style="text-align: left;">
+                                            <% for (product of products) { %>
+                                                <p><a href="/product/<%= product.id %>?color=<%= product.color %>"><%= product.name %> <%= product.color %></a> <%= product.size %> x<%= product.nb %></p>
+                                            <% } %>
+                                        </td>
+                                        <td><%= order.shipping_address %></td>
+                                        <td><a href="/order-detail/<%= order.id %>">Voir plus de détail</a></td>
+                                        <td>
+                                            <% if (order.state == "waiting") { %>
+                                            <a class="btn btn-log mb-2 w-100" href="/admin-update-order/<%= order.id %>" name="update"><%= button %></a> <% } 
+                                            if (order.state == "confirmed") { %>
+                                            <a class="btn btn-cart mb-2 w-100" href="#" data-toggle="modal" data-target="#trackNumberModal" data-id="<%= order.id %>" name="update"><%= button %></a> <% } %>
+                                            <a class="btn btn-danger w-100" href="#" data-toggle="modal" data-target="#deleteOrderModal" data-id="<%= order.id %>" name="delete-order">Supprimer</a>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-history text-center w-100">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="p-1" scope="col">Utilisateur</th>
+                                <th class="p-1" scope="col">Montant</th>
+                                <th class="p-1" scope="col">Produits</th>
+                                <th class="p-1" scope="col">Adresse</th>
+                                <th class="p-1" scope="col">Détail</th>
+                                <th class="p-1" scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (order of orders) { 
+                                if (order.state == 'shipped') { %>
+                                    <tr>
+                                        <td><%= order.name %><br/><%= order.email %></td>
+                                        <td><%= order.total_cost %>€</td>
+                                        <td style="text-align: left;">
+                                            <% var products = order.product;
+                                            for (product of products) { %>
+                                                <p><a href="/product/<%= product.id %>?color=<%= product.color %>"><%= product.name %> <%= product.color %></a> <%= product.size %> x<%= product.nb %></p>
+                                            <% } %>
+                                        </td>
+                                        <td><%= order.shipping_address %></td>
+                                        <td><a href="/order-detail/<%= order.id %>">Voir plus de détail</a></td>
+                                        <td>
+                                            <a class="btn btn-danger w-100" href="#" data-toggle="modal" data-target="#deleteOrderModal" data-id="<%= order.id %>" name="delete-order">Supprimer</a>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- MODAL DELETE ORDER -->
+            <div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteOrderModalLabel">Voulez-vous vraiment vous supprimer ?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body p-4" style="text-transform:none; font-weight: 500;">
+                            <div> Cette commande ne sera plus visible à l'avenir sur la base de donnée. Ne supprimez que si la commande contient des informations éronnée ou semble suspicieuse, et n'oubliez pas d'envoyer un email au client pour lui expliquer la raison de la suppression.
+                            </div>
+                            <div class="form-row justify-content-center pt-3">
+                                <a href="/admin-remove-order/" class="btn btn-danger mr-2" data-dismiss="" id="buttonLink">Confirmer</a>
+                                <button type="button" class="ml-2 btn btn-log" data-dismiss="modal" aria-label="Close"> Annuler</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL TRACK NUMBER -->
+            <div class="modal fade" id="trackNumberModal" tabindex="-1" role="dialog" aria-labelledby="trackNumberModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="trackNumberModalLabel">Numéro de suivi</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body p-4" style="text-transform:none; font-weight: 500;">
+                            <div> Pour poursuivre la validation d'envoi de la commande, renseigner son numéro de suivi Colissimo pour permettre au client d'avoir un suivi possible de ses colis.
+                            </div>
+                            <input type="text" placeholder="Ex : 6Q01929938641" class="form-control my-2" name="track-number">
+                            <div class="form-row justify-content-center pt-3">
+                                <a href="#" class="btn btn-cart mr-2" id="confirmTrackNumber">Confirmer</a>
+                                <button type="button" class="ml-2 btn btn-log" data-dismiss="modal" aria-label="Close"> Annuler</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <%- include('footer') %>
+        </footer>
+    </body>
+    
+    <script type="text/javascript">
+        $('a[name="delete-order"]').click(function (){
+            $('#deleteOrderModal a#buttonLink').attr('href', `/admin-remove-order/${$(this).attr('data-id')}`);
+        });
+        $('a[name="update"]').click(function (){
+            $('#trackNumberModal a#confirmTrackNumber').attr('data-id', $(this).attr('data-id'));
+        });
+        $('a#confirmTrackNumber').click(function (){
+            location.assign(
+                `/admin-update-order/${$(this).attr('data-id')}?trackNumber=${$('input[name="track-number"]').val()}`
+            )
+        });
+
+        // on switch de panneau
+        $("ul.tab-switch li").click(function() {
+            $("ul.tab-switch li").removeClass("active");
+            $(this).addClass("active");
+
+            var pannel = $(this).attr("target");
+            $("div.tab ~ div").removeClass("active");
+            $("div."+pannel).addClass("active");
+        });
+    </script>
+
+</html>

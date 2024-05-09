@@ -1,0 +1,131 @@
+.jumbotron {
+	font-size: 60px;
+	font-weight: 600;
+}
+.title-product {
+	font-size: 20px;
+	font-weight: 600;
+}
+.price-product {
+	font-size: 20px;
+	color: #c12020;
+}
+.product-payout.sticky-bottom {
+	background-color: var(--sticky-bottom);
+}
+
+select.size option:disabled {
+	color: lightgrey;
+}
+
+/* ================= COLOR PICKER ================ */
+
+.color-name {
+	color: grey;
+	transition: 0.3;
+}
+
+.color-box {
+	height: 20px;
+	width: 20px;
+	border: 1px solid transparent;
+	border-radius: 50%;
+	transition: 0.3s;
+}
+.color-box.selected {
+	border: 1px solid black;
+}
+.color-box:hover {
+	cursor: pointer;
+	border: 1px solid black;
+}
+
+/* ==================== RESPONSIVE TEXT ======================= */
+
+.sticky-top .title-product, .sticky-top .price-product {
+	font-size: 20px;
+}
+
+.fixed-bottom .title-product, .fixed-bottom .price-product {
+	font-size: 3.3vw;
+}
+/* ============================================================ */
+
+.storage-info.valid {
+	color: black;
+}
+.storage-info.invalid {
+	color: grey;
+}
+.info-product .desc {
+	font-size: 14px;
+	color: grey
+}
+.title {
+	text-transform: var(--product-title-ts);
+	font-size: 13px;
+	font-weight: 600;
+	padding-right: 10px;
+}
+.info-product div span:nth-of-type(2) {
+	font-size: 13px;
+	color: grey
+}
+.size-chart {
+	font-size: 13px;
+}
+.disp-info {
+	display: flex;
+	justify-content: space-between;
+}
+
+.sticky-offset {
+	top: 100px;
+}
+/*.title {
+	display: inline-block;
+	font-weight: 700;
+	font-size: 17px;
+	margin-bottom: 15px;
+}*/
+
+/* ============================== AFFICHAGE CAROUSEL ==================== */
+
+.carousel-container {
+	flex-direction: column-reverse;
+}
+.carousel-indicators {
+	position: relative;
+	flex-direction: row;
+	justify-content: flex-start;
+
+	touch-action: pan-x;
+	overflow-x: scroll;
+}
+.carousel-indicators img {
+	cursor: pointer;
+    width: 60px;
+}
+
+/* ---- Affichage PC ---- */
+@media (min-width: 768px) { 
+	.carousel-container {
+		flex-direction: row;
+	}
+	.carousel-indicators {
+		flex-direction: column;
+		overflow-x: visible;
+		touch-action: none;
+	}
+	.carousel-indicators img {
+	    width: 130px;
+	}
+}
+
+.carousel-indicators div {
+	opacity: 0.4;
+	transition: 0.3s;
+}
+.carousel-indicators div.active {
+    opacity: 1;
+}

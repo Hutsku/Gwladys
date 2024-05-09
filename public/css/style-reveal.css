@@ -1,0 +1,69 @@
+main {
+	min-height: 100vh;
+	background-color: var(--countdown-bg);
+}
+.main-logo {
+	width: 250px;
+	margin-top: 70px;
+	margin-bottom: 70px;
+}
+#countdown {
+	display: flex;
+	justify-content: center;
+}
+#countdown span {
+	color: var(--countdown-text);
+}
+.days, .hours, .minutes, .seconds {
+	font-size: 25px;
+	font-weight: 600;
+	line-height: 47px;
+
+	border: 2px solid var(--countdown-text);
+	color: var(--countdown-text);
+	height: 60px;
+	width: 60px;
+
+	margin: 10px;
+	padding: 5px;
+	overflow: hidden;
+}
+
+.register-email {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin: auto;
+}
+.register-email input {
+	background-color: white;
+	width: 300px;
+}
+.register-email button {
+	background-color: var(--countdown-button);
+	width: 300px;
+}
+
+/* ---- Affichage PC ---- */
+@media (min-width: 768px) { 
+	.main-logo {
+		width: 300px;
+		margin-top: 100px;
+		margin-bottom: 100px;
+	}
+	.days, .hours, .minutes, .seconds {
+		font-size: 35px;
+		line-height: 82px;
+
+		height: 100px;
+		width: 100px;
+
+		margin: 20px;
+	}
+	.register-email input {
+		width: 390px;
+	}
+	.register-email button {
+		width: 120px;
+	}
+}

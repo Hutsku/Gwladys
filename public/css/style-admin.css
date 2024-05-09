@@ -1,0 +1,172 @@
+.product-stock .input-group button {
+	min-width: 0 !important; 
+	border: none; 
+}
+
+.product-stock .input-group input {
+	padding: 0; 
+}
+
+.product-img img {
+	width: 100px;
+}
+
+.title {
+	display: inline-block;
+
+	font-weight: 700;
+	font-size: 17px;
+	margin-bottom: 15px;
+}
+
+.img-preview img {
+	width: 200px;
+}
+.image-container {
+	position: relative;
+}
+.images label.btn:hover {
+	cursor: pointer;
+}
+.images input {
+	display:none;
+}
+
+.carousel-control-remove {
+	z-index: 1;
+	opacity: 0.6;
+	position: absolute;
+	bottom: 0;
+
+	width: 100%;
+	text-align: center;
+	background-color: grey;
+	font-weight: 600;
+	font-size: 15px;
+	transition: 0.3s;
+}
+.carousel-control-remove:hover {
+	opacity: 0.8;
+}
+.carousel-control-remove span {
+	color:  white;
+}
+.carousel-control-prev, .carousel-control-next, .carousel-control-remove {
+	cursor: pointer;
+}
+
+.stat-container {
+	display: flex;
+	text-transform: none;
+	flex-direction: column;
+
+	font-size: 20px;
+	font-weight: 600;
+}
+
+#export {
+	cursor: pointer;
+	transition: 0.2s;
+}
+#export:hover {
+	color: #f2d875;
+}
+
+#c1 {
+	width: 400px;
+}
+#c2 {
+	width: 400px;
+}
+#c3 {
+	width: 400px;
+}
+
+/* -------- OPTION LIST ---------- */
+
+.remove-option {
+	width: 35px;
+	border-right: 1px solid lightgray;
+	background-color: transparent;
+}
+.remove-option button {
+	width: 100%;
+	height: 35px;
+	padding-bottom: 7px;
+}
+.remove-option:hover {
+	background-color: lightgrey;
+}
+
+.stock-option {
+	justify-content: end;
+	border-left: 1px solid lightgray;
+}
+
+.option-box {
+	height: 35px;
+	border: 1px solid lightgray;
+	color: #6c757d;
+	line-height: 16px;
+	text-transform: none;
+}
+.option-box input.stock-value {
+	width: 60px;
+	height: 33px;
+	display: inline;
+	margin-top: -8px;
+
+	border: none;
+	border-left: 1px solid lightgrey;
+}
+.option-box input[name="name-option"] {
+	height: 33px;
+	display: inline;
+	border: none;
+}
+.option-box .form-control:focus {
+	border: 1px solid var(--border-focus);
+}
+
+/* ================= COLOR PICKER ================ */
+
+.color-box {
+	height: 38px;
+	width: 38px;
+	border:  1px solid lightgrey;
+}
+
+/* -------- ORDER LIST ----------- */
+
+div.tab {
+	text-align: center;
+}
+ul.tab-switch {
+	text-align: center;
+	margin: auto;
+	width: 700px;
+}
+ul.tab-switch li {
+	border-bottom: 5px solid transparent;
+	margin: 0;
+	width: 30%;	
+	height: 50px;
+	padding-top: 10px;	
+	font-weight: 400;
+
+	cursor: pointer;
+	transition: 0.2s;
+}
+ul.tab-switch li:hover {
+	border-bottom: 5px solid lightgrey;	
+}
+ul.tab-switch li.active {
+	border-bottom: 5px solid black;	
+	font-weight: 600;
+}
+div.tab ~ div {
+	display: none;
+}
+div.tab ~ div.active {
+	display: block;
+}
