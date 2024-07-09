@@ -35,7 +35,7 @@
 	font-size: 18px;
 }
 .cart-payout .price-total {
-	color: #c12020;
+	color: var(--button1);
 	font-size: 18px;
 }
 .cart-payout .sticky-top {

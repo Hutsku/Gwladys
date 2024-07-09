@@ -4,6 +4,10 @@
 	display: none;
 }
 
+.hidden {
+	opacity: 0;
+}
+
 /* ====================== DEFINITION DE LA SKIN DU SITE ==================== */
 /* BALISES PRINCIPALES */
 @font-face {
@@ -15,23 +19,26 @@
 
 /* style couleur du site*/
 :root {
-	--main-bg: white;
+	--main-bg: rgb(255, 255, 255, 0);
 	--main-text-trans: none;
-	--table-header-bg: rgb(21, 51, 89, 1);
+	--table-header-bg: #fe4c4c;
 	--table-header-text:  white;
 
-	--font-family: -apple-system,BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-				"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	--footer-bg: rgb(254, 0, 0, 0.7);
+	--footer-text: rgb(255, 255, 255);
+	--footer-hover: rgb(200, 200, 200);
+
+	--font-family: "Yu Gothic", sans-serif;
 
 	--head-title-ts: none;
 	--head-title-fw: 600;
 
-	--a: rgb(21, 51, 89, 1);
-	--a-hover: rgb(21, 51, 89, 1);
+	--a: rgb(0, 0, 0, 1);
+	--a-hover: rgb(254, 0, 0, 0.7);
 
-	--button1: rgb(21, 51, 89, 1);
-	--button1-hover: rgb(21, 51, 89, 0.9);
-	--button1-active: rgb(21, 51, 89, 0.8);
+	--button1: rgb(254, 0, 0, 0.7);
+	--button1-hover: rgb(254, 0, 0, 0.5);
+	--button1-active: rgb(254, 0, 0, 0.4);
 	--button1-text: white;
 
 	--button2: rgb(180, 180, 180);
@@ -39,20 +46,23 @@
 	--button2-active: rgb(130, 130, 130);
 	--button2-text: white;
 
-	--border-focus: rgb(155, 130, 168, 0.8);
+	--border-focus: rgb(0, 0, 0, 0.8);
 
-	--navbar-bg: rgb(152, 16, 62);
-	--navbar-text: rgb(255, 255, 255, 1);
-	--navbar-text-hover: rgb(255, 255, 255, 0.7);
-	--navbar-text-focus: rgb(21, 51, 89, 0.7);
+	--navbar-bg: rgb(255, 255, 255, 1);
+	--navbar-bg2: #fe4c4c;
+	--navbar-text: rgb(0, 0, 0, 1);
+	--navbar-text-hover: rgb(254, 0, 0, 0.7);
+	--navbar-text-focus: rgb(0, 0, 0, 0.7);
 	--navbar-text-trans: none;
-	--navbar-text-fontweight: 600;
+	--navbar-text-fontweight: 400;
+	--navbar-text2: rgb(255, 255, 255);
+	--navbar-text2-focus: rgb(255, 255, 255, 0.5);
 
 	--modal-header: white;
 	--modal-body: white;
 	--modal-text: rgb(155, 130, 168, 1);
 
-	--payout-frame: #f9f9f9;
+	--payout-frame: rgb(255, 246, 241);
 	--payout-menu: white;
 	--payout-form: #fde8e8;
 
@@ -62,17 +72,20 @@
 
 	--sticky-bottom: #ffffff;
 
-	--shop-name-fw: 500;
+	--shop-name-fw: 400;
 	--product-title-ts: none;
 } 
 
 body {
 	font-family: var(--font-family);
+	background-color: var(--main-bg);
 }
 
 main {
 	position: relative;
 	min-height: 90vh;
+
+	margin-right: 100px;
 
 	background-color: var(--main-bg);
 	text-transform: var(--main-text-trans);
@@ -80,9 +93,15 @@ main {
 
 a {
 	color: var(--a);
+	text-decoration: none;
 }
 a:hover {
+	color: unset;
+	text-decoration: none;
+}
+a:not(.product):hover {
 	color: var(--a-hover);
+	text-decoration: none;
 }
 
 small {
@@ -93,6 +112,27 @@ small {
 	cursor: pointer;
 }
 
+/* FORM CONTROL */
+
+.custom-select, .form-control {
+	border-radius: 0;
+}
+.custom-select:focus, .form-control:focus {
+	box-shadow: none;
+}
+
+.form-control {
+	border:none;
+	transition: 0.3s;
+	border-bottom: 2px solid transparent;
+}
+.form-control:hover {
+	border-bottom: 2px solid black;
+}
+.form-control:focus {
+	border-bottom: 2px solid var(--a-hover);
+}
+
 /* BOUTONS */
 .head-title h1, .head-title h2 {
 	text-align: center;
@@ -100,7 +140,7 @@ small {
 }
 
 .btn {
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 	border-radius: 0;
 }
 .btn:focus {
@@ -110,6 +150,7 @@ small {
 .btn-cart {
 	background-color: var(--button1);
 	color: var(--button1-text);
+	font-weight: 500;
 	transition: 0.1s;
 }
 .btn-cart:hover {
@@ -131,14 +172,6 @@ small {
 }
 .btn-log:active {
 	background-color: var(--button2-active);;
-}
-
-.custom-select, .form-control {
-	border-radius: 0;
-}
-.custom-select:focus, .form-control:focus {
-	box-shadow: none;
-	border-color: var(--border-focus);
 }
 
 /* DISCLAIMER */
@@ -165,22 +198,164 @@ small {
 	color: yellow;
 }
 
-/* NAVBAR */
-.navbar {
+/* ==================== SIDE-NAVBAR =================== */
+
+.side-navbar {
+	z-index: 1030;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	position: fixed;
+	right: 0;
+	top: 0;
+	height: 100vh;
+	width: 120px;
+
+	/*border: 1px solid black;*/
+	padding: 20px;
+
 	text-transform: var(--navbar-text-trans);
-	/*font-family: "Swiss 721";*/
     font-weight: var(--navbar-text-fontweight);
-	font-size: 16px;
-	background-color: var(--navbar-bg);
+	font-size: 25px;
+	background-color: transparent;
 }
 
-.navbar-light .navbar-nav .nav-link {
+.navbar-title {
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+	transition-property: opacity, left;
+  	transition-duration: 3s, 5s;
+	transition: 0.5s;
+}
+.navbar-title a {
+	top: 0;
+	position: relative;
+	transition: 0.5s;
+	text-decoration: none;
+}
+.navbar-title.hidden a {
+	top: -30px;
+}
+
+.navbar-cart {
+	font-size: 18px;
+	margin-bottom: 40px;
+	margin-top: 20px;
+}
+.navbar-cart img {
+	height: 70px;
+	/*color: var(--navbar-text-hover);*/
+}
+.navbar-cart span {
+	position: absolute;
+	right: 40px;
+	top: 50px;
+
+	color: red;
+	font-size: 16px;
+}
+
+/* ====================== DRAGBOX (MODAL) ===================== */
+
+.modal-backdrop {
+	background-color: rgb(255, 246, 241);
+}
+
+.drag-box {
+	position: absolute;
+	background-color: white;
+
+	height: 400px;
+	width: 400px;
+
+	color: var(--modal-text);
+	/*text-transform: uppercase;*/
+	font-weight: 400;
+  	
+  	cursor: move;
+}
+#loginBox {
+	top: 70px;
+	left: 100px;
+
+	background-image: url("/img/cloud1-1.png");
+	background-repeat: no-repeat;
+	background-size: 500px 500px;
+	background-color: transparent;
+	border:none;
+
+	height: 500px;
+	width: 500px;
+}
+#cartBox {
+	top: 200px;
+	left: 800px;
+
+	background-image: url("/img/cloud2-1.png");
+	background-repeat: no-repeat;
+	background-size: 500px 500px;
+	background-color: transparent;
+	border:none;
+
+	padding-top: 70px;
+	height: 500px;
+	width: 500px;
+}
+
+.drag-header {
+	padding: 40px;
+	text-align: center;
+	color: red;
+}
+
+.drag-body {
+	margin-left: 120px;
+	margin-right: 120px;
+}
+
+.log-pannel .form-control {
+	/*height: 40px;*/
+	font-weight: 400;
+	font-size: 14px;
+}
+/*.log-pannel .form-control[type="password"] {
+	font-size: 14px;
+}*/
+
+/* ===================== NAVBAR ===================== */
+
+.navbar {
+	text-transform: var(--navbar-text-trans);
+    font-weight: var(--navbar-text-fontweight);
+	/*font-size: 25px;*/
+	background-color: var(--navbar-bg);
+
+	padding-top: 20px;
+ 	padding-bottom: 20px;
+
+ 	transition: 0.3s;
+}
+.navbar.focus {
+	background-color: var(--navbar-bg2);
+}
+.navbar.focus a.navbar-name, .navbar.focus a.nav-link {
+	color: var(--navbar-text2);
+}
+
+.navbar-name {
+	width: 100%;
+	text-align: center;
+	text-decoration: none;
+	font-size: 30px;
     color: var(--navbar-text);
+
+    transition: 0.2s;
 }
-.navbar-light .navbar-nav .nav-link:hover {
-    color: var(--navbar-text-hover);
+.navbar-name:hover{
+	color: var(--navbar-text-hover);
 }
-.navbar-light .navbar-nav .nav-link:focus {
+.navbar-name:focus {
     color: var(--navbar-text-focus);
 }
 
@@ -188,13 +363,16 @@ small {
 	box-shadow: 0 .4rem 1rem rgba(0,0,0,.15) !important;
 }
 
-.navbar-brand img {
-	height:38px;
-}
-
 .navbar-collapse {
 	transition: 0.3s;
 }
+
+#navbarContent {
+	font-size: 18px;
+	margin-top: 15px;
+}
+
+
 
 /* ============================ DIVERS ============================ */
 
@@ -214,28 +392,27 @@ small {
 	.dropdown-item:hover, .dropdown-item:active, .dropdown-item:focus {
 		background-color: transparent;
 	}
+
+	main {
+		margin-right: 0;
+		margin-top: 110px;
+	}
+
+	.navbar {
+		box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+
+		position: fixed;
+		top: 0;
+		right: 0;
+		left: 0;
+		z-index: 1030;
+	}
 }
 
 li.nav-item {
 	width: auto;
 	padding-left: 10px;
 	padding-right: 10px;
-}
-
-.modal-content {
-	color: var(--modal-text);
-	text-transform: uppercase;
-	font-weight: 700;
-	background-color: var(--modal-header);
-}
-.modal-body, .modal-footer {
-	color: black;
-	background-color: var(--modal-body);
-}
-.modal-footer {
-	font-size: 14px;
-	font-weight: 600;
-	color: grey;
 }
 
 /* CART DROPDOWN */
@@ -256,7 +433,7 @@ li.nav-item {
 /* NOTIF CONTAINER */
 .notif-container {
 	z-index: 1031;
-	top: 70px;
+	top: 20px;
 	position: fixed;
 }
 

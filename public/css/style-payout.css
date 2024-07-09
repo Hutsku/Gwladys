@@ -162,12 +162,12 @@ button#submit-payment {
 	font-size: 18px;
 }
 .cart-recap .price-total {
-	color: #c12020;
+	color: var(--button1);
 	font-size: 18px;
 }
 
 .sticky-offset {
-	top: 100px;
+	top: 25px;
 }
 
 /* ----------------------------- RADIO BUTTON ----------------------------*/

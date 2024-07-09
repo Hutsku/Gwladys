@@ -27,7 +27,7 @@ config.email = {
 			extension: 'ejs'
 		} 
 	},
-	from: 'Strange Day <contact@strangeday.fr>',
+	from: 'Kita Pena <contact@kitapena.fr>',
 	send: true,
 	preview: false,
 	test: false,
@@ -36,7 +36,7 @@ config.email = {
 var timeCookieDefault = 180 // en minute (3h)
 var timeCookieStayConnected = 30*24*60 // durée de 30 jours
 config.cookies = { 
-    name: 'strangeday',
+    name: 'kitapena',
     secret: 'keyboard cat', 
     cookie: { maxAge: timeCookieDefault*60*1000}, // in millisecond
     resave: false,

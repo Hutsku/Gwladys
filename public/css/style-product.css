@@ -2,14 +2,6 @@
 	font-size: 60px;
 	font-weight: 600;
 }
-.title-product {
-	font-size: 20px;
-	font-weight: 600;
-}
-.price-product {
-	font-size: 20px;
-	color: #c12020;
-}
 .product-payout.sticky-bottom {
 	background-color: var(--sticky-bottom);
 }
@@ -57,13 +49,13 @@ select.size option:disabled {
 .storage-info.invalid {
 	color: grey;
 }
-.info-product .desc {
+.infos {
 	font-size: 14px;
-	color: grey
+	font-style: normal;
 }
-.title {
+.infos .title {
+	color: black;
 	text-transform: var(--product-title-ts);
-	font-size: 13px;
 	font-weight: 600;
 	padding-right: 10px;
 }
@@ -80,7 +72,7 @@ select.size option:disabled {
 }
 
 .sticky-offset {
-	top: 100px;
+	top: 25px;
 }
 /*.title {
 	display: inline-block;

@@ -11,7 +11,7 @@ function init (cred) {
         host     : 'localhost',
         user     : cred.user,
         password : cred.pass,
-        database : 'strange_day'
+        database : 'kita_pena'
     });
     // On se connecte à une connexion du pool pour voir si la liaison se passe bien
     connection.getConnection(function(err, con) {

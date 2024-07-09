@@ -1,62 +1,39 @@
 
 <!-- BREAKPOINT : MEDIUM -->
 
-<nav class="navbar fixed-top navbar-expand-md navbar-light shadow-sm d-flex">
+<div class="side-navbar d-none d-md-block">
+    <div class="navbar-cart mb-5">
+        <a class="nav-item" href="#" data-toggle="modal" data-target="#menuModal">
+            <% if (session.cart) { %>
+                <span><%= session.cart.nb_products %></span>
+            <% } else { %>
+                <span>...</span>
+            <% } %>
+            <img src="/img/logoCart.png">
+        </a>
+    </div>
+
+    <div class="navbar-title h-100 hidden">
+        <a href="/mainpage">kita pena</a>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-md navbar-light my-md-4">
+
     <!-- Toggle Menu when navbar is collapsed -->
     <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" href="/">
-        <img class="" src="/img/logo_flower3.png">
-    </a>
-
-    <!--
-    <form class="form-inline my-2 mw-100 d-none d-md-block" id="searchForm">
-        <button class="btn color-white fas fa-search" type="submit"></button>
-        <input class="" type="search" placeholder="Search" aria-label="Search" action="/search" method="POST">
-    </form>-->
+    <a class="navbar-name col col-md-12" href="/mainpage">kita pena</a>
 
     <!-- Navbar content -->
     <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav ml-auto">
-            <li class="dropdown nav-item">
-                <a class="nav-link dropdown-toggle" href="#" id="shopDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Shop </a>
-                <div class="dropdown-menu dropdown-menu-right w-auto" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="/shop">Tous les articles</a>
-                    <div class="dropdown-divider d-none d-md-block"></div>
-                    <a class="dropdown-item" href="/shop/unique">Pièces uniques</a>
-                    <a class="dropdown-item" href="/shop/t-shirt">T-shirt</a>
-                    <a class="dropdown-item" href="/shop/crewneck">Crewneck</a>
-                    <a class="dropdown-item" href="/shop/longsleeve">Longsleeve</a>
-                    <a class="dropdown-item" href="/shop/accessory">Accessoires</a>
-                    <a class="dropdown-item" href="/shop/print">Affiches</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/lookbook">Lookbook</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/kezako">Qui sommes-nous ?</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://linktr.ee/StrangeDay" target="_blank">Radio</a>
-            </li>
-            <li class="dropdown nav-item">
-                <a class="nav-link dropdown-toggle" href="#" id="infoDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Infos </a>
-                <div class="dropdown-menu dropdown-menu-right w-auto" aria-labelledby="dropdownMenuButton">
-                    <!--<a class="dropdown-item" href="/contact">Contact</a>-->
-                    <a class="dropdown-item" href="/faq">FAQ</a>
-                </div>
-            </li>
-            <li class="nav-item d-md-none">
-                <a class="nav-link" href="/cart"> Voir le panier <i class="fa fa-shopping-cart"></i></a>
-            </li>
-            <!---------------------------------->
+        <ul class="navbar-nav m-auto">
 
             <!-- SWITCH BETWEEN ACCOUNT && LOGIN PANNEL -->
             <% if (session.logged) { %>
-                <li class="dropdown nav-item">
+                <li class="dropdown nav-item d-md-none">
                     <a class="nav-link dropdown-toggle" href="#" id="accountDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-user"></i> <%- session.username %>
                     </a>
@@ -73,66 +50,15 @@
                     </div>
                 </li>
             <% } else { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal"> 
+                <li class="nav-item d-md-none">
+                    <a class="nav-link" href="/login"> 
                         Se connecter <i class="fa fa-sign-in-alt"></i>
                     </a>
                 </li>
             <% } %>
-            <li class="dropdown nav-item d-none d-md-block">
-                <a class="nav-link dropdown-toggle cart-dropdown" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <% if (session.cart) { %>
-                        <span><%= session.cart.nb_products %></span>
-                    <% } else { %>
-                        <span>0</span>
-                    <% } %>
-                    <i class="fa fa-shopping-cart"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right p-0" aria-labelledby="navbarDropdownMenuLink">
-                    <div class="cart-pannel container">
-                        <% if (session.cart) {
-                            if (session.cart.products.length) {
-                                for (product of session.cart.products) { %>
-                                    <div class="cart-product row align-items-center" product_id="<%= product.id %>" product_option="<%= product.option %>" product_color="<%= product.color %>"> 
-                                        <img class="p-2 col-3" src="/img/<%= product.image %>">
-                                        <div class="col">
-                                            <a href="/product/<%= product.id %>" class="cart-product-name">
-                                                <%- product.name %> <%= product.color == "Défaut" ? '' : product.color %> <%- product.option %>
-                                            </a>
-                                            <span class="ml-2">x</span>
-                                            <span class="qty"><%= product.cart_qty %> </span>
-                                        </div>
-                                        <span class="cart-product-price col-3"><%= product.price %>€</span>
-                                        <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>"  product_option="<%= product.option %>" product_color="<%= product.color %>">
-                                            <button type="submit" name="remove-cart" class="close" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                <% } %>
-                                <div class="cart-total p-3 d-flex justify-content-between">
-                                    <div class="cart-total-title">
-                                        <big>TOTAL</big>
-                                        <small>(TTC - Hors livraison)</small>
-                                    </div>
-                                    <span class="cart-total-price"><%= session.cart.subtotal_cost %>€</span>
-                                </div>
-                                <div class="cart-check pb-3 row justify-content-center">
-                                    <a href="/cart" class="btn btn-log btn-sm col-4">Voir le panier</a>
-                                    </form>
-                                </div>
-                            <% } else { %>
-                                <div class="cart-empty row align-items-center"> 
-                                    <span class="m-5 col"> Aucun produit dans le panier ...</span>
-                                </div>
-                            <% } 
-                        } else { %>
-                            <div class="cart-empty row align-items-center"> 
-                                <span class="m-5 col"> Aucun produit dans le panier ...</span>
-                            </div>
-                        <% } %>
-                    </ul>
-                </div>
+
+            <li class="nav-item d-md-none">
+                <a class="nav-link" href="/cart"> Voir le panier <i class="fa fa-shopping-cart"></i></a>
             </li>
         </ul>
     </div>
@@ -238,8 +164,8 @@
             break;
 
         } %>
-        <div class="notif-container row w-100 justify-content-center">
-            <div class="alert alert-<%= type %> alert-dismissible fade show col-8" role="alert">
+        <div class="notif-container col-12">
+            <div class="alert alert-<%= type %> alert-dismissible fade show">
                 <strong><%= quoteTitle %></strong> <%= quote %>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -249,41 +175,97 @@
 <% } %>
 
 <!-- MODAL CONNEXION -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Se connecter</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+<div class="modal" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
+    <div class="modal-content drag-box pt-5" id="loginBox">
 
-            <div class="modal-body pt-4 pb-2">
-                <form action="/login" method="post" class="log-pannel offset-2 col-8 offset-2">
-                    <div class="form-group form-row">
-                        <input type="text" placeholder="Adresse email" class="form-control" name="email">
-                        <div class="invalid-feedback">Veuillez rentrer une adresse email valide</div>
-                    </div>
+        <!-- SWITCH BETWEEN ACCOUNT && LOGIN PANNEL -->
+        <% if (session.logged) { %>
+        <div class="drag-header">
+            <h5><%- session.username %></h5>
+        </div>
+        <div class="drag-body">
+            <a class="dropdown-item" href="/account/overview">Mon compte</a>
+            <% if (session.admin) { %>
+                <div class="dropdown-divider d-none d-md-block"></div>
+                <a class="dropdown-item" href="/admin-orders-list"><i class="fas fa-server mr-2"></i>Gestion des commandes</a>
+                <a class="dropdown-item" href="/admin-products-list"><i class="fas fa-tshirt mr-2"></i>Gestion des articles</a>
+                <a class="dropdown-item" href="/admin-stat"><i class="fas fa-network-wired mr-2"></i>Statistique</a>
+                <div class="dropdown-divider d-none d-md-block"></div>
+            <% } %>
+            <a class="dropdown-item" href="/quit"><i class="fa fa-power-off mr-2"></i>Se deconnecter</a>
+        </div>
+        <% } else { %>
+        <div class="drag-header">
+            <h5>Se connecter</h5>
+        </div>
+        <div class="drag-body">
+            <form action="/login" method="post" class="log-pannel">
+                <div class="form-group form-row pb-2">
+                    <input type="text" placeholder="Adresse email" class="form-control" name="email">
+                    <div class="invalid-feedback">Veuillez rentrer une adresse email valide</div>
+                </div>
 
-                    <div class="form-group form-row">
-                        <input type="password" placeholder="Mot de passe" class="form-control" name="password">
-                        <div class="invalid-feedback">Veuillez rentrer un mot de passe valide</div>
-                    </div>
+                <div class="form-group form-row pb-4">
+                    <input type="password" placeholder="Mot de passe" class="form-control" name="password">
+                    <div class="invalid-feedback">Veuillez rentrer un mot de passe valide</div>
+                </div>
 
-                    <div class="form-check form-row">
-                        <!--<input class="form-check-input" type="checkbox" id="logRemember" name="newsletter" value="yes">
-                        <label for="logRemember">Rester connecté</label>-->
-                    </div>
-                    <div class="form-row">
-                        <button type="submit" class="btn btn-log w-100" data-dismiss="">Se connecter</button>
-                    </div>
-                    <small> <a href="/forgot-password">Mot de passe oublié</a> </small>
-                </form>
-            </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-log w-100" data-dismiss="">Se connecter</button>
+                </div>
+                <small> <a href="/forgot-password">Mot de passe oublié</a> </small>
+            </form>
+        </div>
+        <% } %>
+    </div>
 
-            <div class="modal-footer">
-                <span class="text-center w-100"> Pas encore inscrit ?  <a href="/subscribe">Créer un compte !</a></span>
+    <div class="modal-content drag-box " id="cartBox">
+        <div class="drag-header">
+            <h5>Panier</h5>
+        </div>
+        <div class="drag-body">
+            <div class="cart-pannel container">
+            <% if (session.cart) {
+                if (session.cart.products.length) {
+                    for (product of session.cart.products) { %>
+                        <div class="cart-product row align-items-center" product_id="<%= product.id %>" product_option="<%= product.option %>" product_color="<%= product.color %>"> 
+                            <img class="p-2 col-3" src="/img/<%= product.image %>">
+                            <div class="col">
+                                <a href="/product/<%= product.id %>" class="cart-product-name">
+                                    <%- product.name %> <%= product.color == "Défaut" ? '' : product.color %> <%- product.option %>
+                                </a>
+                                <span class="ml-2">x</span>
+                                <span class="qty"><%= product.cart_qty %> </span>
+                            </div>
+                            <span class="cart-product-price col-3"><%= product.price %>€</span>
+                            <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>"  product_option="<%= product.option %>" product_color="<%= product.color %>">
+                                <button type="submit" name="remove-cart" class="close" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </form>
+                        </div>
+                    <% } %>
+                    <div class="cart-total p-3 d-flex justify-content-between">
+                        <div class="cart-total-title">
+                            <big>TOTAL</big>
+                            <small>(TTC - Hors livraison)</small>
+                        </div>
+                        <span class="cart-total-price"><%= session.cart.subtotal_cost %>€</span>
+                    </div>
+                    <div class="cart-check pb-3 row justify-content-center">
+                        <a href="/cart" class="btn btn-log btn-sm col-4">Voir le panier</a>
+                        </form>
+                    </div>
+                <% } else { %>
+                    <div class="cart-empty row align-items-center"> 
+                        <span class="m-5 col"> Aucun produit dans le panier ...</span>
+                    </div>
+                <% } 
+            } else { %>
+                <div class="cart-empty row align-items-center"> 
+                    <span class="m-5 col"> Aucun produit dans le panier ...</span>
+                </div>
+            <% } %>
             </div>
         </div>
     </div>
@@ -300,6 +282,70 @@
 <script type="text/javascript">
     /* On efface les cookies de session pour les notifications */
     $.post("/resetNotif");
+
+    /* ===================== OBSERVER ========================== */
+
+    const options = {
+        threshold: 0.2
+    }
+
+    const callback = function (entries) {
+        entries.forEach(function (entry) {
+            //console.log(entry.intersectionRatio)
+            if (entry.intersectionRatio <= 0.2) {
+                $('.side-navbar .navbar-title').removeClass("hidden");
+            }
+            else {
+                $('.side-navbar .navbar-title').addClass("hidden");
+            }
+        });
+    }
+
+    const observer = new IntersectionObserver(callback, options);
+
+    $('.navbar').each( function(index) {
+        observer.observe(this)
+    });
+
+    /* ==================== MOBILE NAVBAR ===================== */
+
+    let navbarToggler = false;
+    $('button[data-target="#navbarContent"]').on("click", function () {
+        if (!$('#navbarContent').hasClass('collapsing')) {
+            if (!navbarToggler && !$('#navbarContent').hasClass('show')) {
+                $('.navbar').addClass("focus");
+                navbarToggler = true
+            } else {
+                $('.navbar').removeClass("focus");
+                navbarToggler = false;
+            }            
+        }
+
+    })
+
+    /* ===================== DRAGBOX ========================== */
+
+    let isDragging = false;
+    let activeDragBox;
+    $(".drag-box").on("mousedown", function () {
+        isDragging = true;
+        activeDragBox = this;
+    });
+
+    $('#menuModal').on("mouseup", function () {
+        isDragging = false;
+    })
+    .on("mousemove", function (event) {
+        if (!isDragging) return false;
+
+        $(activeDragBox).css({
+            'top': activeDragBox.offsetTop + event.originalEvent.movementY,
+            'left': activeDragBox.offsetLeft + event.originalEvent.movementX
+        });
+
+    });
+
+    /* ===================================================== */
 
     /* Erreur à afficher pour le login */
     $('form[action="/login"]').submit(function () {

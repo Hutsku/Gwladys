@@ -1180,6 +1180,6 @@ app.use(function(req, res, next){
     res.status(404).send('Page introuvable !');
 });
 
-// On ouvre le serveur sur le port 8080
-console.log('Ouverture du serveur sur le port 8080')
-app.listen(8080, 'localhost');
+// On ouvre le serveur sur le port 8082
+console.log('Ouverture du serveur sur le port 8082')
+app.listen(8082, 'localhost');

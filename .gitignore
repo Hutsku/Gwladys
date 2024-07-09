@@ -1,0 +1,3 @@
+local_credentials.js
+*.txt
+node_modules
