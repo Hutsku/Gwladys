@@ -140,28 +140,28 @@ if (fs.existsSync('./local_credentials.js')) {
     secret_paypal = cred[path_paypal].client_id;
 } 
 else {
-    vault.read('strangeday/email')
+    vault.read('kitapena/email')
     .then(function(res) {
         email_init(res.data);
     }).catch(console.error);
 
-    vault.read('strangeday/mysql')
+    vault.read('kitapena/mysql')
     .then(function(res) {
         query.init(res.data);
     }).catch(console.error);
 
-    vault.read(`strangeday/${path_stripe}`)
+    vault.read(`kitapena/${path_stripe}`)
     .then(function(res) {
         stripe_init(res.data);
         secret_stripe = res.data.public;
     }).catch(console.error);
 
-    vault.read('strangeday/admin')
+    vault.read('kitapena/admin')
     .then(function(res) {
         adminUser_init(Object.values(res.data));
     }).catch(console.error);
 
-    vault.read(`strangeday/${path_paypal}`)
+    vault.read(`kitapena/${path_paypal}`)
     .then(function(res) {
         secret_paypal = res.data.client_id;
     }).catch(console.error);
