@@ -140,10 +140,10 @@ if (fs.existsSync('./local_credentials.js')) {
     secret_paypal = cred[path_paypal].client_id;
 } 
 else {
-    vault.read('kitapena/email')
+    /*vault.read('kitapena/email')
     .then(function(res) {
         email_init(res.data);
-    }).catch(console.error);
+    }).catch(console.error);*/
 
     vault.read('kitapena/mysql')
     .then(function(res) {
