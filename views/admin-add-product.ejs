@@ -30,6 +30,18 @@
                 </span>
             </div>
             <div class="new-product-content container-fluid px-4">
+                <div class="d-flex flex-wrap bottom-section">
+                    <div class="images col-12 pb-3">
+                        <label class="title my-2"> Image(s) </label>
+                        <div class="img-preview d-flex">
+                        </div>
+                        <label class="btn btn-primary m-0 mt-3" for="files">Ajouter une image</label>
+                        <input class="form-control" type="file" id="files"accept="image/*">
+                        <button class="btn btn-secondary mt-3" id="clear"> Supprimer </a>
+                        <div class="invalid-feedback">Veuillez ajouter au moins une image</div>
+                    </div>
+                </div>
+
                 <div class="d-flex flex-wrap ">
                     <div class="col-md-4 col-12">
                         <div class="name">
@@ -37,78 +49,10 @@
                             <input type="text" placeholder="Nom" class="form-control col" name="name">
                             <div class="invalid-feedback">Veuillez rentrer un nom</div>
                         </div>
-                        <div class="description">
-                            <label class="title my-2"> Description </label>
-                            <textarea class="form-control col" placeholder="Ajouter une description ici ..." rows="10" name="description"></textarea>
-                            <div class="invalid-feedback">Veuillez rentrer une description</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-12">
                         <div class="price">
-                            <label class="title my-2"> Prix </label>
+                            <label class="title my-2"> Prix (€)</label>
                             <input type="text" placeholder="12.99" class="form-control col" name="price">
                             <div class="invalid-feedback">Veuillez rentrer un prix valide (ex: 12.99)</div>
-                        </div>
-                        <div class="weight">
-                            <label class="title my-2"> Poids </label>
-                            <input type="text" placeholder="250" class="form-control col" name="weight">
-                            <div class="invalid-feedback">Veuillez rentrer un poids valide (en gramme ex: 135)</div>
-                        </div>
-                        <div class="available">
-                            <label class="title my-2"> Type </label>
-                            <br/>
-                            <label class="checkbox-inline"><input type="radio" name="type" value="clothe" id="t1" checked > Vêtement </label>
-                            <label class="checkbox-inline ml-3"><input type="radio" name="type" value="print" id="t2" %> > Affiche </label>
-                            <label class="checkbox-inline ml-3"><input type="radio" name="type" value="accessory" id="t3" %> > Accessoire </label>
-                        </div>
-
-                        <div class="type-clothe">
-                            <div class="clothe_type">
-                                <label class="title my-2"> Type de vêtement </label>
-                                <br/>
-                                <select class="custom-select" name="clothe_type">
-                                    <option selected value="t-shirt" class="attached enabled">T-Shirt</option>
-                                    <option value="crewneck" class="attached enabled">Crewneck</option>
-                                    <option value="longsleeve" class="attached enabled">Longsleeve</option>
-                                    <option value="unique" class="attached enabled">Pièce unique</option>
-                                </select>
-                            </div>
-                            <div class="composition">
-                                <label class="title my-2"> Composition </label>
-                                <input type="text" placeholder="Composition du vêtement" class="form-control col" name="composition">
-                            </div>
-                        </div>
-                        <div class="type-poster hide">
-                            <div class="print_size">
-                                <label class="title my-2"> Format </label>
-                                <input type="text" placeholder="A3" class="form-control col" name="print_size">
-                            </div>
-                            <div class="printing">
-                                <label class="title my-2"> Grammage </label>
-                                <input type="text" placeholder="250mg" class="form-control col" name="printing">
-                                <div class="invalid-feedback">veuillez rentrer un grammage</div>
-                            </div>
-                        </div>
-                        <div class="type-accessory hide">
-                            <div class="acc_type">
-                                <label class="title my-2"> Type d'accessoire </label>
-                                <input type="text" placeholder="Sac" class="form-control col" name="acc_type">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-12">
-                        <div class="collection">
-                            <label class="title my-2"> Collection/Capsule </label>
-                            <br/>
-                            <select class="custom-select" name="collection">
-                                <option selected value="Aucune" class="attached enabled">Aucune</option>
-                                <option value="Capsule Photomaton" class="attached enabled">Capsule Photomaton</option>
-                                <option value="Capsule Summer Roadtrip" class="attached enabled">Capsule Summer Roadtrip</option>
-                                <option value="Capsule Insomnie" class="attached enabled">Capsule Insomnie</option>
-                                <option value="Capsule Beau Séjour" class="attached enabled">Capsule Beau Séjour</option>
-                                <option value="Capsule Marché aux Fleurs" class="attached enabled">Capsule Marché aux Fleurs</option>
-                                <option value="Capsule Lazy Sunday Club" class="attached enabled">Capsule Lazy Sunday Club</option>
-                            </select>
                         </div>
                         <div class="available">
                             <label class="title my-2"> Disponible </label>
@@ -116,95 +60,33 @@
                             <label class="checkbox-inline"><input type="radio" name="available" value="1" id="a1" checked> Oui </label>
                             <label class="checkbox-inline ml-3"><input type="radio" name="available" value="0" id="a2"> Non </label>
                         </div>
+
                     </div>
-                </div>
-                <div class="w-100 border-bottom my-4"></div>
-                <div class="d-flex flex-wrap bottom-section">
-                    <div class="tab col-12 mb-3 d-flex">
-                        <button id="removeColor" class="btn btn-danger mx-5" disabled> Supprimer </button>
-                        <ul class="tab-switch list-inline">
-                            <li class="list-inline-item active" target="color1" data-i="1">
-                                <span>Défaut</span>
-                                <label class="checkbox-inline ml-3" style="text-transform:none;">
-                                    <input type="radio" name="default-color" value="1" id="dc1" checked> Défaut 
-                                </label>
-                            </li>
-                        </ul>
-                        <button class="btn btn-success mx-5" data-toggle="modal" data-target="#deleteColorModal" > Ajouter </button>
-                    </div>
-                    <div class="color1 col-12 active">
-                        <div class="images col-12 pb-3">
-                            <label class="title my-2"> Image(s) </label>
-                            <div class="img-preview d-flex">
-                            </div>
-                            <label class="btn btn-primary m-0 mt-3" for="files-1">Ajouter une image</label>
-                            <input class="form-control" type="file" id="files-1"accept="image/*">
-                            <button class="btn btn-secondary mt-3" id="clear"> Supprimer </a>
-                            <div class="invalid-feedback">Veuillez ajouter au moins une image</div>
+                    <div class="col-md-4 col-12">
+                        <div class="description">
+                            <label class="title my-2"> Description </label>
+                            <textarea class="form-control col" placeholder="Ajouter une description ici ..." rows="10" name="description"></textarea>
+                            <div class="invalid-feedback">Veuillez rentrer une description</div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="options">
-                                <label class="title my-2"> Choix tailles / options </label>
-                                <br/>
-                                <span style="text-transform: none;"> S'il n'existe qu'une seule option pour ce produit, elle sera considérée comme par défaut (donc non visible dans le choix des tailles par exemple).</span>
-                                <div class="option-box d-flex mb-1 mt-2" id="box1"> 
-                                    <div class="remove-option">
-                                        <button class="close" aria-label="Close" disabled>
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <span class="name-option col-5 p-0">
-                                        <input type="text" value="Taille 1" class="form-control" name="name-option">
-                                    </span>
-                                    <div class="stock-option col d-flex p-0 py-2">
-                                        <span>Stock </span>
-                                        <label class="checkbox-inline ml-3"><input type="radio" name="stock1-1" value="1" checked> Illimité </label>
-                                        <label class="checkbox-inline mx-3"><input type="radio" name="stock1-1" value="0"> Limité </label>
-                                        <input type="text" placeholder="0" value="0" class="form-control stock-value" name="stock-value1-1" disabled>
-                                    </div>
-                                </div>
-                                <div class="invalid-feedback">Veuillez rentrer une valeur de stock valide</div>
-                                <button class="btn btn-primary mt-3" name="add-option"> Ajouter une option </button>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <div class="weight">
+                            <label class="title my-2"> Poids (g)</label>
+                            <input type="text" placeholder="250" class="form-control col" name="weight">
+                            <div class="invalid-feedback">Veuillez rentrer un poids valide (en gramme ex: 135)</div>
+                        </div>
+                        <div class="type-clothe">
+                            <div class="composition">
+                                <label class="title my-2"> Composition </label>
+                                <input type="text" placeholder="Composition du vêtement" class="form-control col" name="composition">
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <form class="text-center" action="/admin-add-product" method="post">
                     <button class="btn btn-success my-4" type="submit"> Ajouter le produit </button>
                 </form>
-            </div>
-
-            <!-- MODAL ADD COLOR -->
-            <div class="modal fade" id="deleteColorModal" tabindex="-1" role="dialog" aria-labelledby="deleteColorModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteColorModalLabel">Ajouter une couleur</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body p-4" style="text-transform:none; font-weight: 500;">
-                            <div> Si aucune couleur / variation n'a encore été créée pour ce produit, en créer une nouvelle remplacera l'actuelle (avec les paramètres précédents).
-                            </div>
-                                <div class="color-picker d-flex mt-3">
-                                    <div class='color-box mr-2' style="background-color: transparent;"></div>
-                                    <select class="custom-select" name="color-picker">
-                                        <option value="Défaut" selected disabled>Aucune</option>
-                                        <% for (color of colors) { %>
-                                            <option value="<%= color.name %>" data-color="<%= color.code %>" class="attached enabled"><%= color.name %></option>
-                                        <% } %>
-                                    </select>
-                                    <!--<input type="color" id="head" name="head" value="#e66465">-->
-                                </div>
-                            <div class="form-row justify-content-center pt-3">
-                                <button class="btn btn-cart mr-2" id="confirmAddColor" data-dismiss="modal" aria-label="Close">Ajouter</a>
-                                <button type="button" class="ml-2 btn btn-log" data-dismiss="modal" aria-label="Close"> Annuler</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </main>
         <footer>
@@ -228,22 +110,20 @@
             file_list.splice(end, 0, element)
         }
         function bindImageControl() {
-            let target = $('.tab-switch li.active').attr('target');
-            $(`.${target} .image-container a`).unbind();
-            $(`.${target} a.carousel-control-prev`).click(function () {
+            $(`.image-container a`).unbind();
+            $(`a.carousel-control-prev`).click(function () {
                 let item = $(this).parent();
                 moveArray(item.index(), item.index()-1 <= 0 ? 0 : item.index()-1)
                 item.prev().before(item);
             })
-            $(`.${target} a.carousel-control-next`).click(function () {
+            $(`a.carousel-control-next`).click(function () {
                 let item = $(this).parent();
                 moveArray(item.index(), item.index()+1)
                 item.next().after(item);
             })
-            $(`.${target} a.carousel-control-remove`).click(function () {
+            $(`a.carousel-control-remove`).click(function () {
                 let item = $(this).parent();
-                let i = $('.tab-switch li.active').index()
-                file_list[i].splice(item.index(), 1)
+                file_list.splice(item.index(), 1)
                 item.remove();
             })
         }
@@ -260,8 +140,7 @@
 
         function addImgPreview (file) {
             let path = window.URL.createObjectURL(file); // on créer un lien provisoire pour l'image
-            let iColor = $('.tab-switch li.active').attr('data-i');
-            $(`.color${iColor} .img-preview`).append(`
+            $(`.img-preview`).append(`
                 <div class="image-container mx-2">
                     <img src="${path}" img-name='${file.name}'></img>
                     <a class="carousel-control-prev" role="button" data-slide="prev">
@@ -280,22 +159,22 @@
             bindImageControl()
         }
 
-        function getImgList(color) {
+        function getImgList() {
             var list = []
-            $(`.${color} .images img`).each(function () {
+            $(`.images img`).each(function () {
                 list.push($(this).attr('img-name'));
             });
 
             return list
         }
 
-        var file_list = [[]]
+        let file_list = [];
         // Actualise le cadre de preview d'images
-        $('.color1 .images input').change(function () {
-            var files = $(this).prop('files');
-            file_list[0].push(files[0]);
+        $('.images input').change(function () {
+            let files = $(this).prop('files');
+            file_list.push(files[0]);
             if (files.length) {
-                for (var i=0; i<files.length; i++) {
+                for (let i=0; i<files.length; i++) {
                     if (validFileType(files[i])) {
                         addImgPreview(files[i]);
                     }
@@ -304,238 +183,10 @@
         });
 
         // Efface toutes les images
-        $('.color1 .images #clear').click(function () {
-            let iColor = $('.tab-switch li.active').index();
-            $(`.color1 .images .img-preview`).empty()
-            file_list[iColor] = []
-        })
-
-        // Change les champs à remplir selon le type
-        $('input[name="type"]').change(function () {
-            var value = $('input[name="type"]:checked').val();
-            if (value=="clothe") {
-                $('.type-clothe').removeClass('hide');
-                $('.type-poster').addClass('hide');
-                $('.type-accessory').addClass('hide');
-            }
-            else if (value=="print") {
-                $('.type-poster').removeClass('hide');
-                $('.type-clothe').addClass('hide');
-                $('.type-accessory').addClass('hide');
-            }
-            else if (value=="accessory") {
-                $('.type-accessory').removeClass('hide');
-                $('.type-clothe').addClass('hide');
-                $('.type-poster').addClass('hide');
-            }
-        }); 
-
-        /* ========================== OPTION / COULEUR ======================= */
-
-        let indexColor = 1; // Liste le nb de couleur qui ont été créées, supprimées ou non
-        // on switch de panneau de couleur
-        $("ul.tab-switch li").click(function() {
-            $("ul.tab-switch li").removeClass("active");
-            $(this).addClass("active");
-
-            var pannel = $(this).attr("target");
-            $("div.tab ~ div").removeClass("active");
-            $("div."+pannel).addClass("active");
+        $(`.images #clear`).click(function () {
+            $(`.images .img-preview`).empty()
+            file_list = [];
         });
-
-        // Met à jour la boite de couleur sur le modal d'ajout
-        $('select[name="color-picker"]').change(function(){
-            let color = $('option:selected', this).attr('data-color');
-            $('.color-box').css('background-color', color)
-        });
-
-        // Supprime une couleur
-        $('button#removeColor').click(function() {
-            // S'il ne reste plus qu'une option, alors on la remet par défaut, et on desactive le bouton
-            if ($('.tab-switch li').length == 1 && $('.tab-switch li.active').text() != 'Défaut') {
-                $('.tab-switch li.active').text('Défaut')
-                $('button#removeColor').attr('disabled', true)
-                return;
-            }
-
-            // On vide la liste des images
-            let index = $('.tab-switch li.active').index()
-            file_list.splice(index, 1)
-
-            let target = $('.tab-switch li.active').attr('target');
-            $('.tab-switch li.active').remove();
-            $(`.${target}`).remove();
-
-            // On remet un focus sur la première couleur
-            $('.tab-switch li').first().addClass('active')
-            target = $('.tab-switch li.active').attr('target');
-            $(`.${target}`).addClass('active')
-        })
-
-        // Ajoute une couleur 
-        $('button#confirmAddColor').click(function (){
-            let colorName = $('select[name="color-picker"] option:selected').val();
-
-            // On active le bouton de suppression si pas déjà fait
-            $('button#removeColor').attr('disabled', false)
-
-            // S'il n'y a pas encore de couleur ajoutés, la nouvelle remplacera l'ancienne
-            if ($('.tab-switch li.active span').text() == "Défaut") {
-                $('.tab-switch li.active span').text(colorName);
-                return;
-            }
-
-            indexColor += 1
-            let i = indexColor;
-
-            // On change le focus de tab
-            $('.tab-switch li.active').removeClass('active')
-            $("div.tab ~ div").removeClass("active");
-
-            // Et on ajoute les champs
-            $('.tab-switch').append(
-                `<li class="list-inline-item active" target="color${i}" data-i="${i}">
-                    <span>${colorName}</span>
-                    <label class="checkbox-inline ml-3" style="text-transform:none;">
-                        <input type="radio" name="default-color" value="1" id="dc${indexColor}"}> Défaut 
-                    </label>
-                </li>`);
-            $(`.bottom-section`).append(
-                `<div class="color${i} col-12 active">
-                    <div class="images col-12 pb-3">
-                        <label class="title my-2"> Image(s) </label>
-                        <div class="img-preview d-flex">
-                        </div>
-                        <label class="btn btn-primary m-0 mt-3" for="files-${i}">Ajouter une image</label>
-                        <input class="form-control" type="file" id="files-${i}" accept="image/*">
-                        <button class="btn btn-secondary mt-3" id="clear-${i}"> Supprimer </a>
-                        <div class="invalid-feedback">Veuillez ajouter au moins une image</div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="options">
-                            <label class="title my-2"> Choix tailles / options </label>
-                            <br/>
-                            <span style="text-transform: none;"> S'il n'existe qu'une seule option pour ce produit, elle sera considéré comme par défaut (donc non visible dans le choix des tailles par exemple).</span>
-                            <div class="option-box d-flex mb-1 mt-2" id="box${i}-1"> 
-                                <div class="remove-option">
-                                    <button class="close" aria-label="Close" disabled>
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <span class="name-option col-5 p-0">
-                                    <input type="text" placeholder="Défaut" value="Taille 1" class="form-control" name="name-option">
-                                </span>
-                                <div class="stock-option col d-flex p-0 py-2">
-                                    <span>Stock </span>
-                                    <label class="checkbox-inline ml-3"><input type="radio" name="stock${i}-1" value="1" checked> Illimité </label>
-                                    <label class="checkbox-inline mx-3"><input type="radio" name="stock${i}-1" value="0"> Limité </label>
-                                    <input type="text" placeholder="0" value="0" class="form-control stock-value" name="stock-value${i}-1" disabled>
-                                </div>
-                            </div>
-                            <div class="invalid-feedback">Veuillez rentrer une valeur de stock valide</div>
-                            <button class="btn btn-primary mt-3" name="add-option"> Ajouter une option </button>
-                        </div>
-                    </div>
-                </div>`);
-
-            file_list.push([])
-            // Actualise le cadre de preview d'images
-            $(`.color${i} .images #files-${i}`).change(function () {
-                let iColor = $('.tab-switch li.active').index();
-                let files = $(this).prop('files');
-                file_list[iColor].push(files[0]);
-                if (files.length) {
-                    for (let j=0; j<files.length; j++) {
-                        if (validFileType(files[j])) {
-                            addImgPreview(files[j]);
-                        }
-                    }
-                }
-            });
-
-            // Efface toutes les images
-            $(`.color${i} .images #clear-${i}`).click(function () {
-                let iColor = $('.tab-switch li.active').index();
-                $(`.color${i} .images .img-preview`).empty()
-                file_list[iColor] = []
-            })
-
-            // Ajout des évenements basiques d'options
-            $(`input[name="stock${i}-1"]`).change(function () {
-                var value = $(`input[name="stock${i}-1"]:checked`).val();
-                if (value=="1") {
-                    $(`input[name="stock-value${i}-1"]`).attr("disabled", true);
-                }
-                else if (value=="0") {
-                    $(`input[name="stock-value${i}-1"]`).attr("disabled", false);
-                }
-            }); 
-
-            addEventOption(); // On met à jour les events du bouton d'ajout
-
-            // on switch de panneau de couleur
-            $("ul.tab-switch li").click(function() {
-                $("ul.tab-switch li").removeClass("active");
-                $(this).addClass("active");
-
-                var pannel = $(this).attr("target");
-                $("div.tab ~ div").removeClass("active");
-                $("div."+pannel).addClass("active");
-            });
-        });
-
-        // Met à jour les événements sur les ajouts d'option
-        function addEventOption() {
-            let iColor = $('.tab-switch li.active').attr('data-i');
-
-            // Pour chaque clique du bouton, on ajoute une option, et le bouton de suppression
-            $(`.color${iColor} .options button[name="add-option"]`).click(function () {
-                let iOption = $(`.color${iColor} .option-box`).length+1;
-                $(`.color${iColor} .options .invalid-feedback`).before(
-                    `<div class="option-box d-flex mb-1" id="box${iColor}-${iOption}"> 
-                    <div class="remove-option">
-                        <button class="close" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <span class="name-option col-5 p-0">
-                        <input type="text" placeholder="Défaut" value="Taille ${iOption}" class="form-control" name="name-option">
-                    </span>
-                    <div class="stock-option col d-flex p-0 py-2">
-                        <span>Stock </span>
-                        <label class="checkbox-inline ml-3"><input type="radio" name="stock${iColor}-${iOption}" value="1" checked> Illimité </label>
-                        <label class="checkbox-inline mx-3"><input type="radio" name="stock${iColor}-${iOption}" value="0"> Limité </label>
-                        <input type="text" placeholder="0" value="0" class="form-control stock-value" name="stock-value${iColor}-${iOption}" disabled>
-                    </div>
-                </div>`);
-
-                // On ajoute les évenements
-                $(`input[name="stock${iColor}-${iOption}"]`).change(function () {
-                    var value = $(`input[name="stock${iColor}-${iOption}"]:checked`).val();
-                    if (value=="1") {
-                        $(`input[name="stock-value${iColor}-${iOption}"]`).attr("disabled", true);
-                    }
-                    else if (value=="0") {
-                        $(`input[name="stock-value${iColor}-${iOption}"]`).attr("disabled", false);
-                    }
-                }); 
-                $(`.remove-option button`).click(function () {
-                    $(this).parents('.option-box').remove()
-                }); 
-            });
-        }
-        addEventOption();
-
-        // Evenement initial
-        $(`input[name="stock1-1"]`).change(function () {
-            var value = $(`input[name="stock1-1"]:checked`).val();
-            if (value=="1") {
-                $(`input[name="stock-value1-1"]`).attr("disabled", true);
-            }
-            else if (value=="0") {
-                $(`input[name="stock-value1-1"]`).attr("disabled", false);
-            }
-        }); 
 
         /* ============================ POST FINAL ======================== */
 
@@ -546,61 +197,17 @@
             let description = $('textarea[name="description"]');
             let price = $('input[name="price"]');
             let weight = $('input[name="weight"]');
-            let type = $('input[name="type"]:checked');
-            let clothe_type = $('.custom-select[name="clothe_type"]');
             let composition = $('input[name="composition"]');
-            let print_size = $('input[name="print_size"]');
-            let printing = $('input[name="printing"]');
-            let acc_type = $('input[name="acc_type"]');
-            let collection = $('.custom-select[name="collection"]');
             let available = $('input[name="available"]:checked');
 
             let regexPrice  = new RegExp("^(\\d+[.]\\d{1,2})$");
             let regexWeight = new RegExp("^(\\d+)$");
 
-            let default_color = $('span', $('input[name="default-color"]:checked').parent().parent()).text();
-            if (file_list.length == 1) default_color = 'Défaut'
-
-            if (type.val() == "clothe") {
-                print_size.val('');
-                printing.val('');
-                acc_type.val('');
-            } else if (type.val() == "print") {
-                composition.val('');
-                acc_type.val('');
-            }
-            else if (type.val() == "accessory") {
-                composition.val('');
-                print_size.val('');
-                printing.val('');
-            }
-
-            // On récupère le tableau des options et images
-            let optionArray = {};
-            let imageArray = {};
-            // Pour chaque couleur, on itère
-            $('.tab-switch li').each(function() {
-                let colorName = $('span', this).text();
-                let target = $(this).attr('target');
-                optionArray[colorName] = []
-                imageArray[colorName] = getImgList(target)
-
-                // Puis on itère chaque option de chaque couleur ...
-                $(`.${target} .option-box`).each(function() {
-                    let stock;
-                    let radioValue = parseInt($('.stock-option input[type="radio"]:checked', this).val());
-                    if (radioValue) stock = -1
-                    else stock = parseInt($('input.stock-value', this).val())
-
-                    optionArray[colorName].push({
-                        size: $('input[name="name-option"]', this).val(),
-                        stock: stock
-                    })
-                });
-            })
+            // On récupère le tableau des images
+            let imageArray = getImgList()
 
             // On check les erreurs et on ajoute la classe en consequant
-            if (!file_list[0].length) {
+            if (!file_list.length) {
                 image.removeClass('is-valid').addClass('is-invalid');
                 return false;
             } else {
@@ -642,34 +249,11 @@
             } else {
                 composition.removeClass('is-invalid').addClass('is-valid');
             }
-            if (!print_size.val() && type.val() == "print") {
-                print_size.removeClass('is-valid').addClass('is-invalid');
-                return false;
-            }
-            else {
-                print_size.removeClass('is-invalid').addClass('is-valid');
-            }
-            if (!printing.val() && type == "print") {
-                printing.removeClass('is-valid').addClass('is-invalid');
-                return false;
-            }
-            else {
-                printing.removeClass('is-invalid').addClass('is-valid');
-            }
-            if (!acc_type.val() && type.val() == "accessory") {
-                acc_type.removeClass('is-valid').addClass('is-invalid');
-                return false;
-            }
-            else {
-                acc_type.removeClass('is-invalid').addClass('is-valid');
-            }
 
             //uploadImgFiles(file_list) // On upload les images sur le serveur en parallèle
-            var form = new FormData();
-            for (color of file_list) {
-                for (file of color) {
-                    form.append('file', file)
-                }
+            let form = new FormData();
+            for (file of file_list) {
+                form.append('file', file)
             }
 
             // On upload les images sur le serveur
@@ -688,21 +272,15 @@
             })
             .done( function (data) {
                 // ... Et on attend que l'upload soit fini pour lancer la 2e requête
+                console.log(imageArray);
                 $.post("/admin-add-product", {
                     images: JSON.stringify(imageArray),
                     name: name.val(),
                     description: description.val(),
                     price: price.val(),
                     weight: weight.val(),
-                    clothe_type: clothe_type.val(),
+                    type: 'clothe',
                     composition: composition.val(),
-                    option: JSON.stringify(optionArray),
-                    default_color: default_color,
-                    print_size: print_size.val(),
-                    printing: printing.val(),
-                    acc_type: acc_type.val(),
-                    collection: collection.val(),
-                    type: type.val(),
                     available: available.val()
                 })
                 .done( function (data) {

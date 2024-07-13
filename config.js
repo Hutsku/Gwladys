@@ -44,7 +44,7 @@ config.cookies = {
 }
 
 config.debug      = false; // active quelques boutons de test etc.
-config.production = true; // Active les paiements
+config.production = false; // Active les paiements
 config.countdown  = true; // Active/desactive la page d'attente de reveal du site
 // Date.UTC(année, mois, jour, heure) sachant que le mois est entre 0 et 11 et que la france est en GMT+2h
 // À savoir que les changements d'heure en france (+1, -1) ne sont pas pris en compte, donc faudra faire gaffe

@@ -327,8 +327,20 @@ app.use(function(req, res, next) {
 })
 
 .get('/', function(req, res) {
-    // Renvoit par défaut vers la page principale
-    res.redirect('/mainpage');
+    // Créer une liste des images présent dans le dossier mainpage
+    let files_pc = fs.readdirSync('./public/img/mainpage/pc');
+    let files_mobile = fs.readdirSync('./public/img/mainpage/mobile');
+
+    // Affiche la page principale (avec tout les produits)
+    query.getAllProduct(function(products) {
+        // On envoit les données du produit à la page
+        res.render('mainpage.ejs', {
+            products: products, 
+            session: req.session,
+            main_pc: files_pc,
+            main_mobile: files_mobile
+        });
+    });
 })
 
 .get('/unlock', function(req, res) {
@@ -360,44 +372,6 @@ app.use(function(req, res, next) {
     else res.render('subscribe.ejs', {session: req.session});
 })
 
-.get('/shop', function(req, res) {
-    // Redirige vers la liste de tout articles du site
-    res.redirect('/shop/all');
-})
-
-.get('/shop/:link', function(req, res) {
-    // Affiche la liste des articles indiquées
-    let type;
-    if (['t-shirt', 'crewneck', 'longsleeve', 'unique'].includes(req.params.link)) type = 'clothe';
-    else type = req.params.link;
-
-    query.getAllProduct(function(products) {
-        res.render('shop.ejs', {session: req.session, products: products, link: req.params.link});
-    }, type);  
-})
-
-.get('/lookbook', function(req, res) {
-    // Affiche une liste des images présent dans le dossier lookbook
-    let files_1 = fs.readdirSync('./public/img/lookbook/photomaton');
-    let files_2 = fs.readdirSync('./public/img/lookbook/summer roadtrip');
-    let files_3 = fs.readdirSync('./public/img/lookbook/insomnie');
-    let files_4 = fs.readdirSync('./public/img/lookbook/beau_sejour');
-    let files_5 = fs.readdirSync('./public/img/lookbook/marche_fleur');
-    let files_6 = fs.readdirSync('./public/img/lookbook/lazy_sunday_club');
-    let files_7 = fs.readdirSync('./public/img/lookbook/sd_records');
-    let files_8 = fs.readdirSync('./public/img/lookbook/amour_digital');
-    res.render('lookbook.ejs', {session: req.session, 
-        photomaton: files_1, 
-        summer_roadtrip: files_2, 
-        insomnie: files_3,
-        beau_sejour: files_4,
-        marche_fleur: files_5,
-        lazy_sunday_club: files_6,
-        sd_records: files_7,
-        amour_digital: files_8
-    });
-})
-
 .get('/kezako', function(req, res) {
     // Affiche la liste des articles indiquées
     res.render('kezako.ejs', {session: req.session});
@@ -415,15 +389,9 @@ app.use(function(req, res, next) {
             res.redirect('back');
         }
         else {
-            let colorParam = req.query.color 
-            // On traite les valeurs par défaut du paramètre de couleur
-            if (!colorParam) colorParam = ''
-            else if (!product.option[colorParam]) colorParam = ''
-
             // On envoit les données du produit à la page
             res.render('product.ejs', {
                 product: product,
-                paramColor: colorParam,
                 session: req.session
             });  
         }     
@@ -470,20 +438,8 @@ app.use(function(req, res, next) {
 })
 
 .get('/mainpage', function(req, res) {
-    // Créer une liste des images présent dans le dossier mainpage
-    let files_pc = fs.readdirSync('./public/img/mainpage/pc');
-    let files_mobile = fs.readdirSync('./public/img/mainpage/mobile');
-
-    // Affiche la page principale (avec tout les produits)
-    query.getAllProduct(function(products) {
-        // On envoit les données du produit à la page
-        res.render('mainpage.ejs', {
-            products: products, 
-            session: req.session,
-            main_pc: files_pc,
-            main_mobile: files_mobile
-        });
-    });
+    // Renvoit par défaut vers la page principale
+    res.redirect('/');
 })
 
 .get('/account', function(req, res) {
@@ -567,13 +523,10 @@ app.use(function(req, res, next) {
 .get('/admin-edit-product/:id', function(req, res) {
     // on vérifie que l'utilisateur est bien admin (double verification si jamais)
     if (req.session.admin && checkAdmin(req.session.account.email)) {
-        query.getColors(function(colors) {
-            query.getProduct(req.params.id, function(product) {
-                res.render('admin-edit-product.ejs', {
-                    colors: colors,
-                    product: product,
-                    session: req.session
-                });
+        query.getProduct(req.params.id, function(product) {
+            res.render('admin-edit-product.ejs', {
+                product: product,
+                session: req.session
             });
         });
     }
@@ -586,11 +539,8 @@ app.use(function(req, res, next) {
 .get('/admin-add-product', function(req, res) {
     // on vérifie que l'utilisateur est bien admin (double verification si jamais)
     if (req.session.admin && checkAdmin(req.session.account.email)) {
-        query.getColors(function(colors) {
-            res.render('admin-add-product.ejs', {
-                colors: colors,
-                session: req.session
-            });
+        res.render('admin-add-product.ejs', {
+            session: req.session
         });
     }
     else {
@@ -806,7 +756,7 @@ app.use(function(req, res, next) {
     // on vérifie que l'utilisateur est bien admin (double verification si jamais)
     if (req.session.admin && checkAdmin(req.session.account.email)) {
         query.addProduct(req.body); // On ajoute le produit dans la BDD
-        console.log('-> Article ajouté');
+        console.log(`-> Article ajouté | ${req.body.name}`);
 
         req.session.alert = "add product";
         res.redirect('back');
@@ -821,7 +771,7 @@ app.use(function(req, res, next) {
     // on vérifie que l'utilisateur est bien admin (double verification si jamais)
     if (req.session.admin && checkAdmin(req.session.account.email)) {
         query.updateProduct(req.body); // Modifie le produit dans la BDD
-        console.log('-> Article modifié');
+        console.log(`-> Article modifié | ${req.body.name}`);
 
         req.session.alert = "edit product";
         res.redirect('back');
@@ -854,8 +804,6 @@ app.use(function(req, res, next) {
         available: parseInt(req.body.available),
         price: parseFloat(req.body.price),
         weight: parseInt(req.body.weight),
-        color: req.body.color,
-        option: req.body.option,
         cart_qty: parseInt(req.body.cart_qty),
         image: req.body.img,
     }

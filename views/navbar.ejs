@@ -408,17 +408,17 @@
         for (product of cart.products) {
             // On ajoute la ligne de produit à la fenêtre
             $('div.cart-total').before(
-            `<div class="cart-product row align-items-center" product_id="${product.id}" product_option="${product.option}" product_color="${product.color}">> 
+            `<div class="cart-product row align-items-center" product_id="${product.id}"> 
                 <img class="p-2 col-3" src="/img/${product.img}">
                 <div class="col">
                     <a href="/product/${product.id}" class="cart-product-name">
-                        ${product.name} ${product.color == "Défaut" ? '' : product.color} ${product.option}
+                        ${product.name}
                     </a>
                     <span class="ml-2">x</span>
                     <span class="qty">${product.cart_qty}</span>
                 </div>
                 <span class="cart-product-price col-3">${product.price}€</span>
-                <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="${product.id}" product_option="${product.option}" product_color="${product.color}">
+                <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="${product.id}">
                     <button type="submit" name="remove-cart" class="close" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -429,8 +429,6 @@
         // On ajoute l'evenement de suppression des objets du panier
         $(`.cart-product form`).submit(function () {
             var product_id = $(this).attr('product_id');
-            var product_option = $(this).attr('product_option');
-            var product_color = $(this).attr('product_color');
             var nb = parseInt($('.cart-dropdown span').text());
             var div_empty = `<div class="cart-empty row align-items-center"> 
                                     <span class="m-5 col"> Aucun produit dans le panier ...</span>
@@ -438,8 +436,6 @@
 
             $.post("/remove-cart", {
                 id: product_id, 
-                color: product_color,
-                option: product_option
             })
             .done(function (data) {
                 // on modifie le panier dynamiquement
@@ -458,15 +454,11 @@
     // Pour supprimer un objet du panier
     $('form.form-remove-cart').submit(function () {
         var product_id = $(this).attr('product_id');
-        var product_option = $(this).attr('product_option');
-        var product_color = $(this).attr('product_color');
         var div_empty = `<div class="cart-empty row align-items-center"> 
                         <span class="m-5 col"> Aucun produit dans le panier ...</span>
                     </div>`
         $.post("/remove-cart", {
             id: product_id, 
-            color: product_color,
-            option: product_option
         })
         .done(function (data) {
             // on modifie le panier dynamiquement

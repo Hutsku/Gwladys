@@ -29,12 +29,12 @@
     				<div class="cart-pannel-main container">
                         <span class="title row mb-4"> Contenu du panier </span>
                         <% for (product of session.cart.products) {  %>
-                            <div class="cart-product row align-items-center" product_id="<%= product.id %>" product_option="<%= product.option %>" product_color="<%= product.color %>" product_available="<%= product.available %>" product_weight="<%= product.weight %>">
+                            <div class="cart-product row align-items-center" product_id="<%= product.id %>" product_available="<%= product.available %>" product_weight="<%= product.weight %>">
                             	<div class="cart-product-img p-2 col-3">
                             		<img class="w-100" src="/img/<%= product.image %>">
                             	</div>
                             	<div class="cart-product-name col-md-5 col" product_name='<%- product.name %>'>
-                            		<a href="/product/<%= product.id %>"><%- product.name %> <%- product.color == "Défaut" ? '' : product.color %> <%- product.option %></a>
+                            		<a href="/product/<%= product.id %>"><%- product.name %></a>
                             	</div>
                             	<div class="w-100 d-md-none d-block"></div>
                             	<div class="cart-product-qty col-md-2 offset-md-0 offset-3 col-4">
@@ -44,7 +44,7 @@
                             		<span><%= parseFloat((product.price * product.cart_qty).toFixed(10)) %>€</span>
                             	</div>
                             	<div class="product-remove col-md-1 col-1">
-                                <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>" product_option="<%= product.option %>" product_color="<%= product.color %>">
+                                <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>">
                             		<button type="submit" class="close" aria-label="Close">
                                     	<span aria-hidden="true">&times;</span>
                                 	</button>
@@ -209,8 +209,6 @@
                 var product = $(this);
                 new_cart.products.push({
                     id: product.attr('product_id'), 
-                    option: product.attr('product_option'), 
-                    color: product.attr('product_color'),
                     name: product.find('.cart-product-name').attr('product_name'),
                     price: product.find('.cart-product-price').attr('product_price'),
                     weight: parseInt(product.attr('product_weight')),
@@ -238,11 +236,9 @@
         // actualise lorsque on supprime un produit
         $('.cart-pannel-main form[action="/remove-cart"]').submit(function () {
             var product_id = $(this).attr('product_id');
-            var product_option = $(this).attr('product_option');
-            var product_color = $(this).attr('product_color');
 
             // on modifie la page dynamiquement
-            var element = $(`.cart-pannel-main div.cart-product[product_id='${product_id}'][product_option='${product_option}'][product_color='${product_color}']`);
+            var element = $(`.cart-pannel-main div.cart-product[product_id='${product_id}']`);
             element.prev().remove();
             element.remove();
 

@@ -39,19 +39,7 @@
     				<!----------------  CAROUSEL ------------->
     				<div class="carousel-container d-flex">
 					  	<div class="carousel-indicators m-0 mt-4 m-md-0 mx-md-4">
-					  		<%  
-					  			let selected_color;
-					  			if (paramColor) selected_color = paramColor
-					  			else selected_color = product.default_color
-
-					  			// Securité anti-bug
-					  			if (!product.option[selected_color]) {
-					  				console.log(product);
-					  				selected_color = product.default_color
-					  			}
-
-					  			let imageList = product.image[selected_color];
-					  			let optionList = product.option[selected_color];
+					  		<%  let imageList = product.image;
 					  			
 					  			// correction temporaire du bug des ImageList
 					  			if (imageList) {
@@ -90,44 +78,14 @@
 		    				<%- nl2br(product.description) %>
 		    			</span>
 		    			
-		    			<% if (product.type == "clothe") { %>
-			    			<div class="infos mb-1">
-			    				<span class="title">Composition </span>
-			    				<span><%= product.composition %></span>
-			    			</div>
-		    			<% } else if (product.type == "accessory") { %>
-			    			<div class="infos mb-1">
-			    				<span class="title">Type </span>
-			    				<span><%= product.acc_type %></span>
-			    			</div>
-		    			<% } else if (product.type == "print") { %>
-			    			<div class="infos mb-1">
-			    				<span class="title">Impression </span>
-			    				<span>Impression sur papier <%= product.printing %></span>
-			    			</div>
-			    			<div class="infos mb-1">
-			    				<span class="title">Dimension </span>
-			    				<span>Affiche <%= product.print_size %></span>
-			    			</div>
-			    		<% } %>
+		    			<div class="infos mb-1">
+		    				<span class="title">Composition </span>
+		    				<span><%= product.composition %></span>
+		    			</div>
 		    			<!--<div class="ref mb-1">
 		    				<span class="title">Reference </span>
 		    				<span><%= product.id %></span>
 		    			</div>-->
-		    			<% if (product.color.length > 1) { %>
-    					<div>
-	    					<!--<div class="title pb-2">Choix de couleur: 
-	    						<span class="color-name font-weight-normal"><%= selected_color %></span>
-	    					</div>-->
-	    					<div class="color-picker d-flex mb-3">
-	    						<% for (color of product.color) { %>
-	    						<a href="/product/<%= product.id %>?color=<%= color.name %>">
-	    							<div class='color-box mr-2 <% if (color.name == selected_color) {%> selected <% } %>' data-color="<%= color.name %>" style="background-color: <%= color.code %>;"></div>
-	    						</a>
-	    						<% } %>
-	    					</div>
-	    				</div>
-			    		<% } %>
 		    			<!-- <a class="size-chart mt-3" href="#" data-toggle="modal" data-target="#sizeChartModal" name="delete-product">Guide des tailles</a> -->
     				</div>
     			</div>
@@ -147,39 +105,26 @@
 			    				<%- nl2br(product.description) %>
 			    			</span>
 
-			    			<% if (product.type == "clothe") { %>
-				    			<div class="row infos mb-1">
-				    				<span class="title">Composition </span>
-				    				<span><%= product.composition %></span>
-				    			</div>
-			    			<% } else if (product.type == "accessory") { %>
-				    			<div class="row infos mb-1">
-				    				<span class="title">Type </span>
-				    				<span><%= product.acc_type %></span>
-				    			</div>
-			    			<% } else if (product.type == "print") { %>
-				    			<div class="row infos mb-1">
-				    				<span class="title">Impression </span>
-				    				<span>Impression sur papier <%= product.printing %></span>
-				    			</div>
-				    			<div class="row infos mb-1">
-				    				<span class="title">Dimension </span>
-				    				<span>Affiche <%= product.print_size %></span>
-				    			</div>
-				    		<% } %>
+			    			<div class="row infos mb-1">
+			    				<span class="title">Composition </span>
+			    				<span><%= product.composition %></span>
+			    			</div>
 	    				</div>
 	    				<div class="w-100 border-bottom my-4"></div>
 		    			<div class="row">
-			    			<form class="form-product w-100">						    
-						      	<% if (product.available) { %>
-			    				<button class="btn btn-cart col-7" type="submit" name="add-cart">
+			    			<form class="form-product w-100">
+
+			    				<% // On vérifie la disponibilité vis à vis du panier en cours
+			    				let front_available = product.available;
+			    				for (cart_product of session.cart.products) {
+			    					if (cart_product.id == product.id) front_available = false
+			    				} %>						    
+			    				<button class="btn btn-cart col-7 <% if (!front_available) { %> hide <% } %>" type="submit" name="add-cart">
 			    					Ajouter dans le panier <i class="fas fa-shopping-cart ml-2"></i>
 			    				</button>
-			    				<% } else { %>
-			    				<button class="btn btn-cart col-7" disabled=true type="submit" name="add-cart">
+			    				<button class="btn btn-secondary col-7 <% if (front_available) { %> hide <% } %>" disabled=true type="submit" name="not-available">
 			    					Indisponible à l'achat
 			    				</button>
-			    				<% } %>
 			    			</form>
 			    		</div>
 	    			</div>
@@ -209,16 +154,12 @@
 				<span class="product-price col-2 p-0 text-right"><%= product.price %>€</span>
 			</div>
 			<form class="form-product w-100" action="/add-cart" method="post">
-
-		      	<% if (product.available) { %>
-				<button class="btn btn-cart col" type="submit" name="add-cart">
-					Acheter
+				<button class="btn btn-cart col <% if (!front_available) { %> hide <% } %>" type="submit" name="add-cart">
+					Ajouter dans le panier <i class="fas fa-shopping-cart ml-2"></i>
 				</button>
-				<% } else { %>
-				<button class="btn btn-cart col" disabled=true type="submit" name="add-cart">
+				<button class="btn btn-secondary col <% if (front_available) { %> hide <% } %>" disabled=true type="submit" name="not-available">
 					Indisponible à l'achat
 				</button>
-				<% } %>
 			</form>
 		</div>
     </body>
@@ -253,17 +194,17 @@
             for (product of cart.products) {
             	// On ajoute la ligne de produit à la fenêtre
             	$('div.cart-total').before(
-            	`<div class="cart-product row align-items-center" product_id="${product.id}" product_option="${product.option}" product_color="${product.color}"> 
+            	`<div class="cart-product row align-items-center" product_id="${product.id}"> 
                     <img class="p-2 col-3" src="/img/${product.image}">
                     <div class="col">
                         <a href="/product/${product.id}" class="cart-product-name">
-                            ${product.name} ${product.color == "Défaut" ? '' : product.color} ${product.option}
+                            ${product.name}
                         </a>
                         <span class="ml-2">x</span>
                         <span class="qty">${product.cart_qty}</span>
                     </div>
                     <span class="cart-product-price col-3">${product.price}€</span>
-                    <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="${product.id}" product_option="${product.option}" product_color="${product.color}">
+                    <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="${product.id}">
                         <button type="submit" name="remove-cart" class="close" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -274,8 +215,6 @@
 		    // On ajoute l'evenement de suppression des objets du panier
 		    $(`.cart-product form`).submit(function () {
 		        var product_id = $(this).attr('product_id');
-		        var product_option = $(this).attr('product_option');
-		        var product_color = $(this).attr('product_color');
 		        var nb = parseInt($('.cart-dropdown span').text());
 		        var div_empty = `<div class="cart-empty row align-items-center"> 
 		                                <span class="m-5 col"> Aucun produit dans le panier ...</span>
@@ -283,8 +222,6 @@
 
 		        $.post("/remove-cart", {
 		            id: product_id, 
-		            color: product_color,
-		            option: product_option
 		        })
 		        .done(function (data) {
 		            // on modifie le panier dynamiquement
@@ -298,25 +235,32 @@
 		        });
 		        return false; // on n'execute pas le submit normal
 		    });
+
+		    // Enfin, on modifie dynamiquement le bouton d'achat pour éviter de pouvoir en acheter 2 !
+		    let front_available = true;
+		    for (cart_product of cart.products) {
+		    	if (cart_product.id == <%= product.id %>) front_available = false;
+		    }
+
+		    $('button[name="not-available"]').removeClass('hide');
+		    $('button[name="add-cart"]').removeClass('hide');
+		    if (!<%= product.available %>) {
+		    	$('button[name="add-cart"]').addClass('hide');
+		    	$('button[name="not-available"]').removeClass('hide')
+		    	.html("Indisponible à l'achat");
+		    } else if (!front_available) {
+		    	$('button[name="add-cart"]').addClass('hide');
+			    $('button[name="not-available"]').removeClass('hide')
+			    .html('Merci pour votre achat ! <i class="fas fa-heart"></i>');
+		    } else {
+		    	$('button[name="add-cart"]').removeClass('hide');
+			    $('button[name="not-available"]').addClass('hide');
+		    }
 		}
 
         /* Ajoute un produit au panier */
         $('form.form-product').submit(function () {
-        	var option = '';
-        	var type = '<%= product.type %>';
-    		// Permet de differencier le select mobile et pc
-    		$('.custom-select').each(function () {
-    			if (!$(this).is(':hidden')) option = $(this).val();
-    		});
-
-    		// On vérifie qu'on a bien entré une option
-            if (!option && $('.custom-select').length) {
-            	$('.custom-select').removeClass('is-valid').addClass('is-invalid');
-            	console.log('no option')
-            	return false;
-        	} else {
-            	$('.custom-select').removeClass('is-invalid').addClass('is-valid');
-        	}
+        	let type = '<%= product.type %>';
 
         	$.post("/add-cart", {
                 id: <%= product.id %>, 
@@ -324,8 +268,6 @@
 	            available: <%= product.available %>,
 	            price: <%= product.price %>,
 	            weight: <%= product.weight %>,
-	            color: '<%= selected_color %>',
-	            option: option,
 	            cart_qty: 1,
 	            img: '<%= imageList[0] %>',
             })
@@ -335,7 +277,7 @@
                	// on ajoute la notification
                	var notif = $(`<div class="notif-container col-12">
 					            <div class="alert alert-success alert-dismissible fade show" role="alert">
-					                <strong>Ajouté ! </strong> "<%= product.name %> <%= selected_color %> ${option}" a bien été ajouté au panier
+					                <strong>Ajouté ! </strong> "<%= product.name %>" a bien été ajouté au panier
 					                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					                    <span aria-hidden="true">&times;</span>
 					                </button>

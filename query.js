@@ -30,49 +30,25 @@ function roundPrice(x) {
 
 _getAllUser    = `SELECT * FROM user, address WHERE user_id = id`;
 _getAllBaseProduct = `SELECT * FROM product WHERE visible = 1`;
-_getAllProductSimple = `SELECT p.id, p.name, description, price, available, p.type, cover_image, collection, composition, clothe.type as clothe_type, print_size, weight, a.type as acc_type FROM product p
-            LEFT JOIN accessory a ON a.product_id = p.id
+_getAllProductSimple = `SELECT p.id, p.name, description, price, available, p.type, cover_image, composition, clothe.type as clothe_type, weight FROM product p
             LEFT JOIN clothe ON clothe.product_id = p.id
-            LEFT JOIN print ON print.product_id = p.id
             WHERE p.visible = 1
             ORDER BY id DESC`;
-_getAllProduct = `SELECT DISTINCT p.id, p.name, description, price, available, p.type, default_color, c.name color_name, c.code color_code, image.name as image, pi.position as image_pos, composition, clothe.type as clothe_type, collection, print_size, weight, a.type as acc_type FROM product p
+_getAllProduct = `SELECT DISTINCT p.id, p.name, description, price, available, p.type, image.name as image, pi.position as image_pos, composition, clothe.type as clothe_type, weight FROM product p
             INNER JOIN product_image pi ON pi.product_id = p.id
             INNER JOIN image ON image.id = pi.image_id
-            LEFT JOIN accessory a ON a.product_id = p.id
             LEFT JOIN clothe ON clothe.product_id = p.id
-            LEFT JOIN print ON print.product_id = p.id
-            LEFT JOIN product_option po ON po.product_id = p.id
-            LEFT JOIN color c ON c.name = po.color
-            WHERE p.visible = 1 AND (default_color = pi.color OR default_color = 'Défaut')
+            WHERE p.visible = 1
             ORDER BY id DESC, image_pos`;
-_getAllClothe = `SELECT DISTINCT p.id, p.name, description, price, available, p.type, default_color, c.name color_name, c.code color_code, image.name as image, pi.position as image_pos, collection, composition, clothe.type as clothe_type FROM product p 
+_getAllClothe = `SELECT DISTINCT p.id, p.name, description, price, available, p.type, image.name as image, pi.position as image_pos, composition FROM product p 
             INNER JOIN clothe 
             INNER JOIN product_image pi ON pi.product_id = p.id 
             INNER JOIN image ON image.id = pi.image_id 
-            LEFT JOIN product_option po ON po.product_id = p.id
-            LEFT JOIN color c ON c.name = po.color
-            WHERE clothe.product_id = p.id AND p.visible = 1 AND (default_color = pi.color OR default_color = 'Défaut')
+            WHERE clothe.product_id = p.id AND p.visible = 1
             ORDER BY id DESC, image_pos; `;
-_getAllPrint = `SELECT DISTINCT p.id, p.name, description, price, available, p.type, default_color, c.name color_name, c.code color_code, image.name as image, pi.position as image_pos, collection, print_size, printing, weight FROM product p
-            INNER JOIN print
-            INNER JOIN product_image pi ON pi.product_id = p.id
-            INNER JOIN image ON image.id = pi.image_id
-            LEFT JOIN product_option po ON po.product_id = p.id
-            LEFT JOIN color c ON c.name = po.color
-            WHERE print.product_id = p.id AND p.visible = 1 AND (default_color = pi.color OR default_color = 'Défaut')
-            ORDER BY id DESC, image_pos`;
-_getAllAcc = `SELECT DISTINCT p.id, p.name, description, price, available, p.type, default_color, c.name color_name, c.code color_code, image.name as image, pi.position as image_pos, collection, a.type as acc_type FROM product p
-            INNER JOIN accessory a
-            INNER JOIN product_image pi ON pi.product_id = p.id
-            INNER JOIN image ON image.id = pi.image_id
-            LEFT JOIN product_option po ON po.product_id = p.id
-            LEFT JOIN color c ON c.name = po.color
-            WHERE a.product_id = p.id AND p.visible = 1 AND (default_color = pi.color OR default_color = 'Défaut')
-            ORDER BY id DESC, image_pos`;
 
 _getAllOrder   = `SELECT * FROM \`order\``;
-_getAllOrderUser = `SELECT o.id, u.name, u.email, total_cost, shipping_address, o.state, p.id as product_id, oc.name as product, oc.color, oc.size, oc.nb, oc.price, voucher
+_getAllOrderUser = `SELECT o.id, u.name, u.email, total_cost, shipping_address, o.state, p.id as product_id, oc.name as product, oc.nb, oc.price, voucher
 				FROM \`order\` o
                 INNER JOIN user u
                 INNER JOIN order_content oc ON oc.order_id = o.id 
@@ -81,16 +57,13 @@ _getAllOrderUser = `SELECT o.id, u.name, u.email, total_cost, shipping_address, 
                 ORDER BY id DESC;`;
 _getUser       = `SELECT * FROM user, address WHERE id = ? AND user_id = id`;
 _getUserFromEmail = `SELECT * FROM user, address WHERE email = ? AND user_id = id`;
-_getProduct = `SELECT p.id, p.name, description, price, available, p.type, image.name as image, pi.position as image_pos, po.position as option_pos, default_color, po.size as size, stock, po.color as color, composition, clothe.type as clothe_type, collection, print_size, printing, weight, a.type as acc_type FROM product p
+_getProduct = `SELECT p.id, p.name, description, price, available, p.type, image.name as image, pi.position as image_pos, composition, clothe.type as clothe_type, weight FROM product p
             INNER JOIN product_image pi ON pi.product_id = p.id
             INNER JOIN image ON image.id = pi.image_id
-            INNER JOIN product_option po ON po.product_id = p.id
             LEFT JOIN clothe ON clothe.product_id = p.id
-            LEFT JOIN print ON print.product_id = p.id
-            LEFT JOIN accessory a ON a.product_id = p.id
-            WHERE po.color = pi.color AND p.id = ?
-            ORDER BY image_pos, option_pos;`;
-_getOrder      = `SELECT o.id, user_id, date, subtotal_cost, shipping_cost, total_cost, billing_address, shipping_address, payment_method, shipping_method, state, p.id as product_id, oc.name as product, oc.color, oc.size, oc.nb, oc.price as product_price, cover_image, voucher 
+            WHERE p.id = ?
+            ORDER BY image_pos;`;
+_getOrder      = `SELECT o.id, user_id, date, subtotal_cost, shipping_cost, total_cost, billing_address, shipping_address, payment_method, shipping_method, state, p.id as product_id, oc.name as product, oc.nb, oc.price as product_price, cover_image, voucher 
 			FROM \`order\` o
             INNER JOIN order_content oc ON oc.order_id = o.id 
             LEFT JOIN product p ON oc.product_id = p.id
@@ -101,7 +74,6 @@ _getUserEmail  = `SELECT email FROM user WHERE id = ?`;
 _getUserNewsletter = `SELECT user.email FROM newsletter, user WHERE user.email = newsletter.email AND user.id = ?`;
 _getAllNewsletter  = `SELECT email FROM newsletter`;
 _getVoucher    = `SELECT * from voucher WHERE code = ? AND nb != 0`;
-_getColors     = `SELECT * FROM color`;
 
 _checkVoucherUser = `SELECT * FROM voucher v, user_voucher uv WHERE v.code = uv.code AND uv.user_id = ? AND v.code = ?`
 _useVoucher    = `UPDATE voucher SET nb = ? WHERE code = ?`;
@@ -111,10 +83,8 @@ _addAddress = `INSERT INTO address (user_id, address1, address2, city, postal_co
                VALUES (?, ?, ?, ?, ?, ?, ?)`;
 _addOrder   = `INSERT INTO \`order\` (user_id, date, total_cost, subtotal_cost, shipping_cost, shipping_address, billing_address, payment_method, shipping_method, voucher) 
                VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?)`;
-_addProduct  = `INSERT INTO product (name, description, price, weight, available, type, cover_image, default_color, collection) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+_addProduct  = `INSERT INTO product (name, description, price, weight, available, type, cover_image) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 _addClothe   = `INSERT INTO clothe (product_id, type, composition) VALUES (?, ?, ?)`;
-_addPrint    = `INSERT INTO print (product_id, print_size, printing) VALUES (?, ?, ?)`;
-_addAcc      = `INSERT INTO accessory (product_id, type) VALUES (?, ?)`;
 
 _removeProduct = `UPDATE product SET visible = 0 WHERE id = ?`;
 _removeOrder   = `DELETE FROM \`order\` WHERE id = ?`;
@@ -125,10 +95,8 @@ _editUserAddress  = `UPDATE address SET address1 = ?, address2 = ?, city = ?, co
 _editUserInfo     = `UPDATE user SET name = ?, email = ?, tel = ? WHERE id = ?`;
 
 _updateOrder   = `UPDATE \`order\` SET state = ?, tracking_number = ? WHERE id = ?`;
-_updateProduct = `UPDATE product SET name = ?, description = ?, price = ?, weight = ?, available = ?, type = ?, cover_image = ?, default_color = ?, collection = ? WHERE id = ?`;
+_updateProduct = `UPDATE product SET name = ?, description = ?, price = ?, weight = ?, available = ?, type = ?, cover_image = ? WHERE id = ?`;
 _updateClothe  = `UPDATE clothe SET type = ?, composition = ? WHERE product_id = ?`;
-_updatePrint   = `UPDATE print SET print_size = ?, printing = ? WHERE product_id = ?`;
-_updateAcc     = `UPDATE accessory SET type = ? WHERE product_id = ?`;
 
 // Requête de suppression lors de produits manquant
 _sync_order         = `DELETE FROM \`order\` WHERE id NOT IN (
@@ -384,22 +352,7 @@ function getAllUser(callback) {
 
 // Renvoit une liste de tout les produits (avec leurs informations et images)
 function getAllProduct(callback, type) {
-    switch (type) {
-        case 'all': query = _getAllProduct;
-            break;
-
-        case 'clothe': query = _getAllClothe;
-            break;
-
-        case 'print': query = _getAllPrint;
-            break;
-
-        case 'accessory': query = _getAllAcc;
-            break;
-
-        default: query = _getAllProduct;
-    }
-    connection.query(query, function(err, rows, fields) {
+    connection.query(_getAllProduct, function(err, rows, fields) {
         if (err) throw err;
 
         if (!rows.length) {
@@ -410,26 +363,15 @@ function getAllProduct(callback, type) {
         // On trie les résultats par produit et image
         let productList = [];
         let productCheck = [];
-        let colorCheck = []
         for (product of rows) {
             if (!productCheck.includes(product.id)) {
                 product.image = [product.image];
-                if (product.color_name) {
-                    product.color = [{name: product.color_name, code: product.color_code}];
-                }
 
                 productList.push(product);
                 productCheck.push(product.id)
-                colorCheck.push([product.color_name])
             } else {
                 let index = productCheck.indexOf(product.id)
-                if (product.default_color == "Défaut" || product.color_name == product.default_color) {
-                    productList[index].image.push(product.image);
-                }
-                if (product.color_name && !colorCheck[index].includes(product.color_name)) {
-                    productList[index].color.push({name: product.color_name, code: product.color_code});
-                    colorCheck[index].push(product.color_name)
-                }
+                productList[index].image.push(product.image);
             }
         }
         callback(productList);
@@ -467,8 +409,6 @@ function getAllOrderUser(callback) {
         			id: order.product_id,
         			name: order.product,
                     email: order.email,
-                    color: order.color,
-        			size: order.size,
         			nb: order.nb
         		}]; // on reconstruit sous forme de liste
 				orderList.push(order);
@@ -482,8 +422,6 @@ function getAllOrderUser(callback) {
         					id: order.product_id,
         					name: order.product,
                             email: order.email,
-                            color: order.color,
-                            size: order.size,
         					nb: order.nb
         				});
         			}
@@ -492,14 +430,6 @@ function getAllOrderUser(callback) {
         }
         callback(orderList);
     });
-}
-
-// Renvoit la liste des couleurs disponibles
-function getColors(callback) {
-    connection.query(_getColors, function(err, rows, fields) {
-        if (err) throw err;
-        callback(rows);  
-    });    
 }
 
 // Renvoit un produit selon l'id donné
@@ -512,50 +442,14 @@ function getProduct(id, callback) {
             return false;
         }
 
-        // La requête renvoit une ligne par image et taille différente du produit, on doit donc recomposer en tableau
-        // Chaque entrée du tableau renvoit à une couleur/variation du produit. 'base' s'il n'y a pas d'options.
-        imageArray = {}
-        optionArray = {}
-
-        // De simples tableaux utilisé pour la vérification de boucle
-        sizeCheck = {}
-        imageCheck = {}
+        // La requête renvoit une ligne par image différente du produit, on doit donc recomposer en tableau
+        imageArray = []
         for (product of rows) {
-            // S'il n'a pas de couleur particulière, on la règle sur default
-            if (!product.color) product.color = 'Défaut';
-
-            // Si l'option n'est pas encore dans le tableau, on l'ajoute
-            if (!optionArray[product.color]) {
-                optionArray[product.color] = [];
-                imageArray[product.color] = [];
-                sizeCheck[product.color] = [];
-                imageCheck[product.color] = [];
-            }
-
-            // Si l'image ou la taille n'est pas déjà dans le tableau, on l'ajoute à l'option
-            if (!imageCheck[product.color].includes(product.image)) {
-                imageArray[product.color].push(product.image);
-                imageCheck[product.color].push(product.image);
-            }
-            if (!sizeCheck[product.color].includes(product.size)) {
-                optionArray[product.color].push({
-                    size: product.size,
-                    stock: product.stock
-                });
-                sizeCheck[product.color].push(product.size)
-            }
-            
+            imageArray.push(product.image);
         }
 
-        let colorQuery = `SELECT DISTINCT c.name, c.code FROM product_option po, color c WHERE po.color = c.name AND po.product_id = ?`
-        connection.query(colorQuery, [id], function(err, res, fields) {
-            if (err) throw err;
-
-            rows[0].image = imageArray; // On recompose à partir du 1er resultat, par exemple
-            rows[0].option = optionArray; // On recompose à partir du 1er resultat, par exemple
-            rows[0].color = res;
-            callback(rows[0]);
-        });
+        rows[0].image = imageArray; // On recompose à partir du 1er resultat, par exemple
+        callback(rows[0]);
     });
 }
 
@@ -569,8 +463,6 @@ function getOrder(id, callback) {
         	productList.push({
 				id: order.product_id,
 				name: order.product,
-                color: order.color,
-				size: order.size,
 				nb: order.nb,
 				price: order.product_price,
                 image: order.cover_image
@@ -635,91 +527,51 @@ function getStat(callback) {
 
 // Ajoute le produit général à la BDD
 function addProduct(data) {
+
     data.images = JSON.parse(data.images)
-    data.option = JSON.parse(data.option)
+    let cover_image = data.images[0]
 
-    let cover_image = data.images[data.default_color][0]
-
-	var queryParam = [data.name, data.description, data.price, data.weight, data.available, data.type, cover_image, data.default_color, data.collection]
+	let queryParam = [data.name, data.description, data.price, data.weight, data.available, data.type, cover_image]
 	connection.query(_addProduct, queryParam, function(err, result) {
 	    if (err) throw err;
 	    productId = result.insertId;
 
-	    // Ajoute le champ Clothe ou Poster sur la BDD
-		switch (data.type) {
-			case 'clothe':
-				connection.query(_addClothe, [productId, data.clothe_type, data.composition], function(err, result) {
-				    if (err) throw err;
-				});
-				break;
-
-			case 'print':
-				connection.query(_addPrint, [productId, data.print_size, data.printing], function(err, result) {
-				    if (err) throw err;
-				});
-				break;
-
-            case 'accessory':
-                connection.query(_addAcc, [productId, data.acc_type], function(err, result) {
-                    if (err) throw err;
-                });
-                break;
-		}	
-
-        // On ajoute une par une les options à la BDD
-        for (let color in data.option) {
-            let optionList = data.option[color];
-            if (color == "Défaut") color = ""
-            // On itère chaque option par couleur
-            for (let option_pos=0; option_pos<optionList.length; option_pos++) {
-                let option = optionList[option_pos];
-                // On règle les valeurs par défaut
-                if (optionList.length == 1) option.size = "";
-
-                // On créer le lien entre le produit et l'option             
-                let linkImageProduct = `INSERT INTO product_option (product_id, color, size, stock, position) VALUES (?, ?, ?, ?, ?)`;
-                connection.query(linkImageProduct, [productId, color, option.size, option.stock, option_pos], function(err, result) {
-                    if (err) throw err;
-                });
-            }            
-        }
+	    // Ajoute le champ Clothe sur la BDD
+		connection.query(_addClothe, [productId, data.clothe_type, data.composition], function(err, result) {
+		    if (err) throw err;
+		});
 
 		// On ajoute une par une les images à la BDD
-        for (let color in data.images) {
-            let imageList = data.images[color];
-            if (color == "Défaut") color = "";
-            for (let image_pos=0; image_pos<imageList.length; image_pos++) {
-                let image = imageList[image_pos];
-                // On verifie si les images n'existent pas déjà
-                connection.query(`SELECT * FROM image WHERE name = ?`, [image], function(err, rows, fields) {
-                    if (err) throw err;
+        for (let image_pos=0; image_pos<data.images.length; image_pos++) {
+            let image = data.images[image_pos];
+            // On verifie si les images n'existent pas déjà
+            connection.query(`SELECT * FROM image WHERE name = ?`, [image], function(err, rows, fields) {
+                if (err) throw err;
 
-                    // Si l'image n'existe pas, on l'ajoute à la BDD
-                    if (!rows.length) {
-                        connection.query(`INSERT INTO image (name) VALUES (?)`, [image], function(err, result) {
-                            if (err) throw err;
-                            console.log('-> File uploaded')
-                            let imageId = result.insertId;
+                // Si l'image n'existe pas, on l'ajoute à la BDD
+                if (!rows.length) {
+                    connection.query(`INSERT INTO image (name) VALUES (?)`, [image], function(err, result) {
+                        if (err) throw err;
+                        console.log('-> File uploaded')
+                        let imageId = result.insertId;
 
-                            // On lie les images au produit dans la BDD
-                            let linkImageProduct = `INSERT INTO product_image (product_id, image_id, color, position) VALUES (?, ?, ?, ?)`;
-                            connection.query(linkImageProduct, [productId, imageId, color, image_pos], function(err, result) {
-                                if (err) throw err;
-                            });
-                        });
-                    }
-                    else {
-                        // On créer le lien entre le produit et l'image             
-                        let linkImageProduct = `INSERT INTO product_image (product_id, image_id, color, position) VALUES (?, ?, ?, ?)`;
-                        connection.query(linkImageProduct, [productId, rows[0].id, color, image_pos], function(err, result) {
+                        // On lie les images au produit dans la BDD
+                        let linkImageProduct = `INSERT INTO product_image (product_id, image_id, position) VALUES (?, ?, ?)`;
+                        connection.query(linkImageProduct, [productId, imageId, image_pos], function(err, result) {
                             if (err) throw err;
                         });
-                    }
-                });
-            }            
-        }
-
-	});
+                    });
+                }
+                else {
+                    // On créer le lien entre le produit et l'image             
+                    let linkImageProduct = `INSERT INTO product_image (product_id, image_id, position) VALUES (?, ?, ?)`;
+                    connection.query(linkImageProduct, [productId, rows[0].id, image_pos], function(err, result) {
+                        if (err) throw err;
+                    });
+                }
+            });
+        }            
+    });
 }
 
 // On ajoute une commande à l'historique de la BDD
@@ -741,12 +593,11 @@ function addOrder(cart, callback) {
 
     		// On construit la query de liaison entre produit et commande
     		var queryParam = [];
-			var linkOrderContent = `INSERT INTO order_content (order_id, product_id, size, color, nb, name, price) VALUES `;
+			var linkOrderContent = `INSERT INTO order_content (order_id, product_id, nb, name, price) VALUES `;
 			for (i=0; i<cart.products.length; i++) {
 				if (i) linkOrderContent += `,`;
-				linkOrderContent += `(?, ?, ?, ?, ?, ?, ?)`; // Ajoute le nom à la requête 
-                let product_color = cart.products[i].color == "Défaut" ? '' : cart.products[i].color
-				queryParam.push(orderId, cart.products[i].id, cart.products[i].option, product_color, cart.products[i].cart_qty, cart.products[i].name, cart.products[i].price)
+				linkOrderContent += `(?, ?, ?, ?, ?)`; // Ajoute le nom à la requête 
+				queryParam.push(orderId, cart.products[i].id, cart.products[i].cart_qty, cart.products[i].name, cart.products[i].price)
 			}
 
 			// On lie les produits avec la commande
@@ -755,23 +606,11 @@ function addOrder(cart, callback) {
 	            callback(cart, orderId); // on termine avec la callback
 	        });
 
-            // On met à jour la liaison produit/option, notamment les stock
-            let queryProductOption = 'SELECT * FROM product_option WHERE product_id = ? AND size = ? AND color = ?';
+            // Pour chaque produit acheté, on le rend indisponible
+            let updateAvailable = `UPDATE product SET available = 0 WHERE id = ?`;
             for (let product of cart.products) {
-                if (product.color == "Défaut") product.color = ''
-                connection.query(queryProductOption, [product.id, product.option, product.color], function(err, result) {
-                    if (err) throw err;
-
-                    // On modifie seulement si le stock est limité
-                    if (result[0].stock >= 0) {
-                        // On calcule avec une petite securité sur la valeur (pas en dessous de 0)
-                        let new_stock = result[0].stock - product.cart_qty < 0 ? 0 : result[0].stock - product.cart_qty;
-                        // On créer le lien entre le produit et l'option             
-                        let linkImageProduct = `UPDATE product_option SET stock = ? WHERE product_id = ? AND size = ? AND color = ?`;
-                        connection.query(linkImageProduct, [new_stock, product.id, product.option, product.color], function(err, result) {
-                            if (err) throw err;
-                        }); 
-                    }        
+                connection.query(updateAvailable, [product.id], function(err, result) {
+                    if (err) throw err;      
                 });
             }
 
@@ -782,7 +621,7 @@ function addOrder(cart, callback) {
                     if (voucher.nb > 0) {
                         useVoucher([voucher.code, voucher.nb-1], function(err, result) {
                             if (err) throw err;
-                        });     
+                        });
                     }
 
                     // On lie le coupon avec la personne (1 utilisation par personne)
@@ -897,97 +736,51 @@ function resetUserPassword([email, newPassword], callback) {
 // Modifie le produit général à la BDD
 function updateProduct (data) {
     data.image = JSON.parse(data.image)
-    data.option = JSON.parse(data.option)
+    let cover_image = data.image[0]
 
-    let cover_image = data.image[data.default_color][0]
-
-	var queryParam = [data.name, data.description, data.price, data.weight, data.available, data.type, cover_image, data.default_color, data.collection, data.id]
+	var queryParam = [data.name, data.description, data.price, data.weight, data.available, data.type, cover_image, data.id]
 	connection.query(_updateProduct, queryParam, function(err, result) {
 	    if (err) throw err;
 
-	    // On modifie égalalement les tables clothe ou poster
-		switch (data.type) {
-			case 'clothe':
-
-				connection.query(_updateClothe, [data.clothe_type, data.composition, data.id], function(err, result) {
-				    if (err) throw err;
-				});
-				break;
-
-			case 'print':
-				connection.query(_updatePrint, [data.print_size, data.printing, data.id], function(err, result) {
-				    if (err) throw err;
-				});
-				break;
-
-            case 'accessory':
-                connection.query(_updateAcc, [data.acc_type, data.id], function(err, result) {
-                    if (err) throw err;
-                });
-                break;
-		}
+	    // On modifie égalalement les tables clothe
+		connection.query(_updateClothe, [data.clothe_type, data.composition, data.id], function(err, result) {
+		    if (err) throw err;
+		});
 
 		// On supprime d'avance toutes les connections entre le produits et des images pour les refaire
 		connection.query(`DELETE FROM product_image WHERE product_id = ?`, [data.id], function(err, rows, fields) {
 			if (err) throw err;
 
             // On ajoute une par une les images à la BDD
-            for (let color in data.image) {
-                let imageList = data.image[color];
-                if (color == "Défaut") color = "";
-                for (let image_pos=0; image_pos<imageList.length; image_pos++) {
-                    let image = imageList[image_pos];
-                    // On verifie si les images n'existent pas déjà
-                    connection.query(`SELECT * FROM image WHERE name = ?`, [image], function(err, rows, fields) {
-                        if (err) throw err;
+            for (let image_pos=0; image_pos<data.image.length; image_pos++) {
+                let image = data.image[image_pos];
+                // On verifie si les images n'existent pas déjà
+                connection.query(`SELECT * FROM image WHERE name = ?`, [image], function(err, rows, fields) {
+                    if (err) throw err;
 
-                        // Si l'image n'existe pas, on l'ajoute à la BDD
-                        if (!rows.length) {
-                            connection.query(`INSERT INTO image (name) VALUES (?)`, [image], function(err, result) {
-                                if (err) throw err;
-                                console.log('-> File uploaded')
-                                let imageId = result.insertId;
+                    // Si l'image n'existe pas, on l'ajoute à la BDD
+                    if (!rows.length) {
+                        connection.query(`INSERT INTO image (name) VALUES (?)`, [image], function(err, result) {
+                            if (err) throw err;
+                            console.log('-> File uploaded')
+                            let imageId = result.insertId;
 
-                                // On lie les images au produit dans la BDD
-                                let linkImageProduct = `INSERT INTO product_image (product_id, image_id, color, position) VALUES (?, ?, ?, ?)`;
-                                connection.query(linkImageProduct, [data.id, imageId, color, image_pos], function(err, result) {
-                                    if (err) throw err;
-                                });
-                            });
-                        }
-                        else {
-                            // On créer le lien entre le produit et l'image             
-                            let linkImageProduct = `INSERT INTO product_image (product_id, image_id, color, position) VALUES (?, ?, ?, ?)`;
-                            connection.query(linkImageProduct, [data.id, rows[0].id, color, image_pos], function(err, result) {
+                            // On lie les images au produit dans la BDD
+                            let linkImageProduct = `INSERT INTO product_image (product_id, image_id, position) VALUES (?, ?, ?)`;
+                            connection.query(linkImageProduct, [data.id, imageId, image_pos], function(err, result) {
                                 if (err) throw err;
                             });
-                        }
-                    });
-                }            
-            }
-		});
-
-        // On supprime d'avance toutes les connections entre le produits et des images pour les refaire
-        connection.query(`DELETE FROM product_option WHERE product_id = ?`, [data.id], function(err, rows, fields) {
-            if (err) throw err;
-
-            // On ajoute une par une les options à la BDD
-            for (let color in data.option) {
-                let optionList = data.option[color];
-                if (color == "Défaut") color = ""
-                // On itère chaque option par couleur
-                for (let option_pos=0; option_pos<optionList.length; option_pos++) {
-                    let option = optionList[option_pos];
-                    // On règle les valeurs par défaut
-                    if (optionList.length == 1) option.size = "";
-
-                    // On créer le lien entre le produit et l'option             
-                    let linkImageProduct = `INSERT INTO product_option (product_id, color, size, stock, position) VALUES (?, ?, ?, ?, ?)`;
-                    connection.query(linkImageProduct, [data.id, color, option.size, option.stock, option_pos], function(err, result) {
-                        if (err) throw err;
-                    });
-                }            
-            }
+                        });
+                    }
+                    else {
+                        // On créer le lien entre le produit et l'image             
+                        let linkImageProduct = `INSERT INTO product_image (product_id, image_id, position) VALUES (?, ?, ?)`;
+                        connection.query(linkImageProduct, [data.id, rows[0].id, image_pos], function(err, result) {
+                            if (err) throw err;
+                        });
+                    }
+                });
+            }            
         });
 	});
 }
@@ -1071,7 +864,6 @@ module.exports = {
     getUserNewsletter: getUserNewsletter,
     getAllNewsletter: getAllNewsletter,
     getStat: getStat,
-    getColors: getColors,
 
 	addProduct: addProduct,
 	addOrder: addOrder,

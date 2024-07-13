@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="/css/style-shop.css">
         <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
 
-        <title>Strange Day</title>
+        <title>kita pena</title>
     </head>
  
     <body>
@@ -33,8 +33,12 @@
             for (product of products) { %>
                 <a class="product row mb-md-5" href="/product/<%= product.id %>">
                     <div class="product-img col-12 col-md-3">
-                        <!-- Vérification de la disponibilité -->
-                        <% if (!product.available) { %>
+                        <% // On vérifie la disponibilité vis à vis du panier en cours
+                        let front_available = product.available;
+                        for (cart_product of session.cart.products) {
+                            if (cart_product.id == product.id) front_available = false
+                        } %>
+                        <% if (!front_available) { %>
                         <span class="sold-out"> Indisponible </span>
                         <% } %>
 
