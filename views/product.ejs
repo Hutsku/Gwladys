@@ -116,9 +116,11 @@
 
 			    				<% // On vérifie la disponibilité vis à vis du panier en cours
 			    				let front_available = product.available;
-			    				for (cart_product of session.cart.products) {
-			    					if (cart_product.id == product.id) front_available = false
-			    				} %>						    
+			    				if (session.cart) {
+				    				for (cart_product of session.cart.products) {
+				    					if (cart_product.id == product.id) front_available = false
+				    				} 
+				    			} %>						    
 			    				<button class="btn btn-cart col-7 <% if (!front_available) { %> hide <% } %>" type="submit" name="add-cart">
 			    					Ajouter dans le panier <i class="fas fa-shopping-cart ml-2"></i>
 			    				</button>
