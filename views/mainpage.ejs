@@ -35,7 +35,7 @@
                     <div class="product-img col-12 col-md-3">
                         <% // On vérifie la disponibilité vis à vis du panier en cours
                         let front_available = product.available;
-                        if (session.cart.length) {
+                        if (session.cart) {
                             for (cart_product of session.cart.products) {
                                 if (cart_product.id == product.id) front_available = false
                             } 
