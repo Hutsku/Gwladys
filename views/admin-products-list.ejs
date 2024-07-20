@@ -22,7 +22,7 @@
         <link rel="stylesheet" type="text/css" href="/css/style-account.css">
         <link rel="stylesheet" type="text/css" href="/css/style-admin.css">
         <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
-        <title>Strange Day</title>
+        <title>kita pena</title>
     </head>
  
     <body>
@@ -50,6 +50,9 @@
                                 <tr>
                                     <td>
                                         <a class="product-img" href="/product/<%= product.id %>">
+                                            <% if (!product.available) { %>
+                                                <span class="sold-out"> Indisponible </span>
+                                            <% } %>
                                             <img class="" src="/img/<%= product.cover_image %>">
                                         </a>
                                     </td>

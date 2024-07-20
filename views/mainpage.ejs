@@ -32,18 +32,14 @@
             <% if (products.length) {
             for (product of products) { %>
                 <a class="product row mb-md-5" href="/product/<%= product.id %>">
-                    <div class="product-img col-12 col-md-3">
-                        <% // On vérifie la disponibilité vis à vis du panier en cours
-                        let front_available = product.available;
-                        if (session.cart) {
-                            for (cart_product of session.cart.products) {
-                                if (cart_product.id == product.id) front_available = false
-                            } 
-                        } %>
-                        <% if (!front_available) { %>
-                        <span class="sold-out"> Indisponible </span>
-                        <% } %>
-
+                    <% // On vérifie la disponibilité vis à vis du panier en cours
+                    let front_available = product.available;
+                    if (session.cart) {
+                        for (cart_product of session.cart.products) {
+                            if (cart_product.id == product.id) front_available = false
+                        } 
+                    } %>
+                    <div class="product-img col-12 col-md-3 <% if (!front_available) { %> unavailable <% } %>">
                         <!-- Affichage des différentes images -->
                         <img class="w-100" src="/img/<%= product.image[product.image_pos] %>">
                     </div>
@@ -51,7 +47,11 @@
                     <div class="col-12 col-md-7 d-flex flex-column justify-content-between pl-4">
                         <div class="product-infos mt-2 mt-md-0">
                             <span class="product-name pb-md-3"><%= product.name %></span>
+                            <% if (front_available) { %>
                             <span class="product-price pb-md-3"><%= product.price %>€</span>
+                            <% } else { %>
+                            <span class="product-unavailable mb-md-3"> Plus disponible !</span>
+                            <% } %>
                             <span class="product-desc d-none d-md-block"><%= product.description %></span>
                         </div>
 
@@ -59,7 +59,7 @@
                             <% let first_image = true;
                             for (image of product.image) { 
                                 if (image != product.image[product.image_pos]) { %>
-                            <div class="product-img col-3 mr-3 shadow">
+                            <div class="product-img col-3 mr-3 shadow <% if (!front_available) { %> unavailable <% } %>">
                                 <img class="w-100" src="/img/<%= image %>">
                             </div>
                             <% first_image = false;

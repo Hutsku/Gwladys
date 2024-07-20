@@ -176,7 +176,7 @@
 
 <!-- MODAL CONNEXION -->
 <div class="modal" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
-    <div class="modal-content drag-box pt-5" id="loginBox">
+    <div class="modal-content drag-box" id="loginBox">
 
         <!-- SWITCH BETWEEN ACCOUNT && LOGIN PANNEL -->
         <% if (session.logged) { %>
@@ -184,15 +184,13 @@
             <h5><%- session.username %></h5>
         </div>
         <div class="drag-body">
-            <a class="dropdown-item" href="/account/overview">Mon compte</a>
+            <a class="account-item main mb-3 text-center" href="/account/overview">Gérer mon compte</a>
             <% if (session.admin) { %>
-                <div class="dropdown-divider d-none d-md-block"></div>
-                <a class="dropdown-item" href="/admin-orders-list"><i class="fas fa-server mr-2"></i>Gestion des commandes</a>
-                <a class="dropdown-item" href="/admin-products-list"><i class="fas fa-tshirt mr-2"></i>Gestion des articles</a>
-                <a class="dropdown-item" href="/admin-stat"><i class="fas fa-network-wired mr-2"></i>Statistique</a>
-                <div class="dropdown-divider d-none d-md-block"></div>
+                <a class="account-item admin" href="/admin-orders-list"><i class="fas fa-server mr-2"></i>Gestion des commandes</a>
+                <a class="account-item admin" href="/admin-products-list"><i class="fas fa-tshirt mr-2"></i>Gestion des articles</a>
+                <a class="account-item admin mb-3" href="/admin-stat"><i class="fas fa-network-wired mr-2"></i>Statistique</a>
             <% } %>
-            <a class="dropdown-item" href="/quit"><i class="fa fa-power-off mr-2"></i>Se deconnecter</a>
+            <a class="account-item logout text-center" href="/quit"><i class="fa fa-power-off mr-2"></i>Se deconnecter</a>
         </div>
         <% } else { %>
         <div class="drag-header">
@@ -200,20 +198,23 @@
         </div>
         <div class="drag-body">
             <form action="/login" method="post" class="log-pannel">
-                <div class="form-group form-row pb-2">
+                <div class="form-group form-row">
                     <input type="text" placeholder="Adresse email" class="form-control" name="email">
                     <div class="invalid-feedback">Veuillez rentrer une adresse email valide</div>
                 </div>
 
-                <div class="form-group form-row pb-4">
+                <div class="form-group form-row">
                     <input type="password" placeholder="Mot de passe" class="form-control" name="password">
                     <div class="invalid-feedback">Veuillez rentrer un mot de passe valide</div>
                 </div>
 
                 <div class="form-row">
-                    <button type="submit" class="btn btn-log w-100" data-dismiss="">Se connecter</button>
+                    <button type="submit" class="btn btn-cart w-100" data-dismiss="">Se connecter</button>
                 </div>
                 <small> <a href="/forgot-password">Mot de passe oublié</a> </small>
+                <div class="form-row">
+                    <small class="text-center w-100 mt-3"> Pas encore de compte ? <a href="/subscribe">Créez un compte !</a></small>
+                </div>
             </form>
         </div>
         <% } %>
@@ -232,13 +233,13 @@
                             <img class="p-2 col-3" src="/img/<%= product.image %>">
                             <div class="col">
                                 <a href="/product/<%= product.id %>" class="cart-product-name">
-                                    <%- product.name %> <%= product.color == "Défaut" ? '' : product.color %> <%- product.option %>
+                                    <%- product.name %>
                                 </a>
-                                <span class="ml-2">x</span>
-                                <span class="qty"><%= product.cart_qty %> </span>
+                                <!-- <span class="ml-2">x</span>
+                                <span class="qty"><%= product.cart_qty %> </span> -->
                             </div>
                             <span class="cart-product-price col-3"><%= product.price %>€</span>
-                            <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>"  product_option="<%= product.option %>" product_color="<%= product.color %>">
+                            <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>">
                                 <button type="submit" name="remove-cart" class="close" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -253,17 +254,18 @@
                         <span class="cart-total-price"><%= session.cart.subtotal_cost %>€</span>
                     </div>
                     <div class="cart-check pb-3 row justify-content-center">
-                        <a href="/cart" class="btn btn-log btn-sm col-4">Voir le panier</a>
+                        <form action="/cart" method="get">
+                            <button type="submit" class="btn btn-log">Voir le panier</button>
                         </form>
                     </div>
                 <% } else { %>
                     <div class="cart-empty row align-items-center"> 
-                        <span class="m-5 col"> Aucun produit dans le panier ...</span>
+                        <span class="col"> Aucun produit dans le panier ...</span>
                     </div>
                 <% } 
             } else { %>
                 <div class="cart-empty row align-items-center"> 
-                    <span class="m-5 col"> Aucun produit dans le panier ...</span>
+                    <span class="col"> Aucun produit dans le panier ...</span>
                 </div>
             <% } %>
             </div>
@@ -409,13 +411,11 @@
             // On ajoute la ligne de produit à la fenêtre
             $('div.cart-total').before(
             `<div class="cart-product row align-items-center" product_id="${product.id}"> 
-                <img class="p-2 col-3" src="/img/${product.img}">
+                <img class="p-2 col-3" src="/img/${product.image}">
                 <div class="col">
                     <a href="/product/${product.id}" class="cart-product-name">
                         ${product.name}
                     </a>
-                    <span class="ml-2">x</span>
-                    <span class="qty">${product.cart_qty}</span>
                 </div>
                 <span class="cart-product-price col-3">${product.price}€</span>
                 <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="${product.id}">

@@ -82,58 +82,20 @@
 	width: 400px;
 }
 
-/* -------- OPTION LIST ---------- */
+span.sold-out {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	position:absolute;
+	width: 100px;
+	height: 30px;
 
-.remove-option {
-	width: 35px;
-	border-right: 1px solid lightgray;
-	background-color: transparent;
-}
-.remove-option button {
-	width: 100%;
-	height: 35px;
-	padding-bottom: 7px;
-}
-.remove-option:hover {
-	background-color: lightgrey;
-}
+	background-color: black;
+	color: white;
+	font-weight: 700;
+	font-size: 13px;
 
-.stock-option {
-	justify-content: end;
-	border-left: 1px solid lightgray;
-}
-
-.option-box {
-	height: 35px;
-	border: 1px solid lightgray;
-	color: #6c757d;
-	line-height: 16px;
-	text-transform: none;
-}
-.option-box input.stock-value {
-	width: 60px;
-	height: 33px;
-	display: inline;
-	margin-top: -8px;
-
-	border: none;
-	border-left: 1px solid lightgrey;
-}
-.option-box input[name="name-option"] {
-	height: 33px;
-	display: inline;
-	border: none;
-}
-.option-box .form-control:focus {
-	border: 1px solid var(--border-focus);
-}
-
-/* ================= COLOR PICKER ================ */
-
-.color-box {
-	height: 38px;
-	width: 38px;
-	border:  1px solid lightgrey;
+	z-index: 99;
 }
 
 /* -------- ORDER LIST ----------- */

@@ -23,7 +23,7 @@
         <link rel="stylesheet" type="text/css" href="/css/style-product.css">
         <link rel="stylesheet" type="text/css" href="/css/style-shop.css">
         <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
-        <title>Strange Day</title>
+        <title>kita pena</title>
     </head>
  
     <body>
@@ -97,7 +97,11 @@
 	    					<span class="product-name"><%= product.name %></span>
 		    			</div>
 		    			<div class="row">
-		    				<span class="product-price"><%= product.price %>€</span>
+		    				<% if (product.available) { %>
+                            <span class="product-price"><%= product.price %>€</span>
+                            <% } else { %>
+                            <span class="product-unavailable"> Plus disponible !</span>
+                            <% } %>
 		    			</div>
 		    			<!-- <div class="w-100 border-bottom my-4"></div> -->
 		    			<div class="product-desc">
@@ -188,7 +192,8 @@
                     <span class="cart-total-price">${cart.subtotal_cost}€</span>
                 </div>
                 <div class="cart-check pb-3 row justify-content-center">
-                    <a href="/cart" class="btn btn-secondary btn-sm col-4">Voir le panier</a>
+                	<form action="/cart" method="GET">
+                    	<button type="submit" class="btn btn-log ">Voir le panier</button>
                     </form>
                 </div>`);
 
@@ -202,8 +207,6 @@
                         <a href="/product/${product.id}" class="cart-product-name">
                             ${product.name}
                         </a>
-                        <span class="ml-2">x</span>
-                        <span class="qty">${product.cart_qty}</span>
                     </div>
                     <span class="cart-product-price col-3">${product.price}€</span>
                     <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="${product.id}">

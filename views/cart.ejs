@@ -15,7 +15,7 @@
         <!--<link rel="stylesheet" type="text/css" href="/css/style-product.css">-->
         <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
         <link rel="stylesheet" type="text/css" href="/css/style-cart.css">
-        <title>Strange Day</title>
+        <title>kita pena</title>
     </head>
  
     <body>
@@ -30,20 +30,17 @@
                         <span class="title row mb-4"> Contenu du panier </span>
                         <% for (product of session.cart.products) {  %>
                             <div class="cart-product row align-items-center" product_id="<%= product.id %>" product_available="<%= product.available %>" product_weight="<%= product.weight %>">
-                            	<div class="cart-product-img p-2 col-3">
+                            	<div class="cart-product-img p-2 col-md-3 col-5">
                             		<img class="w-100" src="/img/<%= product.image %>">
                             	</div>
-                            	<div class="cart-product-name col-md-5 col" product_name='<%- product.name %>'>
+                            	<div class="cart-product-name col-md-6 col-7" product_name='<%- product.name %>'>
                             		<a href="/product/<%= product.id %>"><%- product.name %></a>
                             	</div>
                             	<div class="w-100 d-md-none d-block"></div>
-                            	<div class="cart-product-qty col-md-2 offset-md-0 offset-3 col-4">
-                            		<input type="number" value="<%= product.cart_qty %>" min="1" max="99" step="1"/>
+                            	<div class="cart-product-price col-md-2 col-6" product_price="<%= product.price %>">
+                            		<span><%= product.price %>€</span>
                             	</div>
-                            	<div class="cart-product-price col-md-1 col-3" product_price="<%= product.price %>">
-                            		<span><%= parseFloat((product.price * product.cart_qty).toFixed(10)) %>€</span>
-                            	</div>
-                            	<div class="product-remove col-md-1 col-1">
+                            	<div class="product-remove col-md-1 col">
                                 <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>">
                             		<button type="submit" class="close" aria-label="Close">
                                     	<span aria-hidden="true">&times;</span>
@@ -55,7 +52,7 @@
                         <% } 
                         if (session.cart.products.length) { %>
                             <form action="/valid-cart" method="post" class="mt-5 text-center">
-                                <button class="w-auto btn btn-log mb-3 payout-button" type="submit" name="valid-cart">
+                                <button class="w-auto btn btn-log mb-3" type="submit" name="valid-cart">
                                     Valider le panier
                                 </button>
                             </form>
@@ -194,8 +191,7 @@
 
         // Créer un nouveau panier avec les informations de la page
         function validCart() {
-            console.log('test')
-            var new_cart = {
+            let new_cart = {
                 products: [],
                 subtotal_cost: $('.price-sub-total').text(),
                 shipping_cost: parseFloat('<%= session.cart.shipping_cost %>') || 0,
@@ -206,46 +202,34 @@
                 voucher_promo: $('.price-voucher').text(),
             }
             $('.cart-pannel-main .cart-product').each(function () {
-                var product = $(this);
+                let product = $(this);
                 new_cart.products.push({
                     id: product.attr('product_id'), 
                     name: product.find('.cart-product-name').attr('product_name'),
                     price: product.find('.cart-product-price').attr('product_price'),
                     weight: parseInt(product.attr('product_weight')),
-                    cart_qty: product.find('.cart-product-qty input').val(),
+                    cart_qty: 1,
                     img: product.find('img').attr('src').split('/')[2],
                     available: product.attr('product_available')
                 });
-                new_cart.weight += parseInt(product.attr('product_weight')) * parseInt(product.find('.cart-product-qty input').val())
-                new_cart.nb_products += parseInt(product.find('.cart-product-qty input').val());
+                new_cart.weight += parseInt(product.attr('product_weight'));
+                new_cart.nb_products += 1;
             });
             return JSON.stringify(new_cart);
         }
 
-        // actualise lors du changement de quantité
-        $('.cart-pannel-main .cart-product-qty input').on("input", function (event) {
-            var element = $(this);
-            var price_element = element.parent().next();
-
-            var price = parseFloat(price_element.attr('product_price')); // on recupère le prix du produit changé
-            price_element.text(roundPrice(element.val()*price)+"€"); // On met à jour avec la qty selectionné
-
-            updateTotalPrice();
-        });
-
         // actualise lorsque on supprime un produit
         $('.cart-pannel-main form[action="/remove-cart"]').submit(function () {
-            var product_id = $(this).attr('product_id');
+            let product_id = $(this).attr('product_id');
 
             // on modifie la page dynamiquement
-            var element = $(`.cart-pannel-main div.cart-product[product_id='${product_id}']`);
-            element.prev().remove();
+            let element = $(`.cart-pannel-main div.cart-product[product_id='${product_id}']`);
+            element.next().remove();
             element.remove();
 
             // s'il n'y a plus rien dans le panier, on supprime le total et on ajoute le texte de vide
             if (!$('.cart-pannel-main .cart-product').length) {
-                $('form[action="/valid-cart"]').remove()
-                $('.cart-pannel-main').append(
+                $('form[action="/valid-cart"]').before(
                     `<div class="cart-empty text-center row"> 
                         <span class="col mt-5">Aucun produit dans le panier ...</span>
                     </div>`);
