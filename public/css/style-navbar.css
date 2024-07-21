@@ -9,12 +9,51 @@
 }
 
 /* ====================== DEFINITION DE LA SKIN DU SITE ==================== */
-/* BALISES PRINCIPALES */
+
 @font-face {
-	font-family: "Swiss 721";
-	src: url('font/swis721_3.ttf') format("truetype");
-	font-weight: normal;
-    font-style: normal;
+	font-family: "Arpona";
+	src: url('font/Arpona/Fontspring-DEMO-arpona-thin.otf') format("opentype");
+	font-weight: 100;
+}
+@font-face {
+	font-family: "Arpona";
+	src: url('font/Arpona/Fontspring-DEMO-arpona-extralight.otf') format("opentype");
+	font-weight: 200;
+}
+@font-face {
+	font-family: "Arpona";
+	src: url('font/Arpona/Fontspring-DEMO-arpona-light.otf') format("opentype");
+	font-weight: 300;
+}
+@font-face {
+	font-family: "Arpona";
+	src: url('font/Arpona/Fontspring-DEMO-arpona-regular.otf') format("opentype");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "Arpona";
+	src: url('font/Arpona/Fontspring-DEMO-arpona-medium.otf') format("opentype");
+	font-weight: 500;
+}
+@font-face {
+	font-family: "Arpona";
+	src: url('font/Arpona/Fontspring-DEMO-arpona-semibold.otf') format("opentype");
+	font-weight: 600;
+}
+@font-face {
+	font-family: "Arpona";
+	src: url('font/Arpona/Fontspring-DEMO-arpona-bold.otf') format("opentype");
+	font-weight: 700;
+}
+@font-face {
+	font-family: "Arpona";
+	src: url('font/Arpona/Fontspring-DEMO-arpona-extrabold.otf') format("opentype");
+	font-weight: 800;
+}
+@font-face {
+	font-family: "Arpona";
+	src: url('font/Arpona/Fontspring-DEMO-arpona-black.otf') format("opentype");
+	font-weight: 900;
 }
 
 /* style couleur du site*/
@@ -228,6 +267,9 @@ input[type="password"] {
 }
 
 .navbar-title {
+	font-family: Arpona;
+	font-weight: 300;
+	
 	writing-mode: vertical-rl;
 	text-orientation: mixed;
 	transition-property: opacity, left;
@@ -400,7 +442,9 @@ input[type="password"] {
 	width: 100%;
 	text-align: center;
 	text-decoration: none;
+	font-family: Arpona;
 	font-size: 30px;
+	font-weight: 300;
     color: var(--navbar-text);
 
     transition: 0.2s;
