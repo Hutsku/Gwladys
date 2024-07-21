@@ -156,8 +156,13 @@
 		<!---------------------- MOBILE ONLY ---------------------------->
 		<div class="sticky-bottom product-payout d-md-none d-block w-100 p-3 shadow-lg">
 			<div class="row mx-2 mb-2">
-				<span class="product-name col-10 p-0"><%= product.name %></span>
-				<span class="product-price col-2 p-0 text-right"><%= product.price %>€</span>
+				<% if (product.available) { %>
+				<span class="product-name col-9 p-0"><%= product.name %></span>
+                <span class="product-price col p-0 text-right"><%= product.price %>€</span>
+                <% } else { %>
+                <span class="product-name col-7 p-0"><%= product.name %></span>
+                <span class="product-unavailable col-5 m-0">Plus disponible !</span>
+                <% } %>
 			</div>
 			<form class="form-product w-100" action="/add-cart" method="post">
 				<button class="btn btn-cart col <% if (!front_available) { %> hide <% } %>" type="submit" name="add-cart">
