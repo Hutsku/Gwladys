@@ -28,9 +28,9 @@
            <%- include('navbar') %>
         </header>
 
-        <main class="mt-5 margin-right">
+        <main class="margin-right">
             <div>
-                <ul class="payout-order list-inline text-center">
+                <ul class="payout-order list-inline text-center pt-4">
                     <li class="list-inline-item">
                         <a href="/payout-infos">
                             <span class="order">1</span>
@@ -240,7 +240,7 @@
             return $('.payout-order li:nth-of-type(3) span.order').offset().left - $('.payout-order li:nth-of-type(1) span.order').offset().left;
         },
         top: function () {
-            return 15;
+            return 40;
         },
         left: function () {
             return $('.payout-order li:nth-of-type(1) span.order').offset().left;
