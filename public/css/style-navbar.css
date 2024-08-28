@@ -164,7 +164,7 @@ input[type="password"] {
 	display: inline-block;
 	font-weight: var(--head-title-fw);
 	font-size: 17px;
-	margin-bottom: 15px;
+	/*margin-bottom: 15px;*/
 }
 
 .head-title h1, .head-title h2 {
