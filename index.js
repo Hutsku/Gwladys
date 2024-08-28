@@ -54,15 +54,15 @@ var transporter;
 function email_init (cred) {
     // setup transporter (mailtrap for test, gmail for production)
     var transport_mailtrap = config.email.mailtrap;
-    var transport_gandi    = config.email.gandi;
+    var transport_gmail    = config.email.gmail;
 
     // edit the transporter with real credentials
-    transport_gandi.auth = {
+    transport_gmail.auth = {
         user: cred.user, 
         pass: cred.pass  
     }
 
-    transporter = transport_gandi;
+    transporter = transport_gmail;
     if (config.email.test) transporter = transport_mailtrap;
 
     // Build-up the email object (pour les email venant du site)
@@ -116,12 +116,12 @@ function app_init () {
 
 // ---------------------- LAUNCH INIT -------------------
 
-var path_stripe = 'stripe'; 
-var path_paypal = 'paypal';
+let path_stripe = 'stripe'; 
+let path_paypal = 'paypal';
 if (!config.production) {
     console.log("/!\\ LE SITE N'EST PAS EN PRODUCTION /!\\ - Les payements sont désactivés ");
-    var path_stripe = 'stripe_test';
-    var path_paypal = 'paypal_test';
+    path_stripe = 'stripe_test';
+    path_paypal = 'paypal_test';
 }
 
 // Si on est en test local, on importe le fichier cred local. Sinon, on utilise vault
@@ -215,14 +215,16 @@ function createInvoice(parameter) {
     }
     let invoiceInfos = `
     TVA non applicable en vertu de l'art. 239B du CGI
-    La société Strange Day" est immatriculée à la chambre de métiers et de l'artisanat de Versailles sous le numéro 901 289 975
     `;
+
+    //La société "Strange Day" est immatriculée à la chambre de métiers et de l'artisanat de Versailles sous le numéro 901 289 975
+    
     
     // On ajoute à la chaine tout les articles de la commande
     for (product of parameter.products) {
         // la mise en forme étrange est normale
         let textProduct = `
-    ${product.name} ${product.color} ${product.option} (x${product.cart_qty}) ${product.price}€`;
+    ${product.name} (x${product.cart_qty}) ${product.price}€`;
 
         orderProducts += textProduct;
     }
@@ -255,6 +257,7 @@ function sendEmail(template, emailTo, parameter) {
     .then()
     .catch(console.error);
 }
+
 // Email pour communiquer avec le site (via le formulaire)
 function contactEmail(emailFrom, parameter) {
     
@@ -270,20 +273,21 @@ function contactEmail(emailFrom, parameter) {
     email_contact.send({
         template: 'contact',
         message: {
-            to: 'contact@strangeday.fr'
+            to: 'kitapenayeehaa@gmail.com'
         },
         locals: parameter,
     })
     .then()
     .catch(console.error);
 }
-// Email notification vers les comptes mails strangeday
+
+// Email notification vers les comptes mails kitapena
 function logEmail(parameter) {
     // On envoit le mail
     emailObject.send({
         template: 'log-order',
         message: {
-            to: 'contact@strangeday.fr',
+            to: 'kitapenayeehaa@gmail.com',
         },
         locals: parameter,
     })
@@ -324,6 +328,12 @@ app.use(function(req, res, next) {
         res.redirect('/mainpage') // Et on redirige vers la page principale
     }
     else res.redirect('/countdown') // ... sinon on redirige vers la page de reveal
+})
+
+.get('/testdev', function(req, res) {
+    // Endpoint pour pouvoir tester des fonctionnalités directement
+    // sendEmail('test', 'arouxel@outlook.fr', {});
+    logEmail({}) // Email notif vers kitapena
 })
 
 .get('/', function(req, res) {

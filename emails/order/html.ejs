@@ -6,28 +6,26 @@
       <td>
         <h2> Merci de votre commande ! </h2>
         <p> 
-          Vous recevez ce mail car vous avez effectué une commande chez Strange Day. Si vous n'avez jamais effectué cette commande, vous pouvez faire une réclamation sur la <a href="https://strangeday.fr/contact" target="_blank">page de contact</a>.
+          Vous recevez ce mail car vous avez effectué une commande chez Kita Pena. Si vous n'avez jamais effectué cette commande, contactez-nous par réponse de mail !
         </p>
         <p style="border-top: 1px solid lightgrey; width:100%;"></p>
         <b> Informations client: </b>
         <p>Nom & prenoms: <%= name %><br/>Adresse email: <%= user.email %><br/>Numéro téléphone: <%= user.tel %></p>
         <b> Informations commande: </b>
-        <p>Date de facturation: <%= date %><br/>Méthode de livraison: Colissimo<br/>Méthode de paiement: <%= billing_method %><br/>Numéro de commande : <b><a href="https://strangeday.fr/order-detail/<%= order_id %>" target="_blank"><%= order_id %></a></b></p>
+        <p>Date de facturation: <%= date %><br/>Méthode de livraison: Colissimo<br/>Méthode de paiement: <%= billing_method %><br/>Numéro de commande : <b><a href="https://kitapena.com/order-detail/<%= order_id %>" target="_blank"><%= order_id %></a></b></p>
         <p style="border-top: 1px solid lightgrey; width:100%;"></p>
         <table>
           <tbody>
           	<% for (product of products) { %>
             <tr>
               <td>
-                <a href="https://strangeday.fr/product/<%= product.id %>">
-                  <img height="50" alt="Image article" src="https://strangeday.fr/img/<%= product.image %>">
+                <a href="https://kitapena.com/product/<%= product.id %>">
+                  <img height="50" alt="Image article" src="https://kitapena.com/img/<%= product.image %>">
                 </a>
               </td>
               <td> 
-                <a href="https://strangeday.fr/product/<%= product.id %>"><%= product.name %></a>
+                <a href="https://kitapena.com/product/<%= product.id %>"><%= product.name %></a>
               </td>
-              <td><%= product.color %></td>
-              <td><%= product.option %></td>
               <td>x<%= product.cart_qty %></td>
               <td><%= product.price %>€</td>
             </tr>
@@ -51,7 +49,7 @@
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                   <tbody>
                     <tr>
-                      <td> <a href="https://strangeday.fr/order-detail/<%= order_id %>" target="_blank">Détail de la commande</a> </td>
+                      <td> <a href="https://kitapena.com/order-detail/<%= order_id %>" target="_blank">Détail de la commande</a> </td>
                     </tr>
                   </tbody>
                 </table>
