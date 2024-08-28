@@ -24,9 +24,9 @@
             <%- include('navbar') %>
         </header>
 
-        <main class="mt-5 margin-right">
+        <main class="margin-right">
             <div>
-                <ul class="payout-order list-inline text-center">
+                <ul class="payout-order list-inline text-center pt-4">
                     <li class="list-inline-item">
                         <a href="/payout-infos">
                             <span class="order">1</span>
@@ -223,7 +223,7 @@
                 return $('.payout-order li:nth-of-type(3) span.order').offset().left - $('.payout-order li:nth-of-type(1) span.order').offset().left;
             },
             top: function () {
-                return 15;
+                return 40;
             },
             left: function () {
                 return $('.payout-order li:nth-of-type(1) span.order').offset().left;
@@ -238,16 +238,15 @@
 
         // Renvoit le frais de port selon le pays et code postal (Colissimo)
         function getShippingCost(country, postal_code, weight) {
-            // Si le client habite à Plaisir, élancourt ou aux clayes, frais gratuit
-            let free = ['78370', '78990', '78340']
-            if (free.indexOf(postal_code) >= 0) return 0;
+            // Si la panier ne pèse rien (par exemple pour des affiches), fdp gratos
+            if (weight == 0) return 0;
             
             // On définie à l'avance les prix
-            let metroCost  = [4.95, 6.45, 7.35, 7.99];     // (250mg, 500, 750, 1Kg)
-            let domtomCost = [11.80, 11.80, 11.90, 11.90]; // (500mg, 1Kg)
-            let euroCost   = [12.90, 12.90, 15.95, 15.95]; // (500mg, 1Kg)
-            let inter1Cost = [19.20, 19.20, 22.90, 22.90]; // (500mg, 1Kg)
-            let inter2Cost = [28.10, 28.10, 31.25, 31.25]; // (500mg, 1Kg)
+            let metroCost  = [4.99, 6.99, 8.1, 8.80];     // (250mg, 500, 750, 1Kg)
+            let domtomCost = [12.65, 12.65, 20, 20]; // (500mg, 1Kg)
+            let euroCost   = [14.25, 14.25, 17.60, 17.60]; // (500mg, 1Kg)
+            let inter1Cost = [21.40, 21.40, 25.55, 25.55]; // (500mg, 1Kg)
+            let inter2Cost = [31.60, 31.60, 31.15, 31.15]; // (500mg, 1Kg)
 
             // On définit l'indice de prix selon le poid du colis
             let fdp_index = Math.trunc(parseFloat(weight-1) / 250);

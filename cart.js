@@ -6,10 +6,6 @@ function roundPrice(x) {
 
 // Renvoit le frais de port selon le pays et code postal (Colissimo)
 function getShippingCost(country, postal_code, weight) {
-    // Si le client habite à Plaisir, élancourt ou aux clayes, frais gratuit
-    // let free = ['78370', '78990', '78340']
-    // if (free.indexOf(postal_code) >= 0) return 0;
-
     // Si la panier ne pèse rien (par exemple pour des affiches), fdp gratos
     if (weight == 0) return 0;
     
