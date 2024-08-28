@@ -72,10 +72,32 @@ ul.account-link a.header-link:hover {
 	font-weight: var(--head-title-fw);
 }
 
-#unsubscribe-pannel a:hover{
+#logout-pannel a:hover {
 	color: white;
-	background-color: red;
+	background-color: #343a40;
 	border-left: 1px solid white;
+}
+
+#admin-pannel a:hover {
+	color: white;
+	background-color: #6bacac;
+	border-left: 1px solid white;
+}
+
+/* ADMIN PANNEL */
+
+.stat-container {
+	display: flex;
+	text-transform: none;
+	flex-direction: column;
+}
+
+#admin-orders, #admin-products {
+	color: white;
+	background-color: rgb(107, 172, 172);
+}
+#admin-orders:hover, #admin-products:hover {
+	background-color: rgb(107, 172, 172, 0.7);
 }
 
 /* PASSWORD EDIT */

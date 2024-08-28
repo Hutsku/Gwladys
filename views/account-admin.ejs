@@ -1,0 +1,28 @@
+
+<div class="mb-3"> 
+	<span href="#" class="link-title p-2 pl-4">
+		Gestion administrateur du site
+	</span>
+</div>
+
+<div class="ml-2">
+    <div class="stat-container mb-4">
+	    <span class="my-2"><b>Nombre d'articles</b>: <%= data.nb_product %></span>
+	    <br/>
+	    <span class="my-2"><b>Utilisateurs inscrit</b>: <%= data.nb_user %></span> 
+	    <span class="my-2"><b>Inscriptions newsletter</b>: <%= data.nb_nl %></span>
+	    <span class="my-2"><b>Commande passées</b>: <%= data.nb_order %></span>
+	    <a href="#" class="my-2" id="export"> Exporter liste inscrit newsletter </a>
+	</div>
+	<a id="admin-orders" href="/admin-orders-list" class="btn btn-cart"><i class="fas fa-server mr-2"></i> Gestion des commandes</a>
+	<a id="admin-products" href="/admin-products-list" class="btn btn-cart"><i class="fas fa-tshirt mr-2"></i> Gestion des articles</a>
+</div>
+
+<script type="module" src='./scripts/file-saver/src/FileSaver.js'></script>
+<script type="text/javascript">
+    $("#export").click(function() { 
+        let list = `<%= newsletter %>`;
+        var blob = new Blob([list], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "SD_export.txt");
+    });
+</script>

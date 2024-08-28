@@ -125,10 +125,13 @@ main {
 	position: relative;
 	min-height: 90vh;
 
-	margin-right: 100px;
+	/*margin-right: 100px;*/
 
 	background-color: var(--main-bg);
 	text-transform: var(--main-text-trans);
+}
+.margin-right {
+	margin-right: 100px;
 }
 
 a {
@@ -157,6 +160,18 @@ input[type="password"] {
 	cursor: pointer;
 }
 
+.title {
+	display: inline-block;
+	font-weight: var(--head-title-fw);
+	font-size: 17px;
+	margin-bottom: 15px;
+}
+
+.head-title h1, .head-title h2 {
+	text-align: center;
+	font-weight: var(--head-title-fw);
+}
+
 /* FORM CONTROL */
 
 .custom-select, .form-control {
@@ -179,11 +194,6 @@ input[type="password"] {
 }
 
 /* BOUTONS */
-.head-title h1, .head-title h2 {
-	text-align: center;
-	font-weight: var(--head-title-fw);
-}
-
 .btn {
 	/*text-transform: uppercase;*/
 	border-radius: 0;
@@ -290,17 +300,19 @@ input[type="password"] {
 	font-size: 18px;
 	margin-bottom: 40px;
 	margin-top: 20px;
+
+	text-align: center;
 }
 .navbar-cart img {
-	height: 70px;
+	height: 50px;
 	filter: invert(35%) sepia(79%) saturate(4131%) hue-rotate(352deg) brightness(99%) contrast(88%);
 }
 .navbar-cart span {
 	position: absolute;
-	right: 48px;
-	top: 53px;
+	right: 54px;
+	top: 54px;
 
-	color: red;
+	color: #ee4423;
 	font-size: 16px;
 }
 
@@ -340,8 +352,8 @@ input[type="password"] {
 	width: 370px;
 }
 #cartBox {
-	top: 70px;
-  	left: 720px;
+	top: 80px;
+  	left: 430px;
 
 	width: 500px;
 }
@@ -417,7 +429,9 @@ input[type="password"] {
     font-weight: var(--navbar-text-fontweight);
 	/*font-size: 25px;*/
 	background-color: var(--navbar-bg);
+	justify-content: center;
 
+	height: 45px;
 	padding-top: 20px;
  	padding-bottom: 20px;
 
@@ -430,18 +444,31 @@ input[type="password"] {
 	color: var(--navbar-text2);
 }
 
+.navbar-brand {
+	z-index: 1030;
+
+	position: absolute;
+	left: 0;
+	margin-left: 0px;
+	margin-left: 40px;
+
+	filter: invert(40%) sepia(100%) saturate(2114%) hue-rotate(341deg) brightness(89%) contrast(111%);
+}
+.navbar-brand img {
+	height: 40px;
+}
+
 .navbar-toggler-icon {
 	background-image: url("/img/logoNavbar.svg") !important;
-	filter: invert(0%) sepia(93%) saturate(7375%) hue-rotate(328deg) brightness(77%) contrast(101%);
+	filter: invert(40%) sepia(100%) saturate(2114%) hue-rotate(341deg) brightness(89%) contrast(111%);
 }
 .navbar.focus .navbar-toggler-icon {
 	filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(154deg) brightness(119%) contrast(109%);
 }
 
 .navbar-name {
-	width: 100%;
+	position: absolute;
 	text-align: center;
-	text-decoration: none;
 	font-family: Arpona;
 	font-size: 30px;
 	font-weight: 300;
@@ -468,6 +495,7 @@ input[type="password"] {
 	font-size: 18px;
 }
 
+
 /* ============================ DIVERS ============================ */
 
 /* MOBILE DROPDOWN */
@@ -489,7 +517,7 @@ input[type="password"] {
 
 	main {
 		margin-right: 0;
-		margin-top: 110px;
+		margin-top: 90px;
 	}
 
 	.navbar {
@@ -500,7 +528,34 @@ input[type="password"] {
 		right: 0;
 		left: 0;
 		z-index: 1030;
+		height: unset;
+
+		justify-content: left;
 	}
+
+	.navbar-name {
+		position: relative;
+	}
+
+	.navbar-brand {
+		margin-left: 30px;
+	}
+
+	.navbar-cart {
+		margin-bottom: 0;
+		margin-top: 0;
+	}
+	.navbar-cart img {
+		height: 40px;
+	}
+	.navbar-cart span {
+		right: 30px;
+		top: 30px;
+	}
+
+	/*#cartBox {
+		width: 100%;
+	}*/
 }
 
 li.nav-item {
@@ -520,4 +575,32 @@ li.nav-item {
 	position: sticky !important;
 	bottom: 0px;
 	z-index: 99;
+}
+
+/* ===================== IMG MAP ===================== */
+
+/*#imagemapPannel {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}*/
+#imagemapPannel .maparea {
+	max-height: 80vh;
+	opacity: 0;
+}
+#imagemapPannel .highlight {
+	position: absolute;
+	max-height: 80vh;
+	transition: 0.3s;
+}
+#imagemapPannel .highlight.hover {
+	filter: grayscale(100%);
+	transform: scale(1.03);
+}
+
+.modal#imagemapPannel {
+	padding-top: 150px;
+}
+.modal#imagemapPannel .maparea, .modal#imagemapPannel .highlight {
+	max-height: 70vh;
 }

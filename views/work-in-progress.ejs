@@ -12,40 +12,35 @@
         <!-- Import CSS Bootstrap -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <!-- Import custom CSS -->
-        <link rel="stylesheet" type="text/css" href="/css/style-account.css">
-        <link rel="stylesheet" type="text/css" href="/css/style-admin.css">
         <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
         <title>kita pena</title>
     </head>
  
     <body>
-        <header>
+    	<header>
             <%- include('navbar') %>
         </header>
 
-        <main>
-            <div class="stat-container mx-4">
-                <span class="my-2">Nombre d'articles: <%= data.nb_product %></span>
-                <br/>
-                <span class="my-2">Utilisateurs inscrit: <%= data.nb_user %></span> 
-                <span class="my-2">Inscriptions newsletter: <%= data.nb_nl %></span>
-                <span class="my-2">Commande passées: <%= data.nb_order %></span>
-                <span class="my-2" id="export"> Exporter liste inscrit newsletter </span>
-            </div>
+        <main class="d-flex justify-content-center pt-5 m-0 mt-3">
+    		<div class="col col-md-6 text-center mt-5">
+                <div class="row title text-center mb-3">
+                    <span class="col"><i class="fas fa-exclamation-triangle mr-2" style="color:orange;"></i> En cours de construction <i class="fas fa-exclamation-triangle ml-2" style="color:orange;"></i></span>
+                </div>
+                <div class="row description text-center mb-5">
+                    <span class="col">Merci pour l'interêt que vous portez à mon travail ! Malheureusement, cette page est toujours en cours de construction et n'est pas encore prête ... 
+                        <br/>
+                        <br/>
+                    <b>Revenez très bientôt !</b></span>
+                </div>
+                <a href="/" class="row btn btn-cart mb-5" role="button" name="add-cart">Revenir sur le site</a>
+	    	</div>
         </main>
         <footer>
             <%- include('footer') %>
         </footer>
     </body>
-    
-    <script type="module" src='./scripts/file-saver/src/FileSaver.js'>
-    </script>
+
     <script type="text/javascript">
-        $("#export").click(function() { 
-            let list = `<%= newsletter %>`;
-            var blob = new Blob([list], {type: "text/plain;charset=utf-8"});
-            saveAs(blob, "SD_export.txt");
-        });
     </script>
 
 </html>

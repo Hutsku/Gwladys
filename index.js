@@ -327,6 +327,12 @@ app.use(function(req, res, next) {
 })
 
 .get('/', function(req, res) {
+    // Renvoit par défaut vers la page principale
+    //res.redirect('/shop');
+    res.render('mainpage.ejs', {session: req.session});
+})
+
+.get('/shop', function(req, res) {
     // Créer une liste des images présent dans le dossier mainpage
     let files_pc = fs.readdirSync('./public/img/mainpage/pc');
     let files_mobile = fs.readdirSync('./public/img/mainpage/mobile');
@@ -334,7 +340,7 @@ app.use(function(req, res, next) {
     // Affiche la page principale (avec tout les produits)
     query.getAllProduct(function(products) {
         // On envoit les données du produit à la page
-        res.render('mainpage.ejs', {
+        res.render('shop.ejs', {
             products: products, 
             session: req.session,
             main_pc: files_pc,
@@ -350,7 +356,7 @@ app.use(function(req, res, next) {
 
 .get('/login', function(req, res) {
     // Affiche la page complète de connection
-    if (req.session.logged) res.redirect('/')
+    if (req.session.logged) res.redirect('/account')
     else res.render('login.ejs', {session: req.session});
 })
 
@@ -372,14 +378,15 @@ app.use(function(req, res, next) {
     else res.render('subscribe.ejs', {session: req.session});
 })
 
-.get('/kezako', function(req, res) {
-    // Affiche la liste des articles indiquées
-    res.render('kezako.ejs', {session: req.session});
-})
-
 .get('/faq', function(req, res) {
     // Affiche la liste des articles indiquées
     res.render('faq.ejs', {session: req.session});
+})
+
+.get('/post-it', function(req, res) {
+    // Affiche la liste des articles indiquées
+    res.redirect('/work-in-progress')
+    //res.render('post-it.ejs', {session: req.session});
 })
 
 .get('/product/:id', function(req, res) {
@@ -461,29 +468,30 @@ app.use(function(req, res, next) {
                 res.render('account.ejs', {session: req.session, link: req.params.link, newsletter: !!data});
             })
         }
+        else if (req.params.link == "admin") {
+            // on vérifie que l'utilisateur est bien admin (double verification si jamais)
+            if (req.session.admin && checkAdmin(req.session.account.email)) {
+                query.getStat(function(data) {
+                    query.getAllNewsletter(function(newsletter) {
+                        let string = "";
+                        for (email of newsletter) {
+                            string += email.email+'\n';
+                        }
+                        res.render('account.ejs', {session: req.session, link: req.params.link, data: data, newsletter: string});
+                    });
+                });
+            }
+            else {
+                // sinon on redirige vers l'écran de connexion
+                res.redirect('/account');
+            } 
+        }
         else res.render('account.ejs', {session: req.session, link: req.params.link});
     }
     else {
         // sinon on redirige vers l'écran de connexion
         res.redirect('/login');
     }
-})
-
-.get('/contact', function(req, res) {
-    // Affiche la page "contact" du site, avec les referencements etc.
-    res.render('contact.ejs', {session: req.session});
-})
-
-.get('/test-dev', function (req, res) {
-    /*query.test(function (product) {
-        if (!product) {
-            res.redirect('back');
-        }
-        else {
-            console.log(product);
-        }     
-    });*/
-    updateDatabase();
 })
 
 .get('/countdown', function (req, res) {
@@ -503,6 +511,11 @@ app.use(function(req, res, next) {
 .get('/reset-success', function (req, res) {
     // Affiche une page défaut avant que le site soit disponible
     res.render('reset-success.ejs', {session: req.session});
+})
+
+.get('/work-in-progress', function (req, res) {
+    // Affiche une page défaut avant que le site soit disponible
+    res.render('work-in-progress.ejs', {session: req.session});
 })
 
 // ----------------------- ADMIN PAGE ------------------------
@@ -621,25 +634,6 @@ app.use(function(req, res, next) {
             res.redirect('back');
         });
     }
-})
-
-.get('/admin-stat', function(req, res) {
-    // on vérifie que l'utilisateur est bien admin (double verification si jamais)
-    if (req.session.admin && checkAdmin(req.session.account.email)) {
-        query.getStat(function(data) {
-            query.getAllNewsletter(function(newsletter) {
-                let string = "";
-                for (email of newsletter) {
-                    string += email.email+'\n';
-                }
-                res.render('admin-stat.ejs', {session: req.session, data: data, newsletter: string});
-            });
-        });
-    }
-    else {
-        // sinon on redirige vers l'écran de connexion
-        res.redirect('/mainpage');
-    } 
 })
 
 // ------------------------ PAYOUT  --------------------------
