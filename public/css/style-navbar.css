@@ -167,9 +167,12 @@ input[type="password"] {
 	/*margin-bottom: 15px;*/
 }
 
-.head-title h1, .head-title h2 {
+.head-title h1, .head-title h2, .head-title h3 {
 	text-align: center;
 	font-weight: var(--head-title-fw);
+}
+h3 {
+	font-size: 1.5rem;
 }
 
 /* FORM CONTROL */
@@ -182,7 +185,7 @@ input[type="password"] {
 }
 
 .form-control {
-	border:none;
+	border: none;
 	transition: 0.3s;
 	border-bottom: 2px solid transparent;
 }

@@ -27,25 +27,25 @@
     		<div class="container-fluid row m-0">
     			<div class="cart-left col-md-8 px-md-5 mb-md-5 pt-5">
     				<div class="cart-pannel-main container">
-                        <span class="title row mb-4"> Contenu du panier </span>
+                        <span class="title pl-2 mb-4"> Contenu du panier </span>
                         <% for (product of session.cart.products) {  %>
                             <div class="cart-product row align-items-center" product_id="<%= product.id %>" product_available="<%= product.available %>" product_weight="<%= product.weight %>">
-                            	<div class="cart-product-img p-2 col-md-3 col-5">
+                            	<div class="cart-product-img p-2 col-md-3 col-4">
                             		<img class="w-100" src="/img/<%= product.image %>">
                             	</div>
                             	<div class="cart-product-name col-md-6 col-7" product_name='<%- product.name %>'>
-                            		<a href="/product/<%= product.id %>"><%- product.name %></a>
+                            		<a href="/product/<%= product.id %>"><%- product.name %></a><br/>
+                                    <span class="d-md-none"><%= product.price %>€</span>
                             	</div>
-                            	<div class="w-100 d-md-none d-block"></div>
-                            	<div class="cart-product-price col-md-2 col-6" product_price="<%= product.price %>">
+                            	<div class="cart-product-price d-none d-md-block col-2" product_price="<%= product.price %>">
                             		<span><%= product.price %>€</span>
                             	</div>
-                            	<div class="product-remove col-md-1 col">
-                                <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>">
-                            		<button type="submit" class="close" aria-label="Close">
-                                    	<span aria-hidden="true">&times;</span>
-                                	</button>
-                                </form>
+                            	<div class="product-remove col-1">
+                                    <form class="form-remove-cart col-1" action="/remove-cart" method="post" product_id="<%= product.id %>">
+                                		<button type="submit" class="close" aria-label="Close">
+                                        	<span aria-hidden="true">&times;</span>
+                                    	</button>
+                                    </form>
                             	</div>     
                             </div>
                             <div class="w-100 border-bottom my-3"></div>

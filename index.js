@@ -528,6 +528,11 @@ app.use(function(req, res, next) {
     res.render('work-in-progress.ejs', {session: req.session});
 })
 
+.get('/contact', function(req, res) {
+    // Affiche la page "contact" du site, avec les referencements etc.
+    res.render('contact.ejs', {session: req.session});
+})
+
 // ----------------------- ADMIN PAGE ------------------------
 
 .get('/admin-products-list', function(req, res) {

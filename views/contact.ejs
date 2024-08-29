@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-payment-success.css">
+        <title>Kita Pena</title>
+    </head>
+ 
+    <body>
+    	<header>
+            <%- include('navbar') %>
+        </header>
+        <main class="">
+            <div class="head-title my-5">
+                <h3>Contacte moi !</h3>
+            </div>
+            <form action="/contact" method="post" class="contact-pannel container">
+                <div class="form-row w-100 m-0 mb-3">
+                    <div class="col p-0 pr-1">
+                        <input type="text" placeholder="Nom et prénom" class="form-control" name="name">
+                    <div class="invalid-feedback">Veuillez rentrer un nom valide</div>
+                    </div>
+                    <div class="col p-0 pl-1">
+                        <input type="text" placeholder="Adresse email" class="form-control" name="email">
+                        <div class="invalid-feedback">Veuillez rentrer une adresse email valide</div>
+                    </div>
+                </div>
+                <div class="form-group w-100">
+                    <textarea class="form-control" placeholder="Message" rows="5" name="text"></textarea>
+                    <div class="invalid-feedback">Veuillez écrire au moins une lettre !</div>
+                </div>
+                <button type="submit" class="btn btn-cart mt-3 col-md-2" data-dismiss="">Envoyer</button>
+            </form>
+        </main>
+        <footer>
+            <%- include('footer') %>
+        </footer>
+    </body>
+    
+    <script type="text/javascript">
+        $('form[action="/contact"]').submit(function () {
+            var nameInput = $('.contact-pannel input[name="name"]');
+            var emailInput = $('.contact-pannel input[name="email"]');
+            var textInput = $('.contact-pannel textarea[name="text"]');
+            var regexEmail = new RegExp(`^[\\w.+-]{1,64}@([a-zA-Z\\d-]{2,252}\\.[\\w\\.]{2,6})$`);
+
+            // On check les erreurs et on ajoute la classe en consequant
+            if (!nameInput.val()) {
+                nameInput.removeClass('is-valid').addClass('is-invalid');
+                return false;
+            } else {
+                nameInput.removeClass('is-invalid').addClass('is-valid');
+            }
+            if (!emailInput.val()) {
+                emailInput.removeClass('is-valid').addClass('is-invalid');
+                return false;
+            } else if (!emailInput.val().match(regexEmail)) {
+                emailInput.removeClass('is-valid').addClass('is-invalid');
+                return false;
+            } else {
+                emailInput.removeClass('is-invalid').addClass('is-valid');
+            }
+            if (!textInput.val()) {
+                textInput.removeClass('is-valid').addClass('is-invalid');
+                return false;
+            } else {
+                textInput.removeClass('is-invalid').addClass('is-valid');
+            }
+
+            // On bloque cette fonctionnalité pour l'instant
+            return false;
+        });   
+    </script>
+
+</html>
