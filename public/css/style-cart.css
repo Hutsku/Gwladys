@@ -22,6 +22,10 @@
 	text-transform: var(--product-title-ts);
 }
 
+.product-remove {
+	padding: 0;
+}
+
 .title .detail {
 	color: gray;
 	font-size: 11px;
