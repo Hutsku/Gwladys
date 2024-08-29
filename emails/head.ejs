@@ -109,16 +109,33 @@
       /* -------------------------------------
           TYPOGRAPHY
       ------------------------------------- */
+
+      @font-face {
+        font-family: "Arpona";
+        src: url('font/Arpona/Fontspring-DEMO-arpona-regular.otf') format("opentype");
+        font-weight: 400;
+      }
+
       h1,
       h2,
-      h3,
-      h4 {
+      h3 {
         color: #000000;
-        font-family: sans-serif;
+        font-family: Arpona;
         font-weight: 400;
         line-height: 1.4;
         margin: 0;
-        margin-bottom: 30px; 
+        /*margin-bottom: 30px; */
+      }
+
+      h4 {
+        color: #000000;
+        font-family: "Yu Gothic";
+        font-weight: 600;
+        line-height: 1.4;
+        font-size: 20px;
+        margin: 0;
+        margin-bottom: 20px;
+        text-align: center;
       }
 
       h1 {
@@ -135,7 +152,7 @@
       p,
       ul,
       ol {
-        font-family: sans-serif;
+        font-family: "Yu Gothic", sans-serif;
         font-size: 14px;
         font-weight: normal;
         margin: 0;
@@ -149,7 +166,7 @@
       }
 
       a {
-        color: rgb(117, 77, 52);
+        color: #ee4423;
         text-decoration: none; 
       }
 
@@ -187,11 +204,11 @@
       }
 
       .btn-primary table td {
-        background-color: rgb(117, 77, 52, 1); 
+        background-color: rgb(238, 68, 35); 
       }
 
       .btn-primary a {
-        background-color: rgb(117, 77, 52, 1);
+        background-color: rgb(238, 68, 35);
         color: white; 
       }
 
@@ -330,7 +347,7 @@
           line-height: inherit;
         }
         .btn-primary table td:hover, .btn-primary a:hover {
-          background-color: rgb(117, 77, 52, 0.9) !important; 
+          background-color: rgb(238, 68, 35, 0.7) !important; 
         }
       }
 
@@ -348,8 +365,9 @@
             <table role="presentation" class="main">
 
               <!-- START MAIN CONTENT AREA -->
-              <tr style="background-color: #754d34;">
+              <tr style="">
                 <td class="wrapper">
-                  <img src="https://kitapena.com/img/logoNavbar.png" alt="Logo kita pena" width="120" height="40" border="0" style="border:0; outline:none; text-decoration:none; display:block;">
+                  <h1> kita pena </h1>
+                  <!-- <img src="https://kitapena.com/img/logoNavbar.png" alt="Logo kita pena" width="120" height="40" border="0" style="border:0; outline:none; text-decoration:none; display:block;"> -->
                 </td>
               </tr>

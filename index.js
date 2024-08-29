@@ -332,8 +332,9 @@ app.use(function(req, res, next) {
 
 .get('/testdev', function(req, res) {
     // Endpoint pour pouvoir tester des fonctionnalités directement
-    // sendEmail('test', 'arouxel@outlook.fr', {});
-    logEmail({}) // Email notif vers kitapena
+    sendEmail('subscribe', 'arouxel@outlook.fr', {name: "michel"});
+    res.redirect('back');
+    //logEmail({}) // Email notif vers kitapena
 })
 
 .get('/', function(req, res) {
@@ -1069,6 +1070,7 @@ app.use(function(req, res, next) {
     query.signUp(req.body, function(user, error) {
         if (user) {
             // on envoit un email de confirmation
+            console.log('teste')
             sendEmail('subscribe', user.email, {name: user.name});
             req.session.username = user.name;
             req.session.account = user;

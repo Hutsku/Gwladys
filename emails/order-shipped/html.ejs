@@ -4,12 +4,12 @@
   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td>
-        <h1> Commande envoyée ! </h1>
-        <p> Votre commande a été correctement traité et les articles emballés et envoyés avec amour. Elle devrait arriver dans les jours qui viennent.  </p>
+        <h4> Commande envoyée ! </h4>
+        <p class="align-center"> Votre commande a été correctement traité et les articles emballés et envoyés avec amour ❤️ Elle devrait arriver dans les jours qui viennent !  </p>
         <% if (track_id) { %>
-          <p>Vous pouvez suivre l'avancement du colis par le numero de suivi colissimo suivant: <b><%= track_id %></b></p>
+          <p class="align-center">Vous pouvez suivre l'avancement du colis par le numero de suivi colissimo suivant: <b><%= track_id %></b></p>
         <% } %>
-        <p> Si vous avez un trou de mémoire, retrouvez ci dessous le détail de votre commande. </p>
+        <p class="align-center"> Si vous avez un trou de mémoire, retrouvez ci dessous le détail de votre commande. </p>
         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
           <tbody>
             <tr>
@@ -17,7 +17,7 @@
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                   <tbody>
                     <tr>
-                      <td> <a href="https://strangeday.fr/order-detail/<%= order_id %>" target="_blank">Détail de la commande</a> </td>
+                      <td> <a href="https://kitapena.com/order-detail/<%= order_id %>" target="_blank">Détail de la commande</a> </td>
                     </tr>
                   </tbody>
                 </table>
