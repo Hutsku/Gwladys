@@ -84,26 +84,26 @@
 	    		<div class="cart-payout col-md-4 mt-4 mt-md-5">
 	    			<div class="sticky-top sticky-offset p-4">
 	    				<div class="row">
-	    					<span class="title col-5">Total Panier</span>
+	    					<span class="title col">Total Panier</span>
 		    			</div>
 		    			<div class="w-100 border-bottom my-3"></div>
-		    			<div class="row py-3">
-		    				<span class="title col-5">Sous-Total <span class="detail">(TTC)</span></span>
+		    			<div class="row py-3 pr-3">
+		    				<span class="title col">Sous-Total <span class="detail">(TTC)</span></span>
 		    				<span class="price price-sub-total"><%= subtot %></span>
 		    			</div>
-		    			<div class="row py-3">
-		    				<span class="title col-5">Livraison <span class="detail">(estimée)</span></span>
+		    			<div class="row py-3 pr-3">
+		    				<span class="title col">Livraison <span class="detail">(estimée)</span></span>
 		    				<span class="price price-shipping"><%= ship %></span>
 		    			</div>
                         <% if (vouch) { %>
-                        <div class="row py-3">
-                            <span class="title col-5">Coupon <span class="detail">(<%= session.cart.voucher_code %>)</span></span>
+                        <div class="row py-3 pr-3">
+                            <span class="title col">Coupon <span class="detail">(<%= session.cart.voucher_code %>)</span></span>
                             <span class="price price-voucher" voucher_name="<%= session.cart.voucher_code %>"><%= vouch %></span>
                         </div>
                         <% } %>
 		    			<div class="w-100 border-bottom my-3"></div>
-		    			<div class="row pb-4">
-			    			<span class="title total col-5">Total <span class="detail">(TTC)</span></span>
+		    			<div class="row pb-4 pr-3">
+			    			<span class="title total col">Total <span class="detail">(TTC)</span></span>
 			    			<span class="price price-total"><%= tot %></span>
 			    		</div>
                         <div class="form-check w-100 pb-2">
