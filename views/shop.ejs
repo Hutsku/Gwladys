@@ -64,7 +64,7 @@
                             <% let first_image = true;
                             for (image of product.image) { 
                                 if (image != product.image[product.image_pos]) { %>
-                            <div class="product-img col-3 mr-3 shadow <% if (!front_available) { %> unavailable <% } %>">
+                            <div class="product-img col-3 mr-3 <% if (!front_available) { %> unavailable <% } %>">
                                 <img class="w-100" src="/img/<%= image %>">
                             </div>
                             <% first_image = false;
