@@ -46,7 +46,6 @@ _getAllClothe = `SELECT DISTINCT p.id, p.name, description, price, available, p.
             INNER JOIN image ON image.id = pi.image_id 
             WHERE clothe.product_id = p.id AND p.visible = 1
             ORDER BY id DESC, image_pos; `;
-
 _getAllOrder   = `SELECT * FROM \`order\``;
 _getAllOrderUser = `SELECT o.id, u.name, u.email, total_cost, shipping_address, o.state, p.id as product_id, oc.name as product, oc.nb, oc.price, voucher
 				FROM \`order\` o
@@ -55,6 +54,11 @@ _getAllOrderUser = `SELECT o.id, u.name, u.email, total_cost, shipping_address, 
                 LEFT JOIN product p ON oc.product_id = p.id
                 WHERE o.user_id = u.id
                 ORDER BY id DESC;`;
+_getAllBlogArticle = `SELECT blog_id as id, name as image, date, title, description1, description2, position FROM blog
+            INNER JOIN blog_image ON blog.id = blog_id
+            INNER JOIN image ON image.id = image_id
+            ORDER BY position`;
+
 _getUser       = `SELECT * FROM user, address WHERE id = ? AND user_id = id`;
 _getUserFromEmail = `SELECT * FROM user, address WHERE email = ? AND user_id = id`;
 _getProduct = `SELECT p.id, p.name, description, price, available, p.type, image.name as image, pi.position as image_pos, composition, clothe.type as clothe_type, weight FROM product p
@@ -73,22 +77,29 @@ _getUserOrder  = `SELECT * FROM \`order\` WHERE user_id = ?`;
 _getUserEmail  = `SELECT email FROM user WHERE id = ?`;
 _getUserNewsletter = `SELECT user.email FROM newsletter, user WHERE user.email = newsletter.email AND user.id = ?`;
 _getAllNewsletter  = `SELECT email FROM newsletter`;
-_getVoucher    = `SELECT * from voucher WHERE code = ? AND nb != 0`;
+_getVoucher     = `SELECT * FROM voucher WHERE code = ? AND nb != 0`;
+_getBlogArticle = `SELECT blog_id as id, name as image, date, title, description1, description2, position FROM blog
+            INNER JOIN blog_image ON blog.id = blog_id
+            INNER JOIN image ON image.id = image_id
+            WHERE blog_id = ?
+            ORDER BY position`;
 
 _checkVoucherUser = `SELECT * FROM voucher v, user_voucher uv WHERE v.code = uv.code AND uv.user_id = ? AND v.code = ?`
-_useVoucher    = `UPDATE voucher SET nb = ? WHERE code = ?`;
+_useVoucher       = `UPDATE voucher SET nb = ? WHERE code = ?`;
 
-_addUser    = `INSERT INTO user (name, password, email, tel) VALUES (?, ?, ?, ?)`;
-_addAddress = `INSERT INTO address (user_id, address1, address2, city, postal_code, state, country) 
+_addUser        = `INSERT INTO user (name, password, email, tel) VALUES (?, ?, ?, ?)`;
+_addAddress     = `INSERT INTO address (user_id, address1, address2, city, postal_code, state, country) 
                VALUES (?, ?, ?, ?, ?, ?, ?)`;
-_addOrder   = `INSERT INTO \`order\` (user_id, date, total_cost, subtotal_cost, shipping_cost, shipping_address, billing_address, payment_method, shipping_method, voucher) 
+_addOrder       = `INSERT INTO \`order\` (user_id, date, total_cost, subtotal_cost, shipping_cost, shipping_address, billing_address, payment_method, shipping_method, voucher) 
                VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?)`;
-_addProduct  = `INSERT INTO product (name, description, price, weight, available, type, cover_image) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-_addClothe   = `INSERT INTO clothe (product_id, type, composition) VALUES (?, ?, ?)`;
+_addProduct     = `INSERT INTO product (name, description, price, weight, available, type, cover_image) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+_addClothe      = `INSERT INTO clothe (product_id, type, composition) VALUES (?, ?, ?)`;
+_addBlogArticle = `INSERT INTO blog (image_id, date, title, description) VALUES (?, ?, ?, ?)`;
 
 _removeProduct = `UPDATE product SET visible = 0 WHERE id = ?`;
 _removeOrder   = `DELETE FROM \`order\` WHERE id = ?`;
 _removeUser    = `DELETE FROM user WHERE id = ?`;
+_removeBlogArticle = `DELETE FROM blog WHERE id = ?`;
 
 _editUserPassword = `UPDATE user SET password = ? WHERE id = ?`;
 _editUserAddress  = `UPDATE address SET address1 = ?, address2 = ?, city = ?, country = ?, state = ?, postal_code = ? WHERE user_id = ?`;
@@ -97,6 +108,7 @@ _editUserInfo     = `UPDATE user SET name = ?, email = ?, tel = ? WHERE id = ?`;
 _updateOrder   = `UPDATE \`order\` SET state = ?, tracking_number = ? WHERE id = ?`;
 _updateProduct = `UPDATE product SET name = ?, description = ?, price = ?, weight = ?, available = ?, type = ?, cover_image = ? WHERE id = ?`;
 _updateClothe  = `UPDATE clothe SET type = ?, composition = ? WHERE product_id = ?`;
+_updateBlogArticle = `UPDATE blog SET image_id = ?, title = ?, description = ? WHERE id = ?`;
 
 // Requête de suppression lors de produits manquant
 _sync_order         = `DELETE FROM \`order\` WHERE id NOT IN (
@@ -509,11 +521,60 @@ function getUserNewsletter(user_id, callback) {
     });
 }
 
-// Renvoit des statistiques globales sur le site
+// Renvoit toutes les newsletter
 function getAllNewsletter(callback) {
     connection.query(_getAllNewsletter, function(err, rows, fields) {
         if (err) throw err;
         callback(rows);  
+    });    
+}
+
+// Renvoit un article de blog selon l'id correspondant
+function getBlogArticle(id, callback) {
+    connection.query(_getBlogArticle, [id], function(err, rows, fields) {
+        if (err) throw err;
+
+        if (!rows.length) {
+            callback(false);
+            return false;
+        }
+
+        // La requête renvoit une ligne par image différente du produit, on doit donc recomposer en tableau
+        imageArray = []
+        for (article of rows) {
+            imageArray.push(article.image);
+        }
+
+        rows[0].image = imageArray; // On recompose à partir du 1er resultat, par exemple
+        callback(rows[0]);
+    });
+}
+
+// Renvoit tous les articles de blog
+function getAllBlogArticle(callback) {
+    connection.query(_getAllBlogArticle, function(err, rows, fields) {
+        if (err) throw err;
+
+        if (!rows.length) {
+            callback(false);
+            return false;
+        }
+
+        // On trie les résultats par produit et image
+        let articleList = [];
+        let articleCheck = [];
+        for (article of rows) {
+            if (!articleCheck.includes(article.id)) {
+                article.image = [article.image];
+
+                articleList.push(article);
+                articleCheck.push(article.id)
+            } else {
+                let index = articleCheck.indexOf(article.id)
+                articleList[index].image.push(article.image);
+            }
+        }
+        callback(articleList);
     });    
 }
 
@@ -640,6 +701,14 @@ function addNewsletter(email, callback) {
     // on vérifie d'abord que l'ancien mdp est valide ...
     connection.query('INSERT INTO newsletter (email) VALUES (?)', [email], function(err, result) {
         console.log('-> Inscription newsletter ! | '+email)
+        if (callback) callback();
+    });
+}
+
+// Ajoute un article de blog
+function addBlogArticle(data, callback) {
+    connection.query(_addBlogArticle, [data.image_id, data.date, data.title, data.description], function(err, result) {
+        console.log('-> Article de blog ajouté ! | '+data.title)
         if (callback) callback();
     });
 }
@@ -786,8 +855,16 @@ function updateProduct (data) {
 }
 
 // Met à jour une commande selon le status passé en paramètre
-function updateOrder(status, id, trackNumber) {
+function updateOrder(status, id, trackNumb) {
     connection.query(_updateOrder, [status, trackNumber, id], function(err, rows, fields) {
+        if (err) throw err;
+    });
+}
+
+// Met à jour un article de blog selon les données entrées
+function updateBlogArticle(data) {
+    connection.query(_updateBlogArticle, [data.image_id, data.title, data.description], function(err, rows, fields) {
+        console.log('-> Article de blog modifié ! |'+data.title)
         if (err) throw err;
     });
 }
@@ -844,6 +921,14 @@ function removeUser (id, callback) {
     });
 }
 
+// Supprime un article de blog de la BDD
+function removeBlogArticle (id, callback) {
+    connection.query(_removeBlogArticle, [id], function(err, rows, fields) {
+        if (err) throw err;
+        callback();
+    });
+}
+
 module.exports = {
 	login: login,
 	signUp: signUp,
@@ -864,10 +949,13 @@ module.exports = {
     getUserNewsletter: getUserNewsletter,
     getAllNewsletter: getAllNewsletter,
     getStat: getStat,
+    getBlogArticle: getBlogArticle,
+    getAllBlogArticle: getAllBlogArticle,
 
 	addProduct: addProduct,
 	addOrder: addOrder,
     addNewsletter: addNewsletter,
+    addBlogArticle: addBlogArticle,
 
 	editUserPassword: editUserPassword,
     resetUserPassword: resetUserPassword,
@@ -877,10 +965,12 @@ module.exports = {
 
 	updateProduct: updateProduct,
 	updateOrder: updateOrder,
+    updateBlogArticle: updateBlogArticle,
 
 	removeProduct: removeProduct,
 	removeOrder: removeOrder,
 	removeUser: removeUser,
+    removeBlogArticle: removeBlogArticle,
 
     test: test,
     updateDatabase: updateDatabase,
