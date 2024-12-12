@@ -73,6 +73,7 @@
                             <div class="composition">
                                 <label class="title my-2"> Composition </label>
                                 <input type="text" placeholder="Composition du vêtement" class="form-control col" name="composition" value="<%= product.composition %>">
+                                <div class="invalid-feedback">Veuillez rentrer une composition</div>
                             </div>
                         </div>
                     </div>
@@ -274,7 +275,7 @@
             } else {
                 weight.removeClass('is-invalid').addClass('is-valid');
             }
-            if (!composition.val() && type.val() == "clothe") {
+            if (!composition.val()) {
                 composition.removeClass('is-valid').addClass('is-invalid');
                 return false;
             } else {
