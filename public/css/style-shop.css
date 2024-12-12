@@ -103,7 +103,7 @@ h3 {
 }
 
 @media (max-width: 768px) { 
-	.product-img {
+	.product-img img {
 		/*border-radius: 0;*/
 		box-shadow: none;
 	}
