@@ -256,7 +256,6 @@
             for (file of file_list) {
                 form.append('file', file)
             }
-            console.log(form)
 
             // On upload les images sur le serveur
             $.ajax({
@@ -274,8 +273,6 @@
             })
             .done( function (data) {
                 // ... Et on attend que l'upload soit fini pour lancer la 2e requête
-                console.log(imageArray);
-                console.log(form)
                 return false;
                 $.post("/admin-add-product", {
                     images: JSON.stringify(imageArray),
