@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<% function nl2br (str, is_xhtml) {
+    if (typeof str === 'undefined' || str === null) {
+        return '';
+    }
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br/>' : '<br/>';
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+} %>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -50,7 +57,7 @@
                             <% } else { %>
                             <span class="product-unavailable mb-md-3"> Plus disponible !</span>
                             <% } %>
-                            <span class="product-desc d-none d-md-block"><%= product.description %></span>
+                            <span class="product-desc d-none d-md-block mb-2"><%- nl2br(product.description) %></span>
                         </div>
 
                         <div class="product-gallery row d-none d-md-flex">

@@ -46,15 +46,15 @@ h3 {
 
 .product-img {
 	position: relative;
-
 	padding: 0;
-	box-shadow: 0 .5rem 1rem rgba(0, 0, 0,.15);
-	border-radius: 5px;
-	
-	overflow: hidden;
 }
 .product-img.unavailable {
 	opacity: 0.4;
+}
+.product-img img {
+	box-shadow: 0 .5rem 1rem rgba(0, 0, 0,.15);
+	border-radius: 5px;
+	overflow: hidden;
 }
 
 .product-gallery {
