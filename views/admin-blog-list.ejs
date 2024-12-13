@@ -45,7 +45,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% for (article of articles) { %>
+                            <% if (articles.length) {
+                                for (article of articles) { %>
                                 <tr>
                                     <td>
                                         <div class="product-img">
@@ -61,7 +62,7 @@
                                     <a class="btn btn-danger w-100" href="#" data-toggle="modal" data-target="#deleteArticleModal" data-id="<%= article.id %>" name="delete-article">Supprimer</a>
                                     </td>
                                 </tr>
-                            <% } %>
+                            <% }} %>
                         </tbody>
                     </table>
                     <a class="btn btn-cart mt-3" href="/admin-add-blogarticle" name="add">Ajouter un article</a>
