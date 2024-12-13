@@ -26,10 +26,25 @@
         <main class="margin-right">
             <div class="m-3"> 
                 <span href="#" class="link-title p-2 pl-4">
-                    Modification d'un article
+                    Modification d'un article de blog
                 </span>
             </div>
             <div class="new-product-content container-fluid px-4">
+                <div class="d-flex flex-wrap">
+                    <div class="titre">
+                        <label class="title my-2"> Titre </label>
+                        <input type="text" placeholder="Titre de l'article" class="form-control col" name="title" value="<%= article.title %>">
+                        <div class="invalid-feedback">Veuillez rentrer un titre</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="description">
+                        <label class="title my-2"> Description </label>
+                        <textarea class="form-control col" placeholder="Ajouter une description ici ..." rows="7" name="description1"><%= article.description1 %></textarea>
+                        <div class="invalid-feedback">Veuillez rentrer une description</div>
+                    </div>
+                </div>
+
                 <div class="d-flex flex-wrap bottom-section">
                     <div class="images col-12 pb-3">
                         <label class="title my-2"> Image(s) </label>
@@ -42,53 +57,17 @@
                     </div>
                 </div>
 
-                <div class="d-flex flex-wrap">
-                    <div class="col-md-4 col-12">
-                        <div class="name">
-                            <label class="title my-2"> Nom </label>
-                            <input type="text" placeholder="Nom" class="form-control col" name="name" value="<%= product.name %>">
-                            <div class="invalid-feedback">Veuillez rentrer un nom</div>
-                        </div>
-                        <div class="price">
-                            <label class="title my-2"> Prix (€)</label>
-                            <input type="text" placeholder="12.99" class="form-control col" name="price" value="<%= product.price %>">
-                            <div class="invalid-feedback">Veuillez rentrer un prix valide (ex: 12.99)</div>
-                        </div>
-                        <div class="available">
-                            <label class="title my-2"> Disponible </label>
-                            <br/>
-                            <label class="checkbox-inline"><input type="radio" name="available" value="1" id="a1" <% if (product.available == 1) { %> checked <% } %> > Oui </label>
-                            <label class="checkbox-inline ml-3"><input type="radio" name="available" value="0" id="a2" <% if (!product.available) { %> checked <% } %> > Non </label>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-12">
-
-                        <div class="weight">
-                            <label class="title my-2"> Poids (g)</label>
-                            <input type="text" placeholder="250" class="form-control col" name="weight" value="<%= product.weight %>">
-                            <div class="invalid-feedback">Veuillez rentrer un poids valide (en milligramme)</div>
-                        </div>
-
-                        <div class="type-clothe">
-                            <div class="composition">
-                                <label class="title my-2"> Composition </label>
-                                <input type="text" placeholder="Composition du vêtement" class="form-control col" name="composition" value="<%= product.composition %>">
-                                <div class="invalid-feedback">Veuillez rentrer une composition</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-12">
-                        <div class="description">
-                            <label class="title my-2"> Description </label>
-                            <textarea class="form-control col" placeholder="Ajouter une description ici ..." rows="7" name="description"><%= product.description %></textarea>
-                            <div class="invalid-feedback">Veuillez rentrer une description</div>
-                        </div>
+                <div>
+                    <div class="description">
+                        <label class="title my-2"> Description (optionnel) </label>
+                        <textarea class="form-control col" placeholder="Ajouter une description ici ..." rows="7" name="description2"><%= article.description2 %></textarea>
+                        <!-- <div class="invalid-feedback">Veuillez rentrer une description</div> -->
                     </div>
                 </div>
 
                 <div class="w-100 border-bottom my-4"></div>
-                <form class="text-center" action="/admin-edit-product" method="post">
-                    <button class="btn btn-success my-4" type="submit"> Modifier le produit </button>
+                <form class="text-center" action="/admin-edit-blogarticle" method="post">
+                    <button class="btn btn-success my-4" type="submit"> Modifier l'article </button>
                 </form>
             </div>
         </main>
@@ -97,11 +76,6 @@
         </footer>
     </body>
     
-    <script src="/scripts/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script>
-    <script>
-        $("input[type='number']").inputSpinner()
-    </script>
-
     <script type="text/javascript">
         var fileTypes = [
           'image/jpeg',
@@ -197,7 +171,7 @@
         /* =========================== PRE-REMPLISSAGE ==================== */
 
         // Préremplis les preview d'image
-        `<% for (image of product.image) { %>`
+        `<% for (image of article.image) { %>`
             $(`.img-preview`).append(`
                 <div class="image-container mx-2">
                     <img src="/img/<%= image %>" img-name='<%= image %>'></img>
@@ -219,21 +193,12 @@
 
         /* ============================ POST FINAL ======================== */
 
-        // Ajuste la valeur par défaut des select  
-        // $(`.custom-select[name="clothe_type"] option[value="<%= product.clothe_type %>"]`).prop('selected',true); 
-
         // Ajouter un produit
-        $('form[action="/admin-edit-product"]').submit(function () {
+        $('form[action="/admin-edit-blogarticle"]').submit(function () {
             let image = $('input[name="images"]');
-            let name = $('input[name="name"]');
-            let description = $('textarea[name="description"]');
-            let price = $('input[name="price"]');
-            let weight = $('input[name="weight"]');
-            let composition = $('input[name="composition"]');
-            let available = $('input[name="available"]:checked');
-
-            let regexPrice  = new RegExp("^(\\d+[.]\\d{1,2})$");
-            let regexWeight = new RegExp("^(\\d+)$");
+            let title = $('input[name="title"]');
+            let description1 = $('textarea[name="description1"]');
+            let description2 = $('textarea[name="description2"]');
 
             // On récupère le tableau des images
             let imageArray = getImgList()
@@ -245,42 +210,24 @@
             } else {
                 image.removeClass('is-invalid').addClass('is-valid');
             }
-            if (!name.val()) {
-                name.removeClass('is-valid').addClass('is-invalid');
+            if (!title.val()) {
+                title.removeClass('is-valid').addClass('is-invalid');
                 return false;
             } else {
-                name.removeClass('is-invalid').addClass('is-valid');
+                title.removeClass('is-invalid').addClass('is-valid');
             }
-            if (!description.val()) {
-                description.removeClass('is-valid').addClass('is-invalid');
+            if (!description1.val()) {
+                description1.removeClass('is-valid').addClass('is-invalid');
                 return false;
             } else {
-                description.removeClass('is-invalid').addClass('is-valid');
+                description1.removeClass('is-invalid').addClass('is-valid');
             }
-            if (!price.val()) {
-                price.removeClass('is-valid').addClass('is-invalid');
-                return false;
-            } else if (!price.val().match(regexPrice)) {
-                price.removeClass('is-valid').addClass('is-invalid');
-                return false;
-            } else {
-                price.removeClass('is-invalid').addClass('is-valid');
-            }
-            if (!weight.val()) {
-                weight.removeClass('is-valid').addClass('is-invalid');
-                return false;
-            } else if (!weight.val().match(regexWeight)) {
-                weight.removeClass('is-valid').addClass('is-invalid');
-                return false;
-            } else {
-                weight.removeClass('is-invalid').addClass('is-valid');
-            }
-            if (!composition.val()) {
-                composition.removeClass('is-valid').addClass('is-invalid');
-                return false;
-            } else {
-                composition.removeClass('is-invalid').addClass('is-valid');
-            }
+            // if (!description2.val()) {
+            //     description2.removeClass('is-valid').addClass('is-invalid');
+            //     return false;
+            // } else {
+            //     description2.removeClass('is-invalid').addClass('is-valid');
+            // }
 
             //uploadImgFiles(file_list) // On upload les images sur le serveur en parallèle
             let form = new FormData();
@@ -304,22 +251,18 @@
             })
             .done(function () {
                 // ... Et on attend que l'upload soit fini pour lancer la 2e requête
-                $.post("/admin-edit-product", {
-                    id: <%= product.id %>,
+                $.post("/admin-edit-blogarticle", {
+                    id: <%= article.id %>,
                     image: JSON.stringify(imageArray),
-                    name: name.val(),
-                    description: description.val(),
-                    price: price.val(),
-                    weight: weight.val(),
-                    composition: composition.val(),
-                    type: 'clothe',
-                    available: available.val()
+                    title: title.val(),
+                    description1: description1.val(),
+                    description2: description2.val(),
                 })
                 .done( function (data) {
                     if (data == "badInfos") {
                     }
                     else {
-                        location.assign('/admin-products-list');
+                        location.assign('/admin-blog-list');
                     }
                 });    
             })

@@ -39,6 +39,9 @@ h3 {
 	
 	overflow: hidden;
 }
+.article-gallery {
+	justify-content: space-around;
+}
 
 /* ------- article-infos ------ */
 
@@ -53,7 +56,7 @@ h3 {
 }
 
 .article-date {
-	color: #c8c8c8;
+	color: var(--button1);
 }
 .article-desc {
 	font-style: italic;

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<% function nl2br (str, is_xhtml) {
+    if (typeof str === 'undefined' || str === null) {
+        return '';
+    }
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+} %>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        
+        <!-- Import CSS Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Import custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/style-account.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-admin.css">
+        <link rel="stylesheet" type="text/css" href="/css/style-navbar.css">
+        <title>kita pena</title>
+    </head>
+ 
+    <body>
+        <header>
+            <%- include('navbar') %>
+        </header>
+
+        <main class="margin-right">
+            <div class="products-list-content container-fluid p-4">
+                <div class="table-order text-center w-100">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="p-1" scope="col">Image</th>
+                                <th class="p-1" scope="col">Titre</th>
+                                <th class="p-1" scope="col">Description (aperçu)</th>
+                                <th class="p-1" scope="col">Date</th>
+                                <th class="p-1" scope="col">ID</th>
+                                <th class="p-1" scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (article of articles) { %>
+                                <tr>
+                                    <td>
+                                        <div class="product-img">
+                                            <img class="" src="/img/<%= article.image[0] %>">
+                                        </div>
+                                    </td>
+                                    <td><%= article.title %></td>
+                                    <td style="text-align:left;"><%- nl2br(article.description1) %></td>
+                                    <td><%= article.date.toLocaleDateString() %></td>
+                                    <td><%= article.id %></td>
+                                    <td>
+                                    <a class="btn btn-log mb-2 w-100" href="/admin-edit-blogarticle/<%= article.id %>" name="edit">Modifier</a>
+                                    <a class="btn btn-danger w-100" href="#" data-toggle="modal" data-target="#deleteArticleModal" data-id="<%= article.id %>" name="delete-article">Supprimer</a>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                    <a class="btn btn-cart mt-3" href="/admin-add-blogarticle" name="add">Ajouter un article</a>
+                </div>
+            </div>
+            <!-- MODAL DELETE ORDER -->
+            <div class="modal fade" id="deleteArticleModal" tabindex="-1" role="dialog" aria-labelledby="deleteArticleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteOrderModalLabel">Voulez-vous vraiment vous supprimer ?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body p-4" style="text-transform:none; font-weight: 500;">
+                            <div> Une fois supprimé, il n'y a plus de retour en arrière possible ! L'article disparaîtra complètement de la liste du blog.<br/>
+                            Pour modifier une information, cliquer sur le bouton modifier de l'article.
+                            </div>
+                            <div class="form-row justify-content-center pt-3">
+                                <a href="/admin-remove-blogarticle/" class="btn btn-danger mr-2" data-dismiss="" id="buttonLink">Confirmer</a>
+                                <button type="button" class="ml-2 btn btn-log" data-dismiss="modal" aria-label="Close"> Annuler</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <%- include('footer') %>
+        </footer>
+    </body>
+    
+    <script type="text/javascript">
+        $('a[name="delete-article"]').click(function (){
+            $('#deleteArticleModal a#buttonLink').attr('href', `/admin-remove-blogarticle/${$(this).attr('data-id')}`);
+        });
+    </script>
+
+</html>

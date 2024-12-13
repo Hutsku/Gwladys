@@ -36,20 +36,21 @@
             <div class="article-list container">
             <% if (articles.length) {
             for (article of articles) { %>
-                <a class="article row mb-md-5" href="">
-                    <div class="article-img col-12 col-md-3">
-                        <!-- Affichage des différentes images -->
-                        <img class="w-100" src="/img/<%= article.image[0] %>">
-                    </div>
-
-                    <div class="col-12 col-md d-flex flex-column justify-content-between pl-4">
+                    <div class="article row d-flex flex-column justify-content-between pl-4 mb-4">
                         <div class="article-infos mt-2 mt-md-0">
-                            <span class="article-title pb-md-3"><%= article.title %></span>
-                            <span class="article-date pb-md-3"><%= article.date %></span>
+                            <span class="article-title"><%= article.title %></span>
+                            <span class="article-date pb-md-3">Article publié le : <%= article.date.toLocaleDateString() %></span>
                             <span class="article-desc d-none d-md-block"><%- nl2br(article.description1) %></span>
+                            <div class="article-gallery d-none d-md-flex my-4">
+                                <% for (image of article.image) { %>
+                                <div class="article-img col-3 mr-3">
+                                    <img class="w-100" src="/img/<%= image %>">
+                                </div>
+                                <% } %>
+                            </div>
+                            <span class="article-desc d-none d-md-block"><%- nl2br(article.description2) %></span>
                         </div>
                     </div>
-                </a>
             <% } }%>
             </div>               
         </main>

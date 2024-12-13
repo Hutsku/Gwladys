@@ -395,9 +395,15 @@ app.use(function(req, res, next) {
 })
 
 .get('/post-it', function(req, res) {
-    // Affiche la liste des articles indiquées
-    res.redirect('/work-in-progress')
-    //res.render('post-it.ejs', {session: req.session});
+    // Affiche la la liste des articles de blog
+    // res.redirect('/work-in-progress')
+    query.getAllBlogArticle(function(articles) {
+        // On envoit les données du produit à la page
+        res.render('post-it.ejs', {
+            articles: articles, 
+            session: req.session
+        });
+    });
 })
 
 .get('/product/:id', function(req, res) {
@@ -652,6 +658,61 @@ app.use(function(req, res, next) {
     }
 })
 
+.get('/admin-blog-list', function(req, res) {
+    // on vérifie que l'utilisateur est bien admin (double verification si jamais)
+    if (req.session.admin && checkAdmin(req.session.account.email)) {
+        query.getAllBlogArticle(function(articles) {
+            res.render('admin-blog-list.ejs', {session: req.session, articles: articles});
+        });
+    }
+    else {
+        // sinon on redirige vers l'écran de connexion
+        res.redirect('/mainpage');
+    } 
+})
+
+.get('/admin-edit-blogarticle/:id', function(req, res) {
+    // on vérifie que l'utilisateur est bien admin (double verification si jamais)
+    if (req.session.admin && checkAdmin(req.session.account.email)) {
+        query.getBlogArticle(req.params.id, function(article) {
+            res.render('admin-edit-blogarticle.ejs', {
+                article: article,
+                session: req.session
+            });
+        });
+    }
+    else {
+        // sinon on redirige vers l'écran de connexion
+        res.redirect('/admin-blog-list');
+    }
+})
+
+.get('/admin-add-blogarticle', function(req, res) {
+    // on vérifie que l'utilisateur est bien admin (double verification si jamais)
+    if (req.session.admin && checkAdmin(req.session.account.email)) {
+        res.render('admin-add-blogarticle.ejs', {
+            session: req.session
+        });
+    }
+    else {
+        // sinon on redirige vers l'écran de connexion
+        res.redirect('/admin-blog-list');
+    } 
+})
+
+.get('/admin-remove-blogarticle/:id', function(req, res) {  
+    // on vérifie que l'utilisateur est bien admin (double verification si jamais)
+    if (req.session.admin && checkAdmin(req.session.account.email)) {
+        query.removeBlogArticle(req.params.id);
+        req.session.alert = "remove article";
+        res.redirect('back');
+    }
+    else {
+        // sinon on redirige vers l'écran de connexion
+        res.send('no admin');
+    }
+})
+
 // ------------------------ PAYOUT  --------------------------
 
 .get('/payout-infos', function(req, res) {
@@ -784,6 +845,36 @@ app.use(function(req, res, next) {
         console.log(`-> Article modifié | ${req.body.name}`);
 
         req.session.alert = "edit product";
+        res.redirect('back');
+    }
+    else {
+        // sinon on redirige vers l'écran de connexion
+        res.send('no admin');
+    }
+})
+
+.post('/admin-add-blogarticle', urlencodedParser, function(req, res) {    
+    // on vérifie que l'utilisateur est bien admin (double verification si jamais)
+    if (req.session.admin && checkAdmin(req.session.account.email)) {
+        query.addBlogArticle(req.body); // On ajoute le produit dans la BDD
+        console.log(`-> Article de blog ajouté | "${req.body.title}"`);
+
+        req.session.alert = "add article";
+        res.redirect('back');
+    }
+    else {
+        // sinon on redirige vers l'écran de connexion
+        res.send('no admin');
+    }
+})
+
+.post('/admin-edit-blogarticle', urlencodedParser, function(req, res) {  
+    // on vérifie que l'utilisateur est bien admin (double verification si jamais)
+    if (req.session.admin && checkAdmin(req.session.account.email)) {
+        query.updateBlogArticle(req.body); // Modifie le produit dans la BDD
+        console.log(`-> Article de blog modifié ! | "${req.body.title}"`);
+
+        req.session.alert = "edit article";
         res.redirect('back');
     }
     else {

@@ -57,7 +57,7 @@ _getAllOrderUser = `SELECT o.id, u.name, u.email, total_cost, shipping_address, 
 _getAllBlogArticle = `SELECT blog_id as id, name as image, date, title, description1, description2, position FROM blog
             INNER JOIN blog_image ON blog.id = blog_id
             INNER JOIN image ON image.id = image_id
-            ORDER BY position`;
+            ORDER BY id DESC, position`;
 
 _getUser       = `SELECT * FROM user, address WHERE id = ? AND user_id = id`;
 _getUserFromEmail = `SELECT * FROM user, address WHERE email = ? AND user_id = id`;
@@ -94,7 +94,7 @@ _addOrder       = `INSERT INTO \`order\` (user_id, date, total_cost, subtotal_co
                VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?)`;
 _addProduct     = `INSERT INTO product (name, description, price, weight, available, type, cover_image) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 _addClothe      = `INSERT INTO clothe (product_id, type, composition) VALUES (?, ?, ?)`;
-_addBlogArticle = `INSERT INTO blog (image_id, date, title, description) VALUES (?, ?, ?, ?)`;
+_addBlogArticle = `INSERT INTO blog (date, title, description1, description2) VALUES (?, ?, ?, ?)`;
 
 _removeProduct = `UPDATE product SET visible = 0 WHERE id = ?`;
 _removeOrder   = `DELETE FROM \`order\` WHERE id = ?`;
@@ -108,7 +108,7 @@ _editUserInfo     = `UPDATE user SET name = ?, email = ?, tel = ? WHERE id = ?`;
 _updateOrder   = `UPDATE \`order\` SET state = ?, tracking_number = ? WHERE id = ?`;
 _updateProduct = `UPDATE product SET name = ?, description = ?, price = ?, weight = ?, available = ?, type = ?, cover_image = ? WHERE id = ?`;
 _updateClothe  = `UPDATE clothe SET type = ?, composition = ? WHERE product_id = ?`;
-_updateBlogArticle = `UPDATE blog SET image_id = ?, title = ?, description = ? WHERE id = ?`;
+_updateBlogArticle = `UPDATE blog SET title = ?, description1 = ?, description2 = ? WHERE id = ?`;
 
 // Requête de suppression lors de produits manquant
 _sync_order         = `DELETE FROM \`order\` WHERE id NOT IN (
@@ -707,9 +707,42 @@ function addNewsletter(email, callback) {
 
 // Ajoute un article de blog
 function addBlogArticle(data, callback) {
-    connection.query(_addBlogArticle, [data.image_id, data.date, data.title, data.description], function(err, result) {
-        console.log('-> Article de blog ajouté ! | '+data.title)
-        if (callback) callback();
+    data.images = JSON.parse(data.images)
+
+    connection.query(_addBlogArticle, [data.date, data.title, data.description1, data.description2], function(err, result) {
+        if (err) throw err;
+        productId = result.insertId;
+
+        // On ajoute une par une les images à la BDD
+        for (let image_pos=0; image_pos<data.images.length; image_pos++) {
+            let image = data.images[image_pos];
+            // On verifie si les images n'existent pas déjà
+            connection.query(`SELECT * FROM image WHERE name = ?`, [image], function(err, rows, fields) {
+                if (err) throw err;
+
+                // Si l'image n'existe pas, on l'ajoute à la BDD
+                if (!rows.length) {
+                    connection.query(`INSERT INTO image (name) VALUES (?)`, [image], function(err, result) {
+                        if (err) throw err;
+                        console.log('-> File uploaded')
+                        let imageId = result.insertId;
+
+                        // On lie les images au produit dans la BDD
+                        let linkImageProduct = `INSERT INTO blog_image (blog_id, image_id, position) VALUES (?, ?, ?)`;
+                        connection.query(linkImageProduct, [productId, imageId, image_pos], function(err, result) {
+                            if (err) throw err;
+                        });
+                    });
+                }
+                else {
+                    // On créer le lien entre le produit et l'image             
+                    let linkImageProduct = `INSERT INTO blog_image (blog_id, image_id, position) VALUES (?, ?, ?)`;
+                    connection.query(linkImageProduct, [productId, rows[0].id, image_pos], function(err, result) {
+                        if (err) throw err;
+                    });
+                }
+            });
+        }            
     });
 }
 
@@ -863,9 +896,46 @@ function updateOrder(status, id, trackNumb) {
 
 // Met à jour un article de blog selon les données entrées
 function updateBlogArticle(data) {
-    connection.query(_updateBlogArticle, [data.image_id, data.title, data.description], function(err, rows, fields) {
-        console.log('-> Article de blog modifié ! |'+data.title)
+    data.image = JSON.parse(data.image)
+
+    connection.query(_updateBlogArticle, [data.title, data.description1, data.description2, data.id], function(err, result) {
         if (err) throw err;
+
+        // On supprime d'avance toutes les connections entre le produits et des images pour les refaire
+        connection.query(`DELETE FROM blog_image WHERE blog_id = ?`, [data.id], function(err, rows, fields) {
+            if (err) throw err;
+
+            // On ajoute une par une les images à la BDD
+            for (let image_pos=0; image_pos<data.image.length; image_pos++) {
+                let image = data.image[image_pos];
+                // On verifie si les images n'existent pas déjà
+                connection.query(`SELECT * FROM image WHERE name = ?`, [image], function(err, rows, fields) {
+                    if (err) throw err;
+
+                    // Si l'image n'existe pas, on l'ajoute à la BDD
+                    if (!rows.length) {
+                        connection.query(`INSERT INTO image (name) VALUES (?)`, [image], function(err, result) {
+                            if (err) throw err;
+                            console.log('-> File uploaded')
+                            let imageId = result.insertId;
+
+                            // On lie les images au produit dans la BDD
+                            let linkImageProduct = `INSERT INTO blog_image (blog_id, image_id, position) VALUES (?, ?, ?)`;
+                            connection.query(linkImageProduct, [data.id, imageId, image_pos], function(err, result) {
+                                if (err) throw err;
+                            });
+                        });
+                    }
+                    else {
+                        // On créer le lien entre le produit et l'image             
+                        let linkImageProduct = `INSERT INTO blog_image (blog_id, image_id, position) VALUES (?, ?, ?)`;
+                        connection.query(linkImageProduct, [data.id, rows[0].id, image_pos], function(err, result) {
+                            if (err) throw err;
+                        });
+                    }
+                });
+            }            
+        });
     });
 }
 
@@ -922,10 +992,15 @@ function removeUser (id, callback) {
 }
 
 // Supprime un article de blog de la BDD
-function removeBlogArticle (id, callback) {
+function removeBlogArticle (id) {
+    // On supprime le produit de la BDD
     connection.query(_removeBlogArticle, [id], function(err, rows, fields) {
         if (err) throw err;
-        callback();
+
+        // On supprime également toutes les connections entre l'article et les images
+        connection.query(`DELETE FROM blog_image WHERE blog_id = ?`, [id], function(err, rows, fields) {
+            if (err) throw err;
+        });
     });
 }
 
