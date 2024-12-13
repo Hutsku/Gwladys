@@ -230,7 +230,6 @@
                 // ... Et on attend que l'upload soit fini pour lancer la 2e requête
                 let date = new Date()
                 $.post("/admin-add-blogarticle", {
-                    id: <%= article.id %>,
                     images: JSON.stringify(imageArray),
                     title: title.val(),
                     description1: description1.val(),
