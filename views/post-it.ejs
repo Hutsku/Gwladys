@@ -40,15 +40,15 @@
                         <div class="article-infos mt-2 mt-md-0">
                             <span class="article-title"><%= article.title %></span>
                             <span class="article-date pb-md-3">Article publié le : <%= article.date.toLocaleDateString() %></span>
-                            <span class="article-desc d-none d-md-block"><%- nl2br(article.description1) %></span>
-                            <div class="article-gallery d-none d-md-flex my-4">
+                            <span class="article-desc d-block"><%- nl2br(article.description1) %></span>
+                            <div class="article-gallery d-flex my-4">
                                 <% for (image of article.image) { %>
-                                <div class="article-img col-3 mr-3">
+                                <div class="article-img col col-md-3 mr-3">
                                     <img class="w-100" src="/img/<%= image %>">
                                 </div>
                                 <% } %>
                             </div>
-                            <span class="article-desc d-none d-md-block"><%- nl2br(article.description2) %></span>
+                            <span class="article-desc d-block"><%- nl2br(article.description2) %></span>
                         </div>
                     </div>
             <% } }%>

@@ -66,11 +66,7 @@ h3 {
 @media (max-width: 768px) { 
 	.article-img {
 		/*border-radius: 0;*/
-		box-shadow: none;
-	}
-
-	.article-infos {
-		text-align: center;
+		/*box-shadow: none;*/
 	}
 
 	.article-list {
