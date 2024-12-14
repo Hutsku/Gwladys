@@ -72,6 +72,10 @@ h3 {
 	.article-list {
 		margin-bottom: 30px;
 	}
+
+	.article-gallery {
+		flex-direction: column;
+	}
 }
 
 /* ----------------------------------------- */
