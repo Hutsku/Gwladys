@@ -8,16 +8,24 @@ function roundPrice(x) {
 function getShippingCost(country, postal_code, weight) {
     // Si la panier ne pèse rien (par exemple pour des affiches), fdp gratos
     if (weight == 0) return 0;
-    
-    // On définie à l'avance les prix
-    let metroCost  = [4.99, 6.99, 8.1, 8.80];     // (250mg, 500, 750, 1Kg)
-    let domtomCost = [12.65, 12.65, 20, 20]; // (500mg, 1Kg)
-    let euroCost   = [14.25, 14.25, 17.60, 17.60]; // (500mg, 1Kg)
-    let inter1Cost = [21.40, 21.40, 25.55, 25.55]; // (500mg, 1Kg)
-    let inter2Cost = [31.60, 31.60, 31.15, 31.15]; // (500mg, 1Kg)
 
+    // On définie la liste des poids : (250, 500, 750, 1kg, 2, 5, 10, 15, 30)
+    let fdp_weight_array = [250, 500, 750, 1000, 2000, 5000, 10000, 15000, 30000]
+    
+    // On définie à l'avance les prix correspondant
+    let metroCost  = [4.99, 6.99, 8.10, 8.80, 10.15, 15.60, 22.70, 28.70, 35.55];
+    let domtomCost = [12.65, 12.65, 20.00, 20.00, 27.25, 40.95, 65.60, 137.05, 150.55]; 
+    let euroCost   = [14.25, 14.25, 17.60, 17.60, 19.95, 25.50, 42.05, 61.80, 80.05]; 
+    let inter1Cost = [21.40, 21.40, 25.55, 25.55, 27.95, 35.90, 59.40, 80.60, 98.55]; 
+    let inter2Cost = [31.60, 31.60, 31.15, 31.15, 48.50, 70.80, 133.80, 190.15, 231.80]; 
+    
     // On définit l'indice de prix selon le poid du colis
-    let fdp_index = Math.trunc(parseFloat(weight-1) / 250);
+    let i = 0
+    for (fdp_weight of fdp_weight_array) {
+        if (weight < fdp_weight) break
+        else i += 1
+    } 
+    let fdp_index = i >= fdp_weight_array.length ? (fdp_weight_array.length-1) : i // On limite la taille max
 
     // On définit les differentes zones
     let euro = ['DE', 'AT', 'BE', 'BG', 'CY', 'HR', 'DK', 'ES', 'EE', 'FI', 'FR', 'GR', 'HU', 'IE', 'IT', 'LT', 

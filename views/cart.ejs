@@ -51,11 +51,11 @@
                             <div class="w-100 border-bottom my-3"></div>
                         <% } 
                         if (session.cart.products.length) { %>
-                            <form action="/valid-cart" method="post" class="mt-5 text-center">
+<!--                             <form action="/valid-cart" method="post" class="mt-5 text-center">
                                 <button class="w-auto btn btn-log mb-3" type="submit" name="valid-cart">
                                     Valider le panier
                                 </button>
-                            </form>
+                            </form> -->
                         <% } else { %>
                             <div class="cart-empty text-center row"> 
                                 <span class="col my-5">Aucun produit dans le panier ...</span>
@@ -227,11 +227,18 @@
             element.next().remove();
             element.remove();
 
+            // On modifie le cookie panier avec une requête post
+            $.post("/valid-cart", {
+                cart: validCart()
+            })
+            $('.cart-dropdown span').text($('.cart-pannel-main .cart-product').length); // On met à jour l'indicateur du panier
+            $('.navbar-cart span').text($('.cart-pannel-main .cart-product').length); // (version mobile)
+
             // s'il n'y a plus rien dans le panier, on supprime le total et on ajoute le texte de vide
             if (!$('.cart-pannel-main .cart-product').length) {
-                $('form[action="/valid-cart"]').before(
+                $('.cart-pannel-main').after(
                     `<div class="cart-empty text-center row"> 
-                        <span class="col mt-5">Aucun produit dans le panier ...</span>
+                        <span class="col my-5">Aucun produit dans le panier ...</span>
                     </div>`);
                 
                 $('.price-shipping').text("-");
