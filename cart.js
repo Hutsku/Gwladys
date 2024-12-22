@@ -8,7 +8,7 @@ function roundPrice(x) {
 function getShippingCost(country, postal_code, weight) {
     // Si la panier ne pèse rien (par exemple pour des affiches), fdp gratos
     if (weight == 0) return 0;
-    return 0; // provisoire (achat en stand direct)
+    // return 0; // provisoire (achat en stand direct)
 
     // On définie la liste des poids : (250, 500, 750, 1kg, 2, 5, 10, 15, 30)
     let fdp_weight_array = [250, 500, 750, 1000, 2000, 5000, 10000, 15000, 30000]
