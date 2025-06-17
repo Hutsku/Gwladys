@@ -1158,10 +1158,10 @@ app.use(function(req, res, next) {
 })
 
 .post('/sign-up', urlencodedParser, function(req, res) {
+    console.log(req.body)
     query.signUp(req.body, function(user, error) {
         if (user) {
             // on envoit un email de confirmation
-            console.log('teste')
             sendEmail('subscribe', user.email, {name: user.name});
             req.session.username = user.name;
             req.session.account = user;
