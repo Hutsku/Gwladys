@@ -1158,27 +1158,30 @@ app.use(function(req, res, next) {
 })
 
 .post('/sign-up', urlencodedParser, function(req, res) {
-    console.log(req.body)
-    query.signUp(req.body, function(user, error) {
-        if (user) {
-            // on envoit un email de confirmation
-            sendEmail('subscribe', user.email, {name: user.name});
-            req.session.username = user.name;
-            req.session.account = user;
-            req.session.logged = true;
-            req.session.alert = "signup";
-            req.session.admin = checkAdmin(user.email);
+    if (!Object.keys(req.body).length) {
+        res.send('null');
+    } else {
+        query.signUp(req.body, function(user, error) {
+            if (user) {
+                // on envoit un email de confirmation
+                sendEmail('subscribe', user.email, {name: user.name});
+                req.session.username = user.name;
+                req.session.account = user;
+                req.session.logged = true;
+                req.session.alert = "signup";
+                req.session.admin = checkAdmin(user.email);
 
-            // On met à jour le panier si jamais
-            req.session.cart = cart.refreshCart(req.session);
-            console.log(`-> Nouveau compte inscrit ! ${user.name} ${user.email}`)
-            res.redirect('/');
-        }
-        else {
-            req.session.alert = "email already used"; // on stock l'erreur dans la seesion
-            res.send(error);
-        }
-    })
+                // On met à jour le panier si jamais
+                req.session.cart = cart.refreshCart(req.session);
+                console.log(`-> Nouveau compte inscrit ! ${user.name} ${user.email}`)
+                res.redirect('/');
+            }
+            else {
+                req.session.alert = "email already used"; // on stock l'erreur dans la seesion
+                res.send(error);
+            }
+        })
+    }
 })
 
 .post('/logout', urlencodedParser, function(req, res) {
